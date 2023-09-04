@@ -1,0 +1,74 @@
+.menu-container-admin{
+    width: 250px;
+    background-color: #fff;
+    /* box-shadow: 0px 0px 5px 0px #737373; */
+    min-height: 100vh;
+}
+.menu-container-admin img {
+    width: 40%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+}
+
+.menu-container-admin .main_Menu{
+    margin-top: 20px;
+}
+.menu-container-admin .main_Menu .single_Menu{
+    user-select: none;
+    clear: both;
+}
+.menu-container-admin .main_Menu .single_Menu .icon-menu{
+    float: left;
+    font-size: 20px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-20%);
+    margin-right: 10px;
+}
+.menu-container-admin .main_Menu .single_Menu .faChevronIcon{
+    float: right;
+    position: relative;
+    top: 5px;
+}
+.menu-container-admin .main_Menu .single_Menu h1,
+.menu-container-admin .main_Menu .single_Menu h2{
+    font-weight: 500;
+    color: var(--neutral-black-black-500, #667085);
+    font-size: 14px;
+    padding: 15px 20px;
+    cursor: pointer;
+}
+.menu-container-admin .main_Menu .single_Menu h2{
+    padding-left: 30px;
+}
+/* .menu-container-admin .main_Menu .single_Menu .single_Menu_1{
+    padding-left: 20px;
+} */
+.menu-container-admin .main_Menu .single_Menu h1:hover,
+.menu-container-admin .main_Menu .single_Menu h2:hover{
+    background: var(--primary-primary-50, #EFEFFD);
+    color: var(--primary-primary-500, #5C59E8);
+    font-weight: 600;
+}
+.nutanhien_menu{
+    position: fixed;
+    display:none;
+}
+.nutanhien_menu button{
+    padding: 10px;
+    border: none;
+    width: 40px;
+    text-align: center;
+    background-color: rgb(0, 62, 168);
+    color: #fff;
+    border-radius: 5px;
+    margin: 5px;
+}
+@media (max-width: 768px) {
+    .nutanhien_menu{
+        display: block;
+    }
+}
+
