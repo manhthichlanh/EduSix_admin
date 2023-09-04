@@ -7,3 +7,20 @@ Mô tả các file
 - src/utils: Chứa các các hàm xử lý thời gian, chuỗi... Sử dụng dụng nhiều lần, nhiều nơi. Api hepers (Liên quan đến gọi API);
 - src/store: Nơi chứa các configture các reducer để cung cấp data cho provider (Redux ToolKit) -> Comming soon.
 - src/slice: Nơi chứa các slice để xử lý các dispatch các action, async action -> Comming soon.
+
+- Lệnh git cơ bản:
+
+//Cập nhật code mới nhất
+git branch develop
+git checkout develop
+// Trỏ đến nhánh dvevelop
+git pull origin develop: lấy source code về;
+
+//Cập nhật code mới nhất
+
+//Trước khi đẩy code lên
+git add .
+git commit -m "Làm gì thi ghi đó"
+git push origin develop: đẩy code lên;
+
+Lệnh chạy code : npm run dev
