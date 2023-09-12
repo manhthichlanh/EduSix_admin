@@ -1,5 +1,5 @@
 import  { useState, useEffect } from 'react';
-import './layout_admin.css';
+import './layout_admin.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBagShopping,
