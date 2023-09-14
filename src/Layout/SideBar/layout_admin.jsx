@@ -35,12 +35,20 @@ const LayoutAdmin = () => {
   useEffect(() => {
     const handleResize = () => {
       setIsAnHienSubMenu(window.innerWidth > 768);
+
+      // Bổ xung thuộc tính display cho menu-container-admin khi thay đổi kích thước màn hình
+      const menuContainerAdmin = document.querySelector('.menu-container-admin');
+      if (menuContainerAdmin) {
+        if (isAnHienSubMenu) {
+          menuContainerAdmin.style.display = 'block'; // Hiển thị menu
+        } else {
+          menuContainerAdmin.style.display = 'none'; // Ẩn menu
+        }
+      }
     };
 
-    // Add event listener for window resize
     window.addEventListener('resize', handleResize);
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -130,10 +138,21 @@ const LayoutAdmin = () => {
                   Thống kê
                 </h1>
               </div>
-              </ul>
-              <div className=''>
-                
+              <div className='bottom_siderbar_admin'>
+              <div className='single_Menu'>
+                <h1>
+                  <div className='icon-menu'>
+                    <FontAwesomeIcon icon={faUser} />
+                  </div>
+                  Thống kê
+                </h1>
+              </div>
+              <div className='dangXuat_Admin'>
+              <button>Đăng Xuất</button>
+              </div>
                 </div>
+              </ul>
+            
             </div>
           </div>
         )}

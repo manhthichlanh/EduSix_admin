@@ -1,0 +1,27 @@
+.divcss-tq0shg1{
+    background-color: rgb(232, 250, 255);
+   
+}
+.Header_Admin{
+    float: left;
+    width: 250px;
+}
+
+
+
+
+
+.Footer_Admin{
+    clear: both;
+}
+
+@media (max-width: 768px) {
+    .Noidungchinh_Admin{
+        width: 100%;
+        overflow: hidden;
+    }
+    .Header_Admin{
+        position: fixed;
+    }
+    
+}
