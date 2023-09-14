@@ -4,24 +4,28 @@
 }
 .Header_Admin{
     float: left;
-    width: 250px;
+    width: 18%;
+}
+
+.trang_Admin{
+    width: 80%;
+    float: right;
+    overflow: hidden;
 }
 
 
 
 
 
-/* .Footer_Admin{
-    clear: both;
-} */
 
 @media (max-width: 768px) {
-    .Noidungchinh_Admin{
+    .trang_Admin{
         width: 100%;
         overflow: hidden;
     }
     .Header_Admin{
         position: fixed;
+        width: 70%;
     }
     
 }
