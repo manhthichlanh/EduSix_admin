@@ -7,7 +7,7 @@ import {
 const InputSelect = () => {
     return (
       <form>
-        <select  type="text" name="" id="" className='px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-blue-700 focus:outline-none'  >
+        <select  type="text" name="" id="" className='px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none'  >
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>

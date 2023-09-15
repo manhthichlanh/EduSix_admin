@@ -12,10 +12,7 @@ export default function Home() {
       <h1 className="text-3xl font-bold underline">
         Hello world!
       </h1>
-      <div className="px-4 py-4 bg-gray-400 rounded-lg border-2 bg-white">   
-            <InputText></InputText>
-            <InputText></InputText>
-          </div>
+ 
     
     </>
   )

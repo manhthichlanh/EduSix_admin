@@ -7,8 +7,8 @@ import {
 const InputText = () => {
     return (
       <div class="text-left">
-          <label htmlFor="" className="text-left w-1/3  ">Ten danh muc</label>
-          <input type="text" name="" id="" className='mb-4 mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-blue-700 focus:outline-none'  />
+          {/* <label htmlFor="" className="text-left w-1/3  ">Ten danh muc</label> */}
+          <input type="text" name="" id="" className='mb-4 mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none'  />
       </div>
     );
 };
