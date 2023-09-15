@@ -8,13 +8,23 @@
 }
 
 .trang_Admin{
+<<<<<<< HEAD
     width: 82%;
+=======
+    width: 80%;
+>>>>>>> origin/develop
     float: right;
     overflow: hidden;
 }
 
 
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> origin/develop
 @media (max-width: 768px) {
     .trang_Admin{
         width: 100%;

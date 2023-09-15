@@ -14,7 +14,11 @@ export default function Layout () {
                 <div className="TopBar_Admin">
                 <TopBar></TopBar>
                 </div>
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> origin/develop
                 <div className="Noidungchinh_Admin">
                 <Outlet></Outlet>
                 </div>
