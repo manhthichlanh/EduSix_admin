@@ -14,7 +14,6 @@ export default function Layout () {
                 <div className="TopBar_Admin">
                 <TopBar></TopBar>
                 </div>
-                
                 <div className="Noidungchinh_Admin">
                 <Outlet></Outlet>
                 </div>
@@ -23,9 +22,9 @@ export default function Layout () {
                 </div>
                 </div>
             </div>
-            
-        </div>    
-            
-       
+
+        </div>
+
+
     );
 }
