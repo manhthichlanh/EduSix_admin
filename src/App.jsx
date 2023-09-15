@@ -18,7 +18,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="*" element={<NoPage />} />
-          <Route path="/add" element={<AddCateCourse />}/>
+          <Route path="/addCateCourse" element={<AddCateCourse />}/>
+          <Route path="/addCourse" element={<AddCourse />}/>
 
           </Route>
         </Routes>
