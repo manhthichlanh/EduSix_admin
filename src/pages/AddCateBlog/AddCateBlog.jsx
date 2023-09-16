@@ -14,14 +14,14 @@ import Button from "../../components/button/Button";
 export default function Home() {
   return (
     <>
-      <div className="m-6 font-medium text-2xl">Thêm danh mục</div>
+      <div className="m-6 font-medium text-2xl">Thêm danh mục bài viết</div>
 
       <div className="flex pl-6 float-left ">
         <p className="pr-2 text-indigo-500">Trang chủ</p>
         <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
         <p className="pr-2 text-indigo-500">Danh mục</p>
         <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
-        <p>Thêm danh mục</p>
+        <p>Thêm danh mục bài viết</p>
       </div>
 
       <div className="float-right flex mr-6 gap-2 mb-4  mt-[-1rem]" >

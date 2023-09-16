@@ -36,7 +36,7 @@ const data = [
 
 export default function Table() {
   return (
-    <div className="border rounded-lg">
+    <div className="border rounded-lg m-6">
       <div className="flex items-center justify-between px-6 py-5 ">
         <div className="text-lg font-medium">Thống kê</div>
         <button className="flex items-center justify-center px-4 py-2 font-medium transition border-2 rounded-lg hover:bg-blue-200">

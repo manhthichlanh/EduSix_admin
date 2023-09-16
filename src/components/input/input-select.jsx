@@ -4,15 +4,18 @@ import {
   faBars,
 } from '@fortawesome/free-solid-svg-icons';
 // import './topbar.scss';
-const InputSelect = () => {
+const InputSelect = (props) => {
+  const {option} = [
+    {value: "Dang bat", label:"dang bat"},
+    {value: "Dang tat", label:"dang tat"},
+  ]
     return (
       <form>
-        <select  type="text" name="" id="" className='px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none'  >
+        <select  type="text" name="" id="" className='mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none'  >
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
-           
              </select>
   
      </form>

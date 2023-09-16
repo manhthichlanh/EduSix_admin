@@ -14,16 +14,19 @@ import Button from "../../components/button/Button";
 export default function Home() {
   return (
     <>
-      <div className="m-6 font-medium text-2xl">Thêm danh mục</div>
-
+      {/* Title */}
+      <div className="m-6 font-medium text-2xl">Thêm phần</div>
+      {/* Breadcrumbs */}
       <div className="flex pl-6 float-left ">
         <p className="pr-2 text-indigo-500">Trang chủ</p>
         <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
         <p className="pr-2 text-indigo-500">Danh mục</p>
         <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
-        <p>Thêm danh mục</p>
+        <p className="pr-2 text-indigo-500">Thêm khóa học</p>
+        <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
+        <p>Thêm phần học</p>
       </div>
-
+      {/* Nút button hủy */}
       <div className="float-right flex mr-6 gap-2 mb-4  mt-[-1rem]" >
         <Button
           text={"Hủy"}
@@ -38,8 +41,9 @@ export default function Home() {
             }
           }
         />
+        {/* Nút button thêm */}
         <Button
-          text={"Thêm"}
+          text={"Thêm thành phần"}
           Class={"flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "}
           Icon={
             function Icon() {
@@ -53,14 +57,19 @@ export default function Home() {
           }
         />
       </div>
+      {/* Thêm thành phần */}
       <div className="m-6 px-4 py-4 bg-gray-400 rounded-lg border-2 bg-white clear-both">
-        <label htmlFor="" className="text-left w-1/3  ">Tên danh mục</label>
-
+        <p htmlFor="" className="text-left w-1/3 font-medium text-xl pb-2">Thêm phần</p>
+        <label htmlFor="" className="text-left w-1/3 ">Tên thành phần</label>
         <InputText></InputText>
-        <label htmlFor="" className="text-left w-1/3 ">Mô tả</label>
-
-        <InputDescription></InputDescription>
+        <label htmlFor="" className="text-left w-1/3 ">Trạng thái</label>
+        <InputSelect></InputSelect>
       </div>
+      {/* Buton tiếp tục */}
+      <Button
+        text={"Tiếp tục"}
+        Class={"flex m-6 font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "}
+      />
     </>
   )
 }

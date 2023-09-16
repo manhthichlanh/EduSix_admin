@@ -1,4 +1,4 @@
-.divcss-tq0shg1{
+.Admin-container{
     background-color: #F9F9FC;
    overflow: hidden;
 }
@@ -7,7 +7,7 @@
     width: 18%;
 }
 
-.trang_Admin{
+.Site_Admin_Right{
     width: 82%;
     float: right;
     overflow: hidden;
@@ -15,8 +15,32 @@
 
 
 
+
+@media (max-width: 1300px) {
+    .Site_Admin_Right{
+        width: 70%;
+       
+    }
+    .Header_Admin{
+        width: 30%;
+    }
+    
+}
+
 @media (max-width: 768px) {
-    .trang_Admin{
+    .Site_Admin_Right{
+        width: 100%;
+        overflow: hidden;
+    }
+    .Header_Admin{
+        position: fixed;
+        width: 50%;
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .Site_Admin_Right{
         width: 100%;
         overflow: hidden;
     }
@@ -24,5 +48,5 @@
         position: fixed;
         width: 70%;
     }
-
+    
 }
