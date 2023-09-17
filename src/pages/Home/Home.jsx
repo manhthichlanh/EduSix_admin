@@ -5,7 +5,8 @@ import InputNumber from "../../components/input/input-number";
 import InputSelect from "../../components/input/input-select";
 import InputDescription from "../../components/input/input-description";
 import { useState } from "react";
-import Table from "../../components/Table/Table";
+import Table from "../../components/Table/TableFiveCols";
+import TableFiveCols from "../../components/Table/TableFiveCols";
 // import Button from "../../components/button/Button";
 export default function Home() {
   return (
@@ -162,7 +163,14 @@ export default function Home() {
           <p className="text-2xl font-medium text-left">2000</p>
         </div>
       </div>
-      <Table></Table>
+      <TableFiveCols
+        title={"Thống kê"}
+        column1Title="Khóa học"
+        column2Title="Bài học"
+        column3Title="Lượt xem"
+        column4Title="Giá"
+        column5Title={"Trạng thái"}
+      ></TableFiveCols>
     </div>
   );
 }

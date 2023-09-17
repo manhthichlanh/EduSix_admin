@@ -1,6 +1,6 @@
-import Button from "../button/Button";
+import React from "react";
+import Button from "../button/Button"; // Đảm bảo bạn đã import Button hoặc sửa thành phần Button nếu cần
 
-// Dữ liệu giả
 const data = [
   {
     course: "HTML, CSS",
@@ -36,11 +36,18 @@ const data = [
   },
 ];
 
-export default function Table() {
+function TableFiveCols({
+  title,
+  column1Title,
+  column2Title,
+  column3Title,
+  column4Title,
+  column5Title,
+}) {
   return (
     <div className="m-6 border rounded-lg">
       <div className="flex items-center justify-between px-6 py-4 ">
-        <div className="text-lg font-medium">Thống kê</div>
+        <div className="text-lg font-bold">{title}</div>
 
         <Button
           text={"Lọc"}
@@ -88,11 +95,13 @@ export default function Table() {
       <table className="w-full mb-4 table-auto">
         <thead className="bg-neutral-100">
           <tr className="font-sans rounded-lg">
-            <td className="px-6 py-4 font-medium">Khóa học</td>
-            <td className="px-6 py-4 font-medium">Bài học</td>
-            <td className="px-6 py-4 font-medium">Lượt xem</td>
-            <td className="px-6 py-4 font-medium">Giá</td>
-            <td className="px-6 py-4 font-medium text-center">Trạng thái</td>
+            <td className="px-6 py-4 font-medium">{column1Title}</td>
+            <td className="px-6 py-4 font-medium">{column2Title}</td>
+            <td className="px-6 py-4 font-medium">{column3Title}</td>
+            <td className="px-6 py-4 font-medium">{column4Title}</td>
+            <td className="px-6 py-4 font-medium text-center">
+              {column5Title}
+            </td>
           </tr>
         </thead>
         <tbody className="rounded-xl">
@@ -209,3 +218,5 @@ export default function Table() {
     </div>
   );
 }
+
+export default TableFiveCols;
