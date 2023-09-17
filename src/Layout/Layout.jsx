@@ -5,12 +5,12 @@ import TopBar from "./TopBar/topBar";
 import "./Layout.css";
 export default function Layout () {
     return (
-        <div className="wwwbinancecom-by-htmltodes1">
-            <div className="divcss-tq0shg1">
+        <div className="Layout_Admin-container">
+            <div className="Admin-container">
                 <div className="Header_Admin">
                 <Header></Header>
                 </div>
-                <div className="trang_Admin">
+                <div className="Site_Admin_Right">
                 <div className="TopBar_Admin">
                 <TopBar></TopBar>
                 </div>

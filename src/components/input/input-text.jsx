@@ -1,23 +1,33 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
- // Add FontAwesome icons for hiding and showing the menu
+  // Add FontAwesome icons for hiding and showing the menu
   faBars,
-} from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 // import './topbar.scss';
-const InputText = () => {
-    return (
-      <div className="text-left">
-          {/* <label htmlFor="" className="text-left w-1/3  ">Ten danh muc</label> */}
-          <input type="text" name="" id="" className='mb-4 mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none'  />
-      </div>
-    );
-};
+function InputText({
+  type,
+  className,
+  label,
+  placeholder,
+  value,
+  onChange,
+  disabled,
+}) {
+  return (
+    <div className="">
+      <label htmlFor="" className="text-left">
+        {label}
+      </label>
+      <input
+        type={type}
+        className={className}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+      />
+    </div>
+  );
+}
 
 export default InputText;
-
-
-
-
-
-
-

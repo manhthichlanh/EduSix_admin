@@ -1,27 +1,27 @@
 
-// import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleRight
 } from '@fortawesome/free-solid-svg-icons';
-// import TableWiget from "../../components/OrderBookTable/TableWiget";
+import TableWiget from "../../components/OrderBookTable/TableWiget";
 import InputText from "../../components/input/input-text";
-// import InputNumber from "../../components/input/input-number";
-// import InputSelect from "../../components/input/input-select";
+import InputNumber from "../../components/input/input-number";
+import InputSelect from "../../components/input/input-select";
 import InputDescription from "../../components/input/input-description";
-// import { useState } from 'react';
+import { useState } from 'react';
 import Button from "../../components/button/Button";
 export default function Home() {
   return (
     <>
-      <div className="m-6 font-medium text-2xl">Thêm danh mục</div>
+      <div className="m-6 font-medium text-2xl">Thêm danh mục bài viết</div>
 
       <div className="flex pl-6 float-left ">
         <p className="pr-2 text-indigo-500">Trang chủ</p>
         <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
         <p className="pr-2 text-indigo-500">Danh mục</p>
         <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
-        <p>Thêm danh mục</p>
+        <p>Thêm danh mục bài viết</p>
       </div>
 
       <div className="float-right flex mr-6 gap-2 mb-4  mt-[-1rem]" >

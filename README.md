@@ -23,4 +23,13 @@ git add .
 git commit -m "Làm gì thi ghi đó"
 git push origin develop: đẩy code lên;
 
+git checkout ngothuyyeah 
+git branch ngothuyyeah   
+git add .  
+git commit -m
+git push origin ngothuyyeah
+git checkout develop
+git merge ngothuyyeah
+git push origin develop --force
+
 Lệnh chạy code : npm run dev
