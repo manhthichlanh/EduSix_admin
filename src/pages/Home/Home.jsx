@@ -7,6 +7,7 @@ import InputSelect from "../../components/input/input-select";
 import InputDescription from "../../components/input/input-description";
 import { useState } from 'react';
 import Table from "../../components/Table/Table";
+import Card from "../../components/card/card";
 export default function Home() {
   return (
     <>

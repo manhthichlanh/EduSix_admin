@@ -3,20 +3,20 @@ import {
   // Add FontAwesome icons for hiding and showing the menu
   faBars,
 } from '@fortawesome/free-solid-svg-icons';
-// import './topbar.scss';
-const Button = (props) => {
-  const { text, style, Class, Icon, id } = props
+const Card = (props) => {
+  const { Icon, title, content,  Class } = props
   return (
-    <div>
-      <button style={style} id={""+id} className={" "+Class}>
+    <div className="mr-6 border-2 w-full p-4 rounded-lg bg-white">
         {Icon && <Icon></Icon>}
-        {text}
-      </button>
+        {title}
+        {content}
+
     </div>
+    
   );
 }
 
-export default Button;
+export default Card;
 
 
 

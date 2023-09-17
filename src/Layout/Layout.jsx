@@ -18,7 +18,7 @@ export default function Layout () {
                 <Outlet></Outlet>
                 </div>
                 <div className="Footer_Admin">
-                {/* <Footer></Footer> */}
+                <Footer></Footer>
                 </div>
                 </div>
             </div>
