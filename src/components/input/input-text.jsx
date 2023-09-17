@@ -1,9 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
- // Add FontAwesome icons for hiding and showing the menu
+  // Add FontAwesome icons for hiding and showing the menu
   faBars,
-} from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 // import './topbar.scss';
+<<<<<<< HEAD
 const InputText = () => {
     return (
       <div className="text-left">
@@ -11,12 +12,32 @@ const InputText = () => {
       </div>
     );
 };
+=======
+function InputText({
+  type,
+  className,
+  label,
+  placeholder,
+  value,
+  onChange,
+  disabled,
+}) {
+  return (
+    <div className="">
+      <label htmlFor="" className="text-left">
+        {label}
+      </label>
+      <input
+        type={type}
+        className={className}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+      />
+    </div>
+  );
+}
+>>>>>>> 6bf369b38e730179f564fd24cc74410b1b377a51
 
 export default InputText;
-
-
-
-
-
-
-
