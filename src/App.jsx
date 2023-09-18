@@ -21,7 +21,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
-
           <Route index element={<Home />} />
           <Route path="*" element={<NoPage />} />
           <Route path="/add-cate-course" element={<AddCateCourse />}/>
@@ -30,7 +29,6 @@ function App() {
           <Route path="/add-lession" element={<AddLession />}/>
           <Route path="/add-video" element={<AddVideo />}/>
           <Route path="/add-cate-blog" element={<AddCateBlog />}/>
-
 
           </Route>
         </Routes>
