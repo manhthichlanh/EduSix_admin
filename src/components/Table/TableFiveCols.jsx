@@ -1,4 +1,5 @@
-import Button from "../button/Button";
+import React from "react";
+import Button from "../button/Button"; // Đảm bảo bạn đã import Button hoặc sửa thành phần Button nếu cần
 
 const data = [
   {
@@ -44,15 +45,15 @@ function TableFiveCols({
   column5Title,
 }) {
   return (
-    <div className="mx-6 my-2 border rounded-lg">
+    <div className="m-6 border rounded-lg">
       <div className="flex items-center justify-between px-6 py-4 ">
         <div className="text-lg font-bold">{title}</div>
+
         <Button
           text={"Lọc"}
           Icon={function Icon() {
             return (
               <svg
-                className=""
                 width="20"
                 height="20"
                 viewBox="0 0 24 24"
@@ -193,7 +194,6 @@ function TableFiveCols({
             Icon={function Icon() {
               return (
                 <svg
-                  className="text-indigo-500 fill-current hover:text-white" // Thiết lập màu biểu tượng mặc định là màu của nút
                   width="16"
                   height="16"
                   viewBox="0 0 24 24"
