@@ -1,10 +1,30 @@
-.topbar{
-    .thanh_topBar{
-        padding: 20px;
-        background-color: #fff;
+.topbar {
+    width: 100%;
 
-        .icon_topBar1{
+    .thanh_topBar {
+        padding: 10px;
+        background-color: #fff;
+        overflow: hidden;
+
+        // .icon_topBar_menu {
+            
+        // }
+
+        .icon_topBar1 {
             margin-left: 10px;
         }
+
+        .topBar_Right {
+            float: right;
+        .topBar_Right_utilities{
+            border-right: 3px solid #F0F1F3;
+            overflow: hidden;
+        }
+            .icon_TopBar {
+                float: left;
+                padding: 5px;
+            }
+        }
     }
+
 }

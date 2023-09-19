@@ -148,6 +148,10 @@
 
 }
 
+table{
+    width: 100%;
+    overflow: hidden;
+}
 @keyframes loading {
     40% {
         background-position:

@@ -1,19 +1,43 @@
-.Admin-container{
+ .Admin-container{
     background-color: #F9F9FC;
    overflow: hidden;
 }
 .Header_Admin{
     float: left;
     width: 18%;
+    z-index: 1;
 }
 
 .Site_Admin_Right{
     width: 82%;
     float: right;
-    overflow: hidden;
+    max-height: 100vh;
+    overflow: auto;
 }
 
+.TopBar_Admin{
+    position: fixed;
+   width: 82%;
+}
 
+.Noidungchinh_Admin{
+    padding-top: 60px;
+}
+
+@media (max-width: 1300px) {
+    .Site_Admin_Right{
+        width: 70%;
+       
+    }
+    .TopBar_Admin{
+        position: fixed;
+       width: 100%;
+    }
+    .Header_Admin{
+        width: 30%;
+    }
+    
+}
 
 
 @media (max-width: 1300px) {
@@ -30,7 +54,11 @@
 @media (max-width: 768px) {
     .Site_Admin_Right{
         width: 100%;
-        overflow: hidden;
+        overflow: auto;
+    }
+    .TopBar_Admin{
+        position: fixed;
+       width: 100%;
     }
     .Header_Admin{
         position: fixed;
@@ -42,7 +70,7 @@
 @media (max-width: 480px) {
     .Site_Admin_Right{
         width: 100%;
-        overflow: hidden;
+        overflow: auto;
     }
     .Header_Admin{
         position: fixed;
