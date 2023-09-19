@@ -4,10 +4,16 @@ import InputText from "../../components/input/input-text";
 import InputNumber from "../../components/input/input-number";
 import InputSelect from "../../components/input/input-select";
 import InputDescription from "../../components/input/input-description";
+<<<<<<< HEAD
+import { useState } from 'react';
+import Table from "../../components/Table/Table";
+import Card from "../../components/card/card";
+=======
 import { useState } from "react";
 import Table from "../../components/Table/TableFiveCols";
 import TableFiveCols from "../../components/Table/TableFiveCols";
 // import Button from "../../components/button/Button";
+>>>>>>> 6bf369b38e730179f564fd24cc74410b1b377a51
 export default function Home() {
   return (
     <div>
