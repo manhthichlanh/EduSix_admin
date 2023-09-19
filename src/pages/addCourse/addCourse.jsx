@@ -1,9 +1,7 @@
 import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import TableWiget from "../../components/OrderBookTable/TableWiget";
-import InputText from "../../components/input/input-text";
-import InputNumber from "../../components/input/input-number";
+import Input from "../../components/input/input";
 import InputSelect from "../../components/input/input-select";
 import InputDescription from "../../components/input/input-description";
 import { useState } from "react";
@@ -13,90 +11,108 @@ export default function Home() {
     <>
       <div className="m-6 text-2xl font-medium">Thêm khóa học</div>
 
-      <div className="flex float-left pl-6 ">
-        <p className="pr-2 text-indigo-500">Trang chủ</p>
-        <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
-        <p className="pr-2 text-indigo-500">Khóa học</p>
-        <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
-        <p>Thêm khóa học</p>
-      </div>
+      <div className="flex items-start justify-between px-6">
+        <div className="flex items-center">
+          <p className="pr-2 text-indigo-500">Trang chủ</p>
+          <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
+          <p className="pr-2 text-indigo-500">Khóa học</p>
+          <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
+          <p>Thêm khóa học</p>
+        </div>
 
-      <div className="float-right flex mr-6 gap-2 mb-4  mt-[-1rem]">
-        <Button
-          text={"Hủy"}
-          Class={
-            "flex font-medium items-center text-black hover:bg-slate-200 transition ease-in-out py-2 px-4 border-2 rounded-lg"
-          }
-          Icon={function Icon() {
-            return (
-              <svg
-                className="pr-2 "
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
-              </svg>
-            );
-          }}
-        />
-        <Button
-          text={"Thêm khóa học"}
-          Class={
-            "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
-          }
-          Icon={function Icon() {
-            return (
-              <svg
-                className="pr-2 "
-                fill="#ffffff"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v-18c0-0.553-0.447-1-1-1z" />
-                <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0 1-0.447 1-1z" />
-              </svg>
-            );
-          }}
-        />
+        <div className="flex gap-2 mb-4 whitespace-nowrap">
+          <Button
+            onClick={() =>
+              console.log("Then stop being my friend and be my lover")
+            }
+            text={"Hủy"}
+            Class={
+              "flex font-medium items-center text-black hover:bg-slate-200 transition ease-in-out py-2 px-4 border-2 rounded-lg"
+            }
+            Icon={function Icon() {
+              return (
+                <svg
+                  className="pr-2 "
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                </svg>
+              );
+            }}
+          />
+          <Button
+            onClick={() => console.log("When I'm back. You will be mine.")}
+            text={"Thêm khóa học"}
+            Class={
+              "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
+            }
+            Icon={function Icon() {
+              return (
+                <svg
+                  className="pr-2 "
+                  fill="#ffffff"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v-18c0-0.553-0.447-1-1-1z" />
+                  <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0 1-0.447 1-1z" />
+                </svg>
+              );
+            }}
+          />
+        </div>
       </div>
-      <div className="flex w-full">
-        <div className="clear-both w-full px-4 py-4 mx-6 bg-gray-400 border-2 rounded-lg">
-          <p htmlFor="" className="w-1/3 pb-2 text-xl font-medium text-left">
+      <div className="flex gap-6 px-6 py-2">
+        <div className="w-full px-4 py-4 border-2 rounded-lg">
+          <p htmlFor="" className="py-2 text-xl font-medium">
             Thông tin
           </p>
-
-          <label htmlFor="" className="w-1/3 text-left ">
+          <label htmlFor="" className="">
             Danh mục
           </label>
           <InputSelect></InputSelect>
-          <label htmlFor="" className="w-1/3 text-left ">
-            Tên khóa học
-          </label>
-          <InputText></InputText>
-          <label htmlFor="" className="w-1/3 text-left ">
-            Số lượng bài học
-          </label>
-          <InputNumber></InputNumber>
-          <label htmlFor="" className="w-1/3 text-left ">
+          <Input
+            label="Tên khóa học"
+            placeholder="Nhập tên khóa học"
+            className="w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+            value=""
+            onChange=""
+            disabled=""
+          ></Input>
+          <Input
+            placeholder="Nhập số bài học"
+            label="Số bài học"
+            type="number"
+            className="w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+            value=""
+            onChange=""
+            disabled=""
+          ></Input>
+          <label htmlFor="" className="">
             Giá
           </label>
           <InputSelect></InputSelect>
-          <label htmlFor="" className="w-1/3 text-left ">
-            Đang bật
+          <label htmlFor="" className="">
+            Trạng thái
           </label>
           <InputSelect></InputSelect>
-          <label htmlFor="" className="w-1/3 text-left ">
-            Mô tả
-          </label>
-
-          <InputDescription></InputDescription>
+          <InputDescription
+            name=""
+            id=""
+            rows={10}
+            cols={30}
+            className="w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+            label="Nhập mô tả"
+            placeholder="Nhập mô tả"
+          ></InputDescription>
         </div>
 
-        <div className="h-full p-6 mr-6 border-2 rounded-lg">
+        <div className="h-full p-4 border-2 rounded-lg">
           <p htmlFor="" className="pb-2 text-xl font-medium text-left">
             Thumnail
           </p>
@@ -136,22 +152,22 @@ export default function Home() {
             <p className="mb-4 text-center text-gray-500 ">
               Kéo thả ảnh vào đây hoặc bấm thêm ảnh
             </p>
-            <Button
-              text={"Thêm ảnh"}
-              Class={
-                "flex font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
-              }
-            />
+            <Input
+              type="file"
+              className="w-full text-sm file:bg-indigo-500 text-slate-500 file:py-3 file:px-6 file:rounded-lg file:border-0 file:text-medium file:font-semibold file:text-white hover:file:bg-indigo-600"
+            ></Input>
           </div>
         </div>
       </div>
-
-      <Button
-        text={"Tiếp tục"}
-        Class={
-          "flex m-6 font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
-        }
-      />
+      <div className="px-6 py-6">
+        <Button
+          text={"Tiếp tục"}
+          Class={
+            "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg "
+          }
+          onClick={() => console.log("When I return, I will be a man.")}
+        />
+      </div>
     </>
   );
 }

@@ -1,27 +1,14 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  // Add FontAwesome icons for hiding and showing the menu
-  faBars,
-} from '@fortawesome/free-solid-svg-icons';
-// import './topbar.scss';
 const Button = (props) => {
-  const { text, style, Class, Icon } = props
+  const { text, style, Class, Icon, onClick } = props;
   // console.log(Icon);
   return (
     <div>
-      <button style={style} className={" "+Class}>
+      <button style={style} className={" " + Class} onClick={onClick}>
         {Icon && <Icon></Icon>}
         {text}
       </button>
     </div>
   );
-}
+};
 
 export default Button;
-
-
-
-
-
-
-

@@ -1,18 +1,16 @@
 import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import TableWiget from "../../components/OrderBookTable/TableWiget";
-import InputText from "../../components/input/input-text";
-import InputNumber from "../../components/input/input-number";
+import Input from "../../components/input/input";
 import InputSelect from "../../components/input/input-select";
 import InputDescription from "../../components/input/input-description";
 import { useState } from "react";
 import Button from "../../components/button/Button";
+import TableThreeCols from "./../../components/Table/TableThreeCols";
 export default function Home() {
   return (
     <div>
       <div className="m-6 text-2xl font-medium">Thêm bài học</div>
-
       <div className="flex float-left pl-6 ">
         <p className="pr-2 text-indigo-500">Trang chủ</p>
         <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
@@ -26,6 +24,7 @@ export default function Home() {
       </div>
       <div className="float-right flex mr-6 gap-2 mb-4  mt-[-1rem]">
         <Button
+          onClick={() => console.log("You are my dream")}
           text={"Hủy"}
           Class={
             "flex font-medium items-center text-black hover:bg-slate-200 transition ease-in-out py-2 px-4 border-2 rounded-lg"
@@ -45,6 +44,7 @@ export default function Home() {
           }}
         />
         <Button
+          onClick={() => console.log("You are my lover")}
           text={"Lưu"}
           Class={
             "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
@@ -75,55 +75,66 @@ export default function Home() {
           Chi tiết
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <InputText
+          <Input
             type="text"
             className={
               "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
             }
             label="Tên khóa học"
-            placeholder="Nhập tên khóa học"
+            placeholder="Học ăn học gói học nói lời yêu em"
             disabled={true}
-          ></InputText>
-          <InputText
+          ></Input>
+          <Input
             type="text"
             className={
               "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
             }
-            label="Tên khóa học"
-            placeholder="Nhập tên khóa học"
-          ></InputText>
+            label="Tên phần học"
+            placeholder="Học ăn"
+            disabled={true}
+          ></Input>
         </div>
       </div>
 
       <div className="clear-both px-4 py-4 m-6 bg-white border-2 rounded-lg ">
-        <p htmlFor="" className="w-1/3 pb-2 text-xl font-medium text-left">
-          Thêm bài học
-        </p>
-        <label htmlFor="" className="w-1/3 text-left ">
-          Tên bài học
-        </label>
-        <InputText></InputText>
-        <label htmlFor="" className="w-1/3 text-left ">
-          Mô tả
-        </label>
-        <InputDescription></InputDescription>
+        <Input
+          type="text"
+          className={
+            "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+          }
+          label="Tên bài học"
+          placeholder="Nhập tên bài học"
+        ></Input>
+        <InputDescription
+          name=""
+          id=""
+          rows={10}
+          cols={30}
+          className="w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+          label="Nhập mô tả"
+          placeholder="Nhập mô tả"
+        ></InputDescription>
       </div>
-      <div className="h-full p-4 m-6 bg-white border-2 rounded-lg">
-        <label htmlFor="" className="w-1/3 text-left text-gray-500 ">
+      <div className="h-full p-6 m-6 bg-white border-2 rounded-lg">
+        <label htmlFor="" className="font-medium text-gray-500 ">
           Video
         </label>
         <div className="grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center">
           <p className="mb-4 text-center text-gray-500 ">
             Kéo thả video vào đây hoặc bấm thêm video
           </p>
-          <Button
-            text={"Thêm video"}
-            Class={
-              "flex  font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
-            }
-          />
+          <Input
+            type="file"
+            className="w-full text-sm file:bg-indigo-500 text-slate-500 file:py-3 file:px-6 file:rounded-lg file:border-0 file:text-medium file:font-semibold file:text-white hover:file:bg-indigo-600"
+            placeholder="Chọn hình"
+          ></Input>
         </div>
       </div>
+      <TableThreeCols
+        column1Title="Tên bài học"
+        column2Title="Loại video"
+        column3Title="Hành động"
+      ></TableThreeCols>
     </div>
   );
 }

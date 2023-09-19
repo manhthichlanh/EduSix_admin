@@ -1,10 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  // Add FontAwesome icons for hiding and showing the menu
-  faBars,
-} from "@fortawesome/free-solid-svg-icons";
-// import './topbar.scss';
-function InputText({
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+function Input({
   type,
   className,
   label,
@@ -15,7 +10,7 @@ function InputText({
 }) {
   return (
     <div className="">
-      <label htmlFor="" className="text-left">
+      <label htmlFor="" className="font-medium text-gray-500">
         {label}
       </label>
       <input
@@ -30,4 +25,4 @@ function InputText({
   );
 }
 
-export default InputText;
+export default Input;
