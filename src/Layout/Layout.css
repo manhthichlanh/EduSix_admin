@@ -17,12 +17,17 @@
 
 .TopBar_Admin{
     position: fixed;
+<<<<<<< HEAD
    width: 82%;
+=======
+    width: 100%;
+>>>>>>> fa6c604e1da8825b51bbe06f55472654c7ff5c95
 }
 
 .Noidungchinh_Admin{
     padding-top: 60px;
 }
+<<<<<<< HEAD
 
 @media (max-width: 1300px) {
     .Site_Admin_Right{
@@ -39,6 +44,8 @@
     
 }
 
+=======
+>>>>>>> fa6c604e1da8825b51bbe06f55472654c7ff5c95
 
 @media (max-width: 1300px) {
     .Site_Admin_Right{
@@ -55,10 +62,13 @@
     .Site_Admin_Right{
         width: 100%;
         overflow: auto;
+<<<<<<< HEAD
     }
     .TopBar_Admin{
         position: fixed;
        width: 100%;
+=======
+>>>>>>> fa6c604e1da8825b51bbe06f55472654c7ff5c95
     }
     .Header_Admin{
         position: fixed;
