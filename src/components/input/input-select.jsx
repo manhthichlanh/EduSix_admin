@@ -5,10 +5,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 // import './topbar.scss';
 const InputSelect = (props) => {
-  const {option} = [
-    {value: "Dang bat", label:"dang bat"},
-    {value: "Dang tat", label:"dang tat"},
-  ]
     return (
       <form>
         <select  type="text" name="" id="" className='mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none'  >

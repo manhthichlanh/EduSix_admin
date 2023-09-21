@@ -1,18 +1,60 @@
 import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import TableWiget from "../../components/OrderBookTable/TableWiget";
-import InputText from "../../components/input/input-text";
-import InputNumber from "../../components/input/input-number";
-import InputSelect from "../../components/input/input-select";
+import Input from "../../components/input/input";
+import InputFile from "../../components/input/input-file";
 import InputDescription from "../../components/input/input-description";
 import { useState } from "react";
 import Button from "../../components/button/Button";
 export default function Home() {
+  const [showUpload, SetShowUpload] = useState(false);
+  const handleClickToUploadBg = () => {
+    // Đặt showUpload về giá trị false để ẩn giao diện tải lên
+    SetShowUpload(false);
+  };
+  const handleClickToUploadBtn = () => {
+    // Đặt showUpload về giá trị true để hiển thị giao diện tải lên
+    SetShowUpload(true);
+  };
   return (
     <div>
-      <div className="m-6 text-2xl font-medium">Thêm bài học</div>
+      <div className={"fixed top-0 left-0 w-full h-full " + (showUpload ? "" : "hidden")} >
+        <div className="w-full h-full flex justify-center items-center relative z-10">
+          <div className="absolute top-0 right-0 bottom-0 left-0 bg-black opacity-80" onClick={handleClickToUploadBg}></div>
+          <div className="absolute w-1/3 border-2 rounded-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-hidden p-6 bg-white justify-center text-center z-20">
+            <p className="font-medium text-2xl">Thêm video</p>
+            <Input
+              title="Nhập link youtube"
+              type="file"
+              className={
+                "w-full mt-2 px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+              }
+              value={""}
+            ></Input>
+            <div className="flex items-center">
+              <div className="flex-grow border-t border-gray-500"></div>
+              <p className="mx-3">Hoặc</p>
+              <div className="flex-grow border-t border-gray-500"></div>
+            </div>
+            <Input
+              type={URL}
+              placeholder="Nhập link youtube"
+              className={
+                "w-full mt-2 px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+              }
+              value={""}
+            ></Input>
+            <div className="flex justify-center"> {/* Sử dụng flex để canh chỉnh nút */}
+              <Button
+                text={"Thêm"}
+                Class="font-medium bg-indigo-100 hover:bg-indigo-700 hover:text-white transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div className="m-6 text-2xl font-medium">Thêm bài học</div>
       <div className="flex float-left pl-6 ">
         <p className="pr-2 text-indigo-500">Trang chủ</p>
         <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
@@ -75,7 +117,7 @@ export default function Home() {
           Chi tiết
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <InputText
+          <Input
             type="text"
             className={
               "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
@@ -83,15 +125,16 @@ export default function Home() {
             label="Tên khóa học"
             placeholder="Nhập tên khóa học"
             disabled={true}
-          ></InputText>
-          <InputText
+          ></Input>
+          <Input
             type="text"
             className={
               "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
             }
-            label="Tên khóa học"
-            placeholder="Nhập tên khóa học"
-          ></InputText>
+            label="Tên phần học"
+            placeholder="Nhập tên phần học"
+            disabled={true}
+          ></Input>
         </div>
       </div>
 
@@ -99,14 +142,25 @@ export default function Home() {
         <p htmlFor="" className="w-1/3 pb-2 text-xl font-medium text-left">
           Thêm bài học
         </p>
-        <label htmlFor="" className="w-1/3 text-left ">
-          Tên bài học
-        </label>
-        <InputText></InputText>
-        <label htmlFor="" className="w-1/3 text-left ">
-          Mô tả
-        </label>
-        <InputDescription></InputDescription>
+        <Input
+          type="text"
+          className={
+            "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+          }
+          label="Tên bài học"
+          placeholder="Nhập tên bài học"
+          disabled={false}
+        ></Input>
+        <InputDescription
+          label={"Mô tả"}
+          placeholder={"Nhập mô tả"}
+          className={
+            "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+          }
+          rows={"10"}
+          cols={"30"}
+          value={""}
+        ></InputDescription>
       </div>
       <div className="h-full p-4 m-6 bg-white border-2 rounded-lg">
         <label htmlFor="" className="w-1/3 text-left text-gray-500 ">
@@ -116,12 +170,15 @@ export default function Home() {
           <p className="mb-4 text-center text-gray-500 ">
             Kéo thả video vào đây hoặc bấm thêm video
           </p>
-          <Button
-            text={"Thêm video"}
-            Class={
-              "flex  font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
-            }
-          />
+          <div className="" onClick={handleClickToUploadBtn}>
+            <Button
+              text={"Thêm video"}
+              Class={
+                "flex  font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
+              }
+            />
+          </div>
+
         </div>
       </div>
     </div>
