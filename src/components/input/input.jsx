@@ -3,7 +3,7 @@ import {
   // Add FontAwesome icons for hiding and showing the menu
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
-function InputText({
+function Input({
   type,
   className,
   label,
@@ -13,8 +13,8 @@ function InputText({
   disabled,
 }) {
   return (
-    <div className="">
-      <label htmlFor="" className="text-left">
+    <div className="py-2">
+      <label htmlFor="" className="text-base font-medium text-gray-500">
         {label}
       </label>
       <input
@@ -29,4 +29,4 @@ function InputText({
   );
 }
 
-export default InputText;
+export default Input;
