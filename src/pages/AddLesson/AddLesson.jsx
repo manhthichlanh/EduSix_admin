@@ -1,14 +1,11 @@
 import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import TableWiget from "../../components/OrderBookTable/TableWiget";
-import InputText from "../../components/input/input-text";
-import InputNumber from "../../components/input/input-number";
+import Input from "../../components/input/input";
 import InputSelect from "../../components/input/input-select";
 import InputDescription from "../../components/input/input-description";
 import { useState } from "react";
 import Button from "../../components/button/Button";
-import React, { useEffect } from "react";
 export default function Home() {
   return (
     <div>
@@ -76,7 +73,7 @@ export default function Home() {
           Chi tiết
         </p>
         <div className="grid grid-cols-2 gap-4">
-          <InputText
+          <Input
             type="text"
             className={
               "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
@@ -84,15 +81,15 @@ export default function Home() {
             label="Tên khóa học"
             placeholder="Nhập tên khóa học"
             disabled={true}
-          ></InputText>
-          <InputText
+          ></Input>
+          <Input
             type="text"
             className={
               "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
             }
             label="Tên khóa học"
             placeholder="Nhập tên khóa học"
-          ></InputText>
+          ></Input>
         </div>
       </div>
 
@@ -103,7 +100,7 @@ export default function Home() {
         <label htmlFor="" className="w-1/3 text-left ">
           Tên bài học
         </label>
-        <InputText></InputText>
+        <Input></Input>
         <label htmlFor="" className="w-1/3 text-left ">
           Mô tả
         </label>
