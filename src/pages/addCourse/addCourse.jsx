@@ -73,7 +73,14 @@ export default function Home() {
           <label htmlFor="" className="text-left ">
             Danh mục
           </label>
-          <InputSelect></InputSelect>
+          <InputSelect
+            array={
+              [
+                { value: "123", text: "Hello" },
+                { value: "213", text: "Hello2" },
+              ]
+            }
+          ></InputSelect>
           <Input
             type={"text"}
             label={"Tên bài học"}
@@ -110,7 +117,7 @@ export default function Home() {
             cols={"30"}
             value={""}
           ></InputDescription>
-        </div>  
+        </div>
         <div className="lg:my-0 md:my-2">
           <InputFile
             title="Thumnails"

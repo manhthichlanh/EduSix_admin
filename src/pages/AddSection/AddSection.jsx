@@ -72,10 +72,15 @@ export default function Home() {
         <p htmlFor="" className="w-1/3 pb-2 text-xl font-medium text-left">
           Thêm phần
         </p>
-        <label htmlFor="" className="w-1/3 text-left ">
-          Tên thành phần
-        </label>
-        <InputText></InputText>
+        <Input
+        label={"Tên thành phần"}
+              type={"text"}
+              placeholder="Nhập tên thành phần"
+              className={
+                "w-full mt-2 px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+              }
+              onChange={(e)=>{console.log(e.target.value);}}
+            ></Input>
         <label htmlFor="" className="w-1/3 text-left ">
           Trạng thái
         </label>

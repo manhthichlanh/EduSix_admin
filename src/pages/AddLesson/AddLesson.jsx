@@ -8,6 +8,12 @@ import { useState } from "react";
 import Button from "../../components/button/Button";
 export default function Home() {
   const [showUpload, SetShowUpload] = useState(false);
+  const [urlInputValue, setUrlInputValue] = useState(null);
+  const [formValue, setFormValue] = useState({
+    course_id: 1, 
+    courseName: "",
+    
+  })
   const handleClickToUploadBg = () => {
     // Đặt showUpload về giá trị false để ẩn giao diện tải lên
     SetShowUpload(false);
@@ -16,6 +22,11 @@ export default function Home() {
     // Đặt showUpload về giá trị true để hiển thị giao diện tải lên
     SetShowUpload(true);
   };
+  const handleChangeURL = (e) => {
+    
+    const newValue = e.target.value;
+    if (newValue) setUrlInputValue(newValue)
+  }
   return (
     <div>
       <div className={"fixed top-0 left-0 w-full h-full " + (showUpload ? "" : "hidden")} >
@@ -37,12 +48,12 @@ export default function Home() {
               <div className="flex-grow border-t border-gray-500"></div>
             </div>
             <Input
-              type={URL}
+              type={"text"}
               placeholder="Nhập link youtube"
               className={
                 "w-full mt-2 px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
               }
-              value={""}
+              onChange={(e)=>{console.log(e.target.value);}}
             ></Input>
             <div className="flex justify-center"> {/* Sử dụng flex để canh chỉnh nút */}
               <Button
