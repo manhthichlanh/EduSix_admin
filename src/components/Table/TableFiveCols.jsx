@@ -99,9 +99,7 @@ function TableFiveCols({
             <td className="px-6 py-4 font-medium">{column2Title}</td>
             <td className="px-6 py-4 font-medium">{column3Title}</td>
             <td className="px-6 py-4 font-medium">{column4Title}</td>
-            <td className="px-6 py-4 font-medium text-center">
-              {column5Title}
-            </td>
+            <td className="px-6 py-4 font-medium">{column5Title}</td>
           </tr>
         </thead>
         <tbody className="rounded-xl">
@@ -110,7 +108,7 @@ function TableFiveCols({
               key={index}
               className="transition border-t-2 border-b-2 hover:bg-neutral-100"
             >
-              <td className="px-6 py-4">
+              <td className="flex items-start px-6 py-4">
                 <div>
                   <div className="text-base font-medium">{item.course}</div>
                   <div className="mt-1 text-medium text-stone-400">
@@ -131,9 +129,9 @@ function TableFiveCols({
               >
                 {item.price === "0" ? "Miễn phí" : item.price}
               </td>
-              <td className="flex items-center justify-center px-2 py-6">
+              <td className="px-6 py-6">
                 <p
-                  className={`py-1 px-2 inline-block justify-center items-center font-medium ${
+                  className={`py-1 px-2 inline-block font-medium ${
                     item.status === "active"
                       ? "text-green-600 bg-gray-200"
                       : "text-red-700 bg-gray-200"
