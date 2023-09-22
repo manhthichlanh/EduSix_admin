@@ -69,16 +69,16 @@ export default function Home() {
           <p htmlFor="" className="pb-2 text-xl font-medium text-left">
             Thông tin
           </p>
-
-          <label htmlFor="" className="text-left ">
-            Danh mục
-          </label>
           <InputSelect
+            label={"Tên bài học"}
             array={
               [
                 { value: "123", text: "Hello" },
                 { value: "213", text: "Hello2" },
               ]
+            }
+            className={
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
             }
           ></InputSelect>
           <Input
@@ -99,14 +99,30 @@ export default function Home() {
             }
             value={""}
           ></Input>
-          <label htmlFor="" className="w-1/3 text-left ">
-            Giá
-          </label>
-          <InputSelect></InputSelect>
-          <label htmlFor="" className="w-1/3 text-left ">
-            Đang bật
-          </label>
-          <InputSelect></InputSelect>
+          <InputSelect
+            label={"Giá"}
+            array={
+              [
+                { value: "123", text: "Miễn phí" },
+                { value: "213", text: "Có phí" },
+              ]
+            }
+            className={
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+            }
+          ></InputSelect>
+          <InputSelect
+            label={"Trạng thái"}
+            array={
+              [
+                { value: "123", text: "Đang bật" },
+                { value: "213", text: "Đang tắt" },
+              ]
+            }
+            className={
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+            }
+          ></InputSelect>
           <InputDescription
             label={"Mô tả"}
             placeholder={"Nhập mô tả"}

@@ -23,7 +23,6 @@ export default function Home() {
         <FontAwesomeIcon icon={faAngleRight} className="pr-2 m-1" />
         <p>Thêm phần học</p>
       </div>
-      {/* Nút button hủy */}
       <div className="float-right flex mr-6 gap-2 mb-4  mt-[-1rem]">
         <Button
           text={"Hủy"}
@@ -44,7 +43,6 @@ export default function Home() {
             );
           }}
         />
-        {/* Nút button thêm */}
         <Button
           text={"Thêm thành phần"}
           Class={
@@ -67,7 +65,6 @@ export default function Home() {
           }}
         />
       </div>
-      {/* Thêm thành phần */}
       <div className="clear-both px-4 py-4 m-6 bg-white bg-gray-400 border-2 rounded-lg">
         <p htmlFor="" className="w-1/3 pb-2 text-xl font-medium text-left">
           Thêm phần
@@ -81,12 +78,19 @@ export default function Home() {
               }
               onChange={(e)=>{console.log(e.target.value);}}
             ></Input>
-        <label htmlFor="" className="w-1/3 text-left ">
-          Trạng thái
-        </label>
-        <InputSelect></InputSelect>
+        <InputSelect
+            label={"Trạng thái"}
+            array={
+              [
+                { value: "123", text: "Đang bật" },
+                { value: "213", text: "Đang tắt" },
+              ]
+            }
+            className={
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+            }
+          ></InputSelect>
       </div>
-      {/* Buton tiếp tục */}
       <Button
         text={"Tiếp tục"}
         Class={

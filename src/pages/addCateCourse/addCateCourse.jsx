@@ -1,12 +1,7 @@
-// import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-// import TableWiget from "../../components/OrderBookTable/TableWiget";
 import Input from "../../components/input/input";
-// import InputNumber from "../../components/input/input-number";
-// import InputSelect from "../../components/input/input-select";
 import InputDescription from "../../components/input/input-description";
-// import { useState } from 'react';
 import Button from "../../components/button/Button";
 export default function Home() {
   return (
