@@ -1,6 +1,6 @@
 import {Outlet} from "react-router-dom"
 import Header from "./Header";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 import TopBar from "./TopBar/topBar";
 import "./Layout.css";
 export default function Layout () {
@@ -17,9 +17,9 @@ export default function Layout () {
                 <div className="Noidungchinh_Admin">
                 <Outlet></Outlet>
                 </div>
-                <div className="Footer_Admin">
+                {/* <div className="Footer_Admin">
                 <Footer></Footer>
-                </div>
+                </div> */}
                 </div>
             </div>
 
