@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from "../../components/button/Button";
 import {
     faChevronUp,
     faChevronDown,
@@ -175,7 +176,7 @@ const topBar = () => {
                                     <h1>Phạm Trường Đạt</h1>
                                     <p>Admin</p>
                                 </div>
-                                <button>Đăng Xuất</button>
+                                <Button text={"Đăng Xuất"}></Button>
                             </div>
                         )}
                     </div>
