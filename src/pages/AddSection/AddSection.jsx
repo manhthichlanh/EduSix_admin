@@ -1,11 +1,11 @@
 import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import TableWiget from "../../components/OrderBookTable/TableWiget";
+// import TableWiget from "../../components/OrderBookTable/TableWiget";
 import Input from "../../components/input/input";
 // import InputNumber from "../../components/input/input-number";
 import InputSelect from "../../components/input/input-select";
-import InputDescription from "../../components/input/input-description";
+// import InputDescription from "../../components/input/input-description";
 import { useState } from "react";
 import Button from "../../components/button/Button";
 export default function Home() {
@@ -75,39 +75,41 @@ export default function Home() {
           />
         </div>
       </div>
-      {/* Thêm thành phần */}
-      <div className="px-6 py-4 mx-6 my-4 bg-white border-2 rounded-lg">
-        <p htmlFor="" className="pb-2 text-xl font-medium text-left">
-          Thêm phần
-        </p>
-        <Input
-          label={"Tên phần"}
-          className={
-            "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
-          }
-        ></Input>
-        <label htmlFor="" className="text-base font-medium text-gray-500">
-          Trạng thái
-        </label>
-        <InputSelect></InputSelect>
-      </div>
-      {/* Button*/}
-      <div className="flex gap-2 px-6">
-        <Button
-          onClick={() => console.log("You'll be mine")}
-          text={"Submit"}
-          Class={
-            "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
-          }
-        />
-        <Button
-          onClick={() => console.log("You'll be mine")}
-          text={"Tiếp tục"}
-          Class={
-            "flex font-medium items-center bg-indigo-200 hover:bg-indigo-500 transition ease-in-out text-indigo-500 hover:text-white py-2 px-4 rounded-lg"
-          }
-        />
-      </div>
+      <form action="">
+        {/* Thêm thành phần */}
+        <div className="px-6 py-6 mx-6 my-4 bg-white border-2 rounded-lg">
+          <p htmlFor="" className="pb-2 text-xl font-medium text-left">
+            Thêm phần
+          </p>
+          <Input
+            label={"Tên phần"}
+            className={
+              "w-full px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
+            }
+          ></Input>
+          <label htmlFor="" className="text-base font-medium text-gray-500">
+            Trạng thái
+          </label>
+          <InputSelect></InputSelect>
+        </div>
+        {/* Button*/}
+        <div className="flex gap-2 px-6">
+          <Button
+            onClick={() => console.log("You'll be mine")}
+            text={"Submit"}
+            Class={
+              "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
+            }
+          />
+          <Button
+            onClick={() => console.log("You'll be mine")}
+            text={"Tiếp tục"}
+            Class={
+              "flex font-medium items-center bg-indigo-200 hover:bg-indigo-500 transition ease-in-out text-indigo-500 hover:text-white py-2 px-4 rounded-lg"
+            }
+          />
+        </div>
+      </form>
     </>
   );
 }
