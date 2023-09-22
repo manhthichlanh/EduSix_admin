@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 import { useState } from "react";
 import TableFiveCols from "../../components/Table/TableFiveCols";
 
-import Card from "./../../components/card/Card";
+import Card from "../../components/Card/Card";
 export default function Home() {
   return (
     <div>

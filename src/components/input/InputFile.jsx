@@ -1,4 +1,4 @@
-import Input from "./input";
+import Input from "./Input";
 function InputFile({ title, label, className, placeholder, value, onChange }) {
   return (
     <div className="p-6 border-2 rounded-lg">

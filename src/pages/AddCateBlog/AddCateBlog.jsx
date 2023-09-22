@@ -2,13 +2,12 @@ import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import TableWiget from "../../components/OrderBookTable/TableWiget";
-import InputText from "../../components/input/input";
-import InputNumber from "../../components/input/input-number";
-import InputSelect from "../../components/input/input-select";
-import InputDescription from "../../components/input/input-description";
+import InputText from "../../components/Input/Input";
+import InputSelect from "../../components/Input/InputSelect";
+import InputDescription from "../../components/Input/InputDescription";
 import { useState } from "react";
-import Button from "../../components/button/Button";
-import Input from "../../components/input/input";
+import Button from "../../components/Button/Button";
+import Input from "../../components/Input/Input";
 export default function Home() {
   return (
     <>

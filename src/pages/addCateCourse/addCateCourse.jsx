@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import Input from "../../components/input/input";
-import InputDescription from "../../components/input/input-description";
-import Button from "../../components/button/Button";
+import Input from "../../components/Input/Input";
+import InputDescription from "../../components/Input/InputDescription";
+import Button from "../../components/Button/Button";
 export default function Home() {
   return (
     <>

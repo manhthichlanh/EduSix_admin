@@ -24,7 +24,6 @@ function App() {
           <Route path="/add-course" element={<AddCourse />} />
           <Route path="/add-section" element={<AddSection />} />
           <Route path="/add-lesson" element={<AddLesson />} />
-          {/* <Route path="/add-video" element={<AddVideo />} /> */}
           <Route path="/add-cate-blog" element={<AddCateBlog />} />
         </Route>
       </Routes>

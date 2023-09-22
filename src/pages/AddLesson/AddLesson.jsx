@@ -1,11 +1,9 @@
-import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import Input from "../../components/input/input";
-import InputFile from "../../components/input/input-file";
-import InputDescription from "../../components/input/input-description";
+import Input from "../../components/Input/Input";
+import InputDescription from "../../components/Input/InputDescription";
 import { useState } from "react";
-import Button from "../../components/button/Button";
+import Button from "../../components/Button/Button";
 export default function Home() {
   const [showUpload, SetShowUpload] = useState(false);
   const [urlInputValue, setUrlInputValue] = useState(null);
@@ -29,11 +27,18 @@ export default function Home() {
   }
   return (
     <div>
-      <div className={"fixed top-0 left-0 w-full h-full " + (showUpload ? "" : "hidden")} >
-        <div className="w-full h-full flex justify-center items-center relative z-10">
-          <div className="absolute top-0 right-0 bottom-0 left-0 bg-black opacity-80" onClick={handleClickToUploadBg}></div>
-          <div className="absolute w-1/3 border-2 rounded-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-hidden p-6 bg-white justify-center text-center z-20">
-            <p className="font-medium text-2xl">Thêm video</p>
+      <div
+        className={
+          "fixed top-0 left-0 w-full h-full " + (showUpload ? "" : "hidden")
+        }
+      >
+        <div className="relative z-10 flex items-center justify-center w-full h-full">
+          <div
+            className="absolute top-0 bottom-0 left-0 right-0 bg-black opacity-80"
+            onClick={handleClickToUploadBg}
+          ></div>
+          <div className="absolute z-20 justify-center w-1/3 p-6 overflow-hidden text-center transform -translate-x-1/2 -translate-y-1/2 bg-white border-2 rounded-lg top-1/2 left-1/2">
+            <p className="text-2xl font-medium">Thêm video</p>
             <Input
               title="Nhập link youtube"
               type="file"
@@ -55,7 +60,9 @@ export default function Home() {
               }
               onChange={(e)=>{console.log(e.target.value);}}
             ></Input>
-            <div className="flex justify-center"> {/* Sử dụng flex để canh chỉnh nút */}
+            <div className="flex justify-center">
+              {" "}
+              {/* Sử dụng flex để canh chỉnh nút */}
               <Button
                 text={"Thêm"}
                 Class="font-medium bg-indigo-100 hover:bg-indigo-700 hover:text-white transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg"
@@ -189,7 +196,6 @@ export default function Home() {
               }
             />
           </div>
-
         </div>
       </div>
     </div>

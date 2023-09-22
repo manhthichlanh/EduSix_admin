@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../button/Button"; // Đảm bảo bạn đã import Button hoặc sửa thành phần Button nếu cần
+import Button from "../Button/Button"; // Đảm bảo bạn đã import Button hoặc sửa thành phần Button nếu cần
 
 const data = [
   {
