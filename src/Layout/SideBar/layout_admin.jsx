@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './layout_admin.scss';
+import Button from "../../components/button/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronUp,
@@ -305,7 +306,7 @@ const LayoutAdmin = () => {
                     </NavLink>
                   </div>
                   <div className='dangXuat_Admin'>
-                    <button>Đăng Xuất</button>
+                    <Button text={"Đăng Xuất"}></Button>
                   </div>
                 </div>
               </ul>
