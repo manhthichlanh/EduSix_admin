@@ -2,6 +2,7 @@ import TableFiveCols from "../../components/Table/TableFiveCols";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Card from "../../components/Card/Card";
+import TableMember from "../../components/Table/TableMember";
 export default function Home() {
     return (
         <div>
@@ -101,14 +102,14 @@ export default function Home() {
                             content="1504"
                         ></Card>
                     </div>
-                    <TableFiveCols
+                    <TableMember
                         title={"Thống kê"}
-                        column1Title="Khóa học"
-                        column2Title="Bài học"
-                        column3Title="Lượt xem"
-                        column4Title="Giá"
-                        column5Title={"Trạng thái"}
-                    ></TableFiveCols>
+                        column1Title="Order Id"
+                        column2Title="Khóa học"
+                        column3Title="Giá"
+                        column4Title={"Trạng thái"}
+                        column5Title="Thời gian"
+                    ></TableMember>
                 </div>
             </div>
 

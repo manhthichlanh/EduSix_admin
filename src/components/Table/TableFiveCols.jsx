@@ -48,7 +48,6 @@ function TableFiveCols({
     <div className="m-6 border rounded-lg">
       <div className="flex items-center justify-between px-6 py-4 ">
         <div className="text-lg font-bold">{title}</div>
-
         <Button
           text={"Lọc"}
           Icon={function Icon() {
