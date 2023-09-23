@@ -17,9 +17,9 @@ export default function Layout () {
                 <div className="Noidungchinh_Admin">
                 <Outlet></Outlet>
                 </div>
-                <div className="Footer_Admin">
+                {/* <div className="Footer_Admin">
                 <Footer></Footer>
-                </div>
+                </div> */}
                 </div>
             </div>
 

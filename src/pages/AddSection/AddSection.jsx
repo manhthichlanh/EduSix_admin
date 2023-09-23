@@ -9,26 +9,27 @@ export default function Home() {
     <>
       <form action="">
         {/* Title */}
-        <div className="m-6 text-2xl font-medium">Thêm phần</div>
-        <div className="items-start justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
+        <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
           {/* Breadcrumbs */}
-          <div className="flex items-center gap-2 whitespace-nowrap">
-            <a href="/" className="text-indigo-500 text">
-              Trang chủ
-            </a>
-            <FontAwesomeIcon icon={faAngleRight} className="" />
-            <a href="/" className="text-indigo-500">
-              Danh sách khóa học
-            </a>
-            <FontAwesomeIcon icon={faAngleRight} className="" />
-            <a href="/add-course" className="text-indigo-500">
-              Thêm khóa học
-            </a>
-            <FontAwesomeIcon icon={faAngleRight} className="" />
-            <p className="">Thêm phần</p>
+          <div className="mt-6">
+            <div className="text-2xl font-medium pb-2">Thêm phần</div>
+            <div className="flex items-center gap-2 whitespace-nowrap">
+              <a href="/" className="text-indigo-500 text">
+                Trang chủ
+              </a>
+              <FontAwesomeIcon icon={faAngleRight} className="" />
+              <a href="/list-cate" className="text-indigo-500">
+                Danh sách khóa học
+              </a>
+              <FontAwesomeIcon icon={faAngleRight} className="" />
+              <a href="/add-course" className="text-indigo-500">
+                Thêm khóa học
+              </a>
+              <FontAwesomeIcon icon={faAngleRight} className="" />
+              <p className="">Thêm phần</p>
+            </div>
           </div>
-          {/* Nút button hủy */}
-          <div className="flex gap-2 whitespace-nowrap xl:mt-0 lg:mt-2 md:mt-4 md:justify-end sm:mt-4 sm:justify-end">
+          <div className="flex gap-2 whitespace-nowrap xl:mt-0 lg:mt-4 md:mt-4 md:justify-end mt-4 sm:mb-0 sm:mt-4 sm:justify-end">
             <Button
               text={"Hủy"}
               Class={
@@ -48,7 +49,6 @@ export default function Home() {
                 );
               }}
             />
-            {/* Nút button thêm */}
             <Button
               text={"Thêm thành phần"}
               Class={
@@ -73,7 +73,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="px-6 py-6 mx-6 my-4 bg-white border-2 rounded-lg">
+        <div className="px-6 py-6 m-6 bg-white border-2 rounded-lg">
           <p htmlFor="" className="pb-2 text-xl font-medium text-left">
             Thêm phần
           </p>
