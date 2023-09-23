@@ -91,58 +91,60 @@ function TableFiveCols({
           }
         ></Button>
       </div>
-      <table className="w-full mb-4 table-auto">
-        <thead className="bg-neutral-100">
-          <tr className="font-sans rounded-lg">
-            <td className="px-6 py-4 font-medium">{column1Title}</td>
-            <td className="px-6 py-4 font-medium">{column2Title}</td>
-            <td className="px-6 py-4 font-medium">{column3Title}</td>
-            <td className="px-6 py-4 font-medium">{column4Title}</td>
-            <td className="px-6 py-4 font-medium">{column5Title}</td>
-          </tr>
-        </thead>
-        <tbody className="rounded-xl">
-          {data.map((item, index) => (
-            <tr
-              key={index}
-              className="transition border-t-2 border-b-2 hover:bg-neutral-100"
-            >
-              <td className="flex items-start px-6 py-4">
-                <div>
-                  <div className="text-base font-medium">{item.course}</div>
-                  <div className="mt-1 text-medium text-stone-400">
-                    SKU: {item.sku}
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-6 font-medium text-gray-500 ">
-                {item.lesson}
-              </td>
-              <td className="px-6 py-6 font-medium text-gray-500">
-                {item.views}
-              </td>
-              <td
-                className={`px-6 py-6 font-bold min-h-60 ${
-                  item.price === "0" ? "text-gray-500" : "text-red-500"
-                }`}
-              >
-                {item.price === "0" ? "Miễn phí" : item.price}
-              </td>
-              <td className="px-6 py-6">
-                <p
-                  className={`py-1 px-2 inline-block font-medium ${
-                    item.status === "active"
-                      ? "text-green-600 bg-gray-200"
-                      : "text-red-700 bg-gray-200"
-                  } rounded-lg`}
-                >
-                  {item.status === "active" ? "Activated" : "Inactivate"}
-                </p>
-              </td>
+      <div className="w-full overflow-x-auto">
+        <table className="w-full table-auto">
+          <thead className="bg-neutral-100">
+            <tr className="font-sans rounded-lg whitespace-nowrap">
+              <td className="px-6 py-4 font-medium">{column1Title}</td>
+              <td className="px-6 py-4 font-medium">{column2Title}</td>
+              <td className="px-6 py-4 font-medium">{column3Title}</td>
+              <td className="px-6 py-4 font-medium">{column4Title}</td>
+              <td className="px-6 py-4 font-medium">{column5Title}</td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="rounded-xl">
+            {data.map((item, index) => (
+              <tr
+                key={index}
+                className="transition border-t-2 border-b-2 hover:bg-neutral-100"
+              >
+                <td className="flex items-start px-6 py-4">
+                  <div>
+                    <div className="text-base font-medium">{item.course}</div>
+                    <div className="mt-1 text-medium text-stone-400">
+                      SKU: {item.sku}
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-6 font-medium text-gray-500 ">
+                  {item.lesson}
+                </td>
+                <td className="px-6 py-6 font-medium text-gray-500">
+                  {item.views}
+                </td>
+                <td
+                  className={`px-6 py-6 font-bold min-h-60 ${
+                    item.price === "0" ? "text-gray-500" : "text-red-500"
+                  }`}
+                >
+                  {item.price === "0" ? "Miễn phí" : item.price}
+                </td>
+                <td className="px-6 py-6">
+                  <p
+                    className={`py-1 px-2 inline-block font-medium ${
+                      item.status === "active"
+                        ? "text-green-600 bg-gray-200"
+                        : "text-red-700 bg-gray-200"
+                    } rounded-lg`}
+                  >
+                    {item.status === "active" ? "Activated" : "Inactivate"}
+                  </p>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div className="flex items-center justify-between px-6 py-2 space-x-2">
         <div className="font-medium text-gray-500">Showing 1-5 from 15</div>
         <div className="flex justify-between gap-2 mx-auto">

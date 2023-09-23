@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 import { useState } from "react";
 import TableFiveCols from "../../components/Table/TableFiveCols";
-
+// import TableNineCols from "../../components/Table/TableNineCols";
 import Card from "../../components/Card/Card";
 export default function Home() {
   return (
@@ -215,6 +215,17 @@ export default function Home() {
         column4Title="Giá"
         column5Title={"Trạng thái"}
       ></TableFiveCols>
+      {/* <TableNineCols
+        column1Title="Khóa học"
+        column2Title="ID"
+        column3Title="Danh mục"
+        column4Title="Số bài học"
+        column5Title="Giá"
+        column6Title="Trạng thái"
+        column7Title="Thời lượng"
+        column8Title="Ngày thêm"
+        column9Title="Thao tác"
+      ></TableNineCols> */}
     </div>
   );
 }
