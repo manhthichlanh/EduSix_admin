@@ -131,10 +131,10 @@ const LayoutAdmin = () => {
                     </h1>
                     {isKhaoHocSubMenuOpen && (
                       <div className='single_Menu_1'>
-                        <NavLink to="/dskh" activeclassname="active">
+                        <NavLink to="/list-course" activeclassname="active">
                           <h2>Danh sách khóa học</h2>
                         </NavLink>
-                        <NavLink to="/dm" activeclassname="active">
+                        <NavLink to="/cate-course" activeclassname="active">
                           <h2>Danh mục</h2>
                         </NavLink>
                       </div>
@@ -166,11 +166,11 @@ const LayoutAdmin = () => {
                     </h1>
                     {isBaiVietSubMenuOpen && (
                       <div className='single_Menu_1'>
-                        <NavLink to="/dsbv" activeclassname="active">
+                        <NavLink to="/list-blog" activeclassname="active">
 
                           <h2>Danh sách bài viết</h2>
                         </NavLink>
-                        <NavLink to="/dmbv" activeclassname="active">
+                        <NavLink to="/cate-blog" activeclassname="active">
 
                           <h2>Danh mục bài viết</h2>
                         </NavLink>
@@ -178,7 +178,7 @@ const LayoutAdmin = () => {
                     )}
                   </div>
                   <div className='single_Menu'>
-                    <NavLink to="/dsm" activeclassname="active">
+                    <NavLink to="/order" activeclassname="active">
                       <h1>
                         <div className='icon-menu'>
                           <svg className="custom-svg"
@@ -212,7 +212,7 @@ const LayoutAdmin = () => {
                     </NavLink>
                   </div>
                   <div className='single_Menu'>
-                    <NavLink to="/tv" activeclassname="active">
+                    <NavLink to="/member" activeclassname="active">
                       <h1>
                         <div className='icon-menu'>
                           <svg className="custom-svg"
@@ -248,7 +248,7 @@ const LayoutAdmin = () => {
                       </h1>
                     </NavLink>
                   </div>
-                  <div className='single_Menu'>
+                  {/* <div className='single_Menu'>
                     <NavLink to="/tk" activeclassname="active">
                       <h1>
                         <div className='icon-menu'>
@@ -271,11 +271,11 @@ const LayoutAdmin = () => {
                         Thống kê
                       </h1>
                     </NavLink>
-                  </div>
+                  </div> */}
 
                 </div>
                 <div className='bottom_siderbar_admin'>
-                  <div className='single_Menu'>
+                  {/* <div className='single_Menu'>
                     <NavLink to="/st" activeclassname="active">
                       <h1>
                         <div className='icon-menu'>
@@ -304,7 +304,7 @@ const LayoutAdmin = () => {
                         Setting
                       </h1>
                     </NavLink>
-                  </div>
+                  </div> */}
                   <div className='dangXuat_Admin'>
                     <Button text={"Đăng Xuất"}></Button>
                   </div>
