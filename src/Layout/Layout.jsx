@@ -2,7 +2,7 @@ import {Outlet} from "react-router-dom"
 import Header from "./Header";
 // import Footer from "./Footer";
 import TopBar from "./TopBar/topBar";
-import "./Layout.css";
+import "./Layout.scss";
 export default function Layout () {
     return (
         <div className="Layout_Admin-container">
