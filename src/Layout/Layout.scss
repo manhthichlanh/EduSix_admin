@@ -1,0 +1,79 @@
+<<<<<<< HEAD:src/Layout/Layout.css
+.Admin-container {
+  background-color: #f9f9fc;
+  overflow: hidden;
+=======
+.Admin-container{
+    background-color: #F9F9FC;
+   overflow: hidden;
+>>>>>>> 504d7197b8eafcc487a8781d8a3a9ecb3d7b26a3:src/Layout/Layout.scss
+}
+.Header_Admin {
+  float: left;
+  width: 18%;
+  z-index: 1;
+}
+
+.Site_Admin_Right {
+  width: 82%;
+  float: right;
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.TopBar_Admin {
+  position: fixed;
+  width: 82%;
+}
+
+.Noidungchinh_Admin {
+  padding-top: 60px;
+}
+
+@media (max-width: 1300px) {
+  .Site_Admin_Right {
+    width: 70%;
+  }
+  .TopBar_Admin {
+    position: relative;
+    width: 100%;
+  }
+  .Header_Admin {
+    width: 30%;
+  }
+}
+
+@media (max-width: 1300px) {
+  .Site_Admin_Right {
+    width: 70%;
+  }
+  .Header_Admin {
+    width: 30%;
+  }
+}
+
+@media (max-width: 768px) {
+  .Site_Admin_Right {
+    width: 100%;
+    overflow: auto;
+  }
+  .TopBar_Admin {
+    position: fixed;
+    width: 100%;
+  }
+  .Header_Admin {
+    position: fixed;
+    width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .Site_Admin_Right {
+    width: 100%;
+    overflow: auto;
+  }
+  .Header_Admin {
+    position: fixed;
+    width: 70%;
+  }
+}
