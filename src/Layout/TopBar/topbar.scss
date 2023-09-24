@@ -1,249 +1,244 @@
 .topbar {
-    width: 100%;
-    user-select: none;
+  width: 100%;
+  user-select: none;
 
-    .thanh_topBar {
-        padding: 10px;
-        background-color: #fff;
-        overflow: hidden;
-        animation: topBar_truot 0.5s ease-in-out;
-        box-shadow: 5px 0px 5px 2px rgb(224, 224, 224);
-        // .icon_topBar_menu {
+  .thanh_topBar {
+    padding: 10px;
+    background-color: #fff;
+    overflow: hidden;
+    animation: topBar_truot 0.5s ease-in-out;
+    box-shadow: 5px 0px 5px 2px rgb(224, 224, 224);
+    // .icon_topBar_menu {
 
-        // }
+    // }
 
-        .icon_topBar1 {
-            margin-left: 10px;
-        }
-
-        @keyframes topBar_truot {
-            0% {
-                transform: translateY(-100%);
-            }
-
-            100% {
-                transform: translateY(0%);
-            }
-        }
-
-        .topBar_Right {
-            float: right;
-
-            .topBar_Right_utilities {
-                border-right: 3px solid #F0F1F3;
-                overflow: hidden;
-                float: left;
-            }
-
-            .seach_Admin {
-                position: absolute;
-                bottom: -50px;
-                width: 100%;
-                left: 0;
-                padding: 10px;
-                transition: 0.3s;
-
-                .input_seach_Admin {
-                    float: left;
-                    width: 80%;
-
-                    input {
-                        padding: 10px;
-                        width: 100%;
-                        border: 2px solid #5C59E8;
-                        border-top-left-radius: 20px;
-                        border-bottom-left-radius: 20px;
-                    }
-                }
-
-                .submit_Search {
-                    float: right;
-                    width: 20%;
-                    right: 0;
-
-                    button {
-                        width: 100px;
-                        padding: 11.5px;
-                        background-color: #5C59E8;
-                        color: #fff;
-                        margin-left: -10px;
-                        border-top-right-radius: 20px;
-                        border-bottom-right-radius: 20px;
-                    }
-                }
-            }
-
-            .thongBao_Admin {
-                position: absolute;
-                background-color: #fff;
-                top: 60px;
-                padding: 10px;
-                box-shadow: 0px 0px 5px 0px #c2c2c2;
-                border-radius: 5px;
-                width: 300px;
-
-                h1 {
-                    text-align: center;
-                    color: red;
-                    font-weight: 700;
-                    padding-bottom: 10px;
-                    border-bottom: 1px solid #afafaf;
-                }
-
-                .thongBao_Admin_sroll {
-
-                    .thongBao_Admin_box {
-                        cursor: pointer;
-
-                        :hover {
-                            background-color: #afafaf;
-                        }
-
-                        p {
-                            padding: 10px;
-                            background-color: #dbdbdb;
-                            font-size: 13px;
-                            border-bottom: 2px solid #fff;
-                        }
-                    }
-                }
-            }
-
-            .icon_TopBar {
-                position: relative;
-                float: left;
-                padding: 10px;
-                cursor: pointer;
-
-                .number_utilities {
-                    position: absolute;
-                    top: -5px;
-                    right: 0;
-
-                    span {
-                        background-color: red;
-                        color: #fff;
-                        padding: 0px 5px;
-                        font-size: 10px;
-                        border-radius: 20px;
-                    }
-                }
-
-            }
-
-            .user_Admin {
-                float: right;
-                // width: 210px;
-                padding-left: 10px;
-                user-select: none;
-                cursor: pointer;
-                padding-right: 35px;
-
-                .avatar_User_Admin {
-                    float: left;
-                    position: relative;
-
-                    img {
-                        width: 40px;
-                        height: 40px;
-                        border-radius: 50%;
-                    }
-
-                    .hoatdong_user_Admin {
-                        width: 15px;
-                        height: 15px;
-                        background-color: #3DA172;
-                        position: absolute;
-                        border-radius: 50%;
-                        right: -3px;
-                        bottom: 0px;
-                        border: 2px solid #fff;
-                    }
-                }
-
-                .tt_user_Admin {
-                    font-size: 13px;
-                    float: left;
-                    padding-left: 10px;
-
-                    h1 {
-                        font-size: 14px;
-                        font-weight: 600;
-                    }
-
-                    p {
-                        color: #5C59E8;
-                        font-weight: 600;
-                    }
-                }
-
-                .icon_User_Admin {
-                    position: absolute;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    right: 20px;
-                    color: #afafaf;
-                }
-
-                .cropdow_user_Admin {
-                    position: absolute;
-                    box-shadow: 0px 0px 5px 0px #afafaf;
-                    width: 200px;
-                    top: 60px;
-                    backdrop-filter: blur(10px);
-                    cursor: pointer;
-                    border-radius: 5px;
-                    right: 10px;
-                    padding: 5px;
-
-                    .tt_user_Admin_1 {
-                        display: none;
-                        font-size: 13px;
-                        float: left;
-                        padding-left: 10px;
-                        margin-bottom: 10px;
-
-                        h1 {
-                            font-size: 14px;
-                            font-weight: 600;
-                        }
-
-                        p {
-                            color: #5C59E8;
-                            font-weight: 600;
-                        }
-                    }
-
-                    button {
-                        border-radius: 5px;
-                        background-color: #ff0000d0;
-                        padding: 10px;
-                        font-size: 13px;
-                        width: 100%;
-                        color: #fff;
-                        font-weight: 600;
-                    }
-                }
-            }
-        }
-
-        @media (max-width: 480px) {
-            .tt_user_Admin {
-                display: none;
-            }
-
-            .topBar_Right {
-                .user_Admin {
-                    .cropdow_user_Admin {
-                        .tt_user_Admin_1 {
-                            display: block;
-                        }
-                    }
-                }
-            }
-        }
+    .icon_topBar1 {
+      margin-left: 10px;
     }
 
+    @keyframes topBar_truot {
+      0% {
+        transform: translateY(-100%);
+      }
 
+      100% {
+        transform: translateY(0%);
+      }
+    }
 
+    .topBar_Right {
+      float: right;
+
+      .topBar_Right_utilities {
+        border-right: 3px solid #f0f1f3;
+        overflow: hidden;
+        float: left;
+      }
+
+      .seach_Admin {
+        position: absolute;
+        bottom: -50px;
+        width: 100%;
+        left: 0;
+        padding: 10px;
+        transition: 0.3s;
+
+        .input_seach_Admin {
+          float: left;
+          width: 80%;
+
+          input {
+            padding: 10px;
+            width: 100%;
+            border: 2px solid #5c59e8;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+          }
+        }
+
+        .submit_Search {
+          float: right;
+          width: 20%;
+          right: 0;
+
+          button {
+            width: 100px;
+            padding: 11.5px;
+            background-color: #5c59e8;
+            color: #fff;
+            margin-left: -10px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+          }
+        }
+      }
+
+      .thongBao_Admin {
+        position: absolute;
+        background-color: #fff;
+        top: 60px;
+        padding: 10px;
+        box-shadow: 0px 0px 5px 0px #c2c2c2;
+        border-radius: 5px;
+        width: 300px;
+
+        h1 {
+          text-align: center;
+          color: red;
+          font-weight: 700;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #afafaf;
+        }
+
+        .thongBao_Admin_sroll {
+          .thongBao_Admin_box {
+            cursor: pointer;
+
+            :hover {
+              background-color: #afafaf;
+            }
+
+            p {
+              padding: 10px;
+              background-color: #dbdbdb;
+              font-size: 13px;
+              border-bottom: 2px solid #fff;
+            }
+          }
+        }
+      }
+
+      .icon_TopBar {
+        position: relative;
+        float: left;
+        padding: 10px;
+        cursor: pointer;
+
+        .number_utilities {
+          position: absolute;
+          top: -5px;
+          right: 0;
+
+          span {
+            background-color: red;
+            color: #fff;
+            padding: 0px 5px;
+            font-size: 10px;
+            border-radius: 20px;
+          }
+        }
+      }
+
+      .user_Admin {
+        float: right;
+        // width: 210px;
+        padding-left: 10px;
+        user-select: none;
+        cursor: pointer;
+        padding-right: 35px;
+
+        .avatar_User_Admin {
+          float: left;
+          position: relative;
+
+          img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+          }
+
+          .hoatdong_user_Admin {
+            width: 15px;
+            height: 15px;
+            background-color: #3da172;
+            position: absolute;
+            border-radius: 50%;
+            right: -3px;
+            bottom: 0px;
+            border: 2px solid #fff;
+          }
+        }
+
+        .tt_user_Admin {
+          font-size: 13px;
+          float: left;
+          padding-left: 10px;
+
+          h1 {
+            font-size: 14px;
+            font-weight: 600;
+          }
+
+          p {
+            color: #5c59e8;
+            font-weight: 600;
+          }
+        }
+
+        .icon_User_Admin {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          right: 20px;
+          color: #afafaf;
+        }
+
+        .cropdow_user_Admin {
+          position: absolute;
+          box-shadow: 0px 0px 5px 0px #afafaf;
+          width: 200px;
+          top: 60px;
+          backdrop-filter: blur(10px);
+          cursor: pointer;
+          border-radius: 5px;
+          right: 10px;
+          padding: 5px;
+
+          .tt_user_Admin_1 {
+            display: none;
+            font-size: 13px;
+            float: left;
+            padding-left: 10px;
+            margin-bottom: 10px;
+
+            h1 {
+              font-size: 14px;
+              font-weight: 600;
+            }
+
+            p {
+              color: #5c59e8;
+              font-weight: 600;
+            }
+          }
+
+          button {
+            border-radius: 5px;
+            background-color: #ff0000d0;
+            padding: 10px;
+            font-size: 13px;
+            width: 100%;
+            color: #fff;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tt_user_Admin {
+        display: none;
+      }
+
+      .topBar_Right {
+        .user_Admin {
+          .cropdow_user_Admin {
+            .tt_user_Admin_1 {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
 }
