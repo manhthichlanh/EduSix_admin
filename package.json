@@ -15,10 +15,7 @@
     "@headlessui/react": "^1.7.17",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
-<<<<<<< HEAD
-=======
     "jodit-react": "^1.3.39",
->>>>>>> f2c10f6bdd7e77f7d84d69f3993d2a46ec436147
     "classnames": "^2.3.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
