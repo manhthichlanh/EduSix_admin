@@ -45,7 +45,7 @@ export default function Home() {
                 Icon={function Icon() {
                   return <MoneyIcon></MoneyIcon>;
                 }}
-                title={"Doanh thu"}
+                title={"Doanh thu"} 
                 b-6
                 content={`${Number(1000000).toLocaleString("vi-VN")} VND`}
               ></Card>
