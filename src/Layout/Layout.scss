@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<< HEAD:src/Layout/Layout.css
 .Admin-container {
   background-color: #f9f9fc;
@@ -7,11 +8,16 @@
     background-color: #F9F9FC;
    overflow: hidden;
 >>>>>>> 504d7197b8eafcc487a8781d8a3a9ecb3d7b26a3:src/Layout/Layout.scss
+=======
+.Admin-container {
+  background-color: #f9f9fc;
+  overflow: hidden;
+>>>>>>> f2c10f6bdd7e77f7d84d69f3993d2a46ec436147
 }
 .Header_Admin {
   float: left;
   width: 18%;
-  z-index: 1;
+  z-index: 2;
 }
 
 .Site_Admin_Right {
@@ -24,6 +30,7 @@
 .TopBar_Admin {
   position: fixed;
   width: 82%;
+  z-index: 1;
 }
 
 .Noidungchinh_Admin {
@@ -40,6 +47,9 @@
   }
   .Header_Admin {
     width: 30%;
+  }
+  .Noidungchinh_Admin {
+    padding-top: 0px;
   }
 }
 
@@ -65,6 +75,9 @@
     position: fixed;
     width: 50%;
   }
+  .Noidungchinh_Admin {
+    padding: 60px;
+}
 }
 
 @media (max-width: 480px) {

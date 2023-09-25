@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./layout_admin.scss";
-import Button from "../../components/button/Button";
+import Button from "../../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronUp,
