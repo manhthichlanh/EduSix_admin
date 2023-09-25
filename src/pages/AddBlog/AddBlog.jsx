@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
-import Jodit from "../../components/Jodit/Jodit";
 export default function Home() {
   return (
     <>
@@ -86,10 +85,6 @@ export default function Home() {
               "w-full mt-2 px-3 py-2 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
             }
           ></Input>
-           <Jodit 
-           label={"Mô tả"}
-           placeholder={"Mô tả bài viết"}
-           ></Jodit>
         </div>
       </form>
     </>

@@ -4,6 +4,7 @@ import Button from "../../components/Button/Button";
 import { Menu } from "@headlessui/react";
 import FilterIcon from "../../components/common/icon/FilterIcon";
 import TableCourse from "../../components/Table/Course/TableCourse";
+import Search from "../../components/Search/Search";
 export default function Home() {
   return (
     <div className="px-6 py-6 max-h-full">
@@ -48,20 +49,10 @@ export default function Home() {
       {/* filter button*/}
       <div className="w-full ">
         <div className="flex justify-between ">
-          <div className=''>
-            <div className="relative flex items-center w-full h-12 border-2 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
-              <div className="grid place-items-center h-full w-12 text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-
-              <input
-                className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
-                type="text"
-                placeholder="Search something.." />
-            </div>
+          <div className="w-1/3">
+            <Search></Search>
           </div>
+
           <Menu as="div" className=" relative inline-block text-left">
             <Menu.Button className="px-4 py-2 border rounded-lg flex items-center gap-2 bg-white ">
               <FilterIcon></FilterIcon>

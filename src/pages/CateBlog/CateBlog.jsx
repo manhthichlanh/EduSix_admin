@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button/Button";
-
 import { Menu } from "@headlessui/react";
 import FilterIcon from "../../components/common/icon/FilterIcon";
-
+import Search from "../../components/Search/Search";
 import TableBlogCate from "../../components/Table/Blog/TableBlogCate";
 export default function Home() {
   return (
@@ -48,7 +47,10 @@ export default function Home() {
       </div>
       {/* filter button*/}
       <div className="w-full">
-        <div className="flex justify-end">
+        <div className="flex justify-between ">
+          <div className="w-1/3">
+            <Search></Search>
+          </div>
           <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="px-4 py-2 border rounded-lg flex items-center gap-2">
               <FilterIcon></FilterIcon>
@@ -58,9 +60,8 @@ export default function Home() {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`block px-4 py-2 rounded-md ${
-                      active ? "bg-blue-500 text-white" : "text-gray-700"
-                    }`}
+                    className={`block px-4 py-2 rounded-md ${active ? "bg-blue-500 text-white" : "text-gray-700"
+                      }`}
                     role="menuitem"
                   >
                     Account settings
@@ -70,9 +71,8 @@ export default function Home() {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`block px-4 py-2 rounded-md ${
-                      active ? "bg-blue-500 text-white" : "text-gray-700"
-                    }`}
+                    className={`block px-4 py-2 rounded-md ${active ? "bg-blue-500 text-white" : "text-gray-700"
+                      }`}
                     role="menuitem"
                   >
                     Documentation
