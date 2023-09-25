@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Button from "../../components/button/Button";
+import Button from "../../components/Button/Button";
 import {
     faChevronUp,
     faChevronDown,

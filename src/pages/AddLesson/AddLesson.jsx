@@ -201,7 +201,7 @@ export default function Home() {
           <label htmlFor="" className="text-left text-gray-500 ">
             Video
           </label>
-          <div className="grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center">
+          <div className="grid p-6 my-2 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center">
             <p className="mb-4 text-center text-gray-500 ">
               Kéo thả video vào đây hoặc bấm thêm video
             </p>
