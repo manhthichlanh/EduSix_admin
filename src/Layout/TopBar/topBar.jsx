@@ -81,7 +81,7 @@ const topBar = () => {
                                 </div>
                             </div>
                         )}
-                        <div className='icon_TopBar'>
+                        {/* <div className='icon_TopBar'>
                             <svg
                                 width={24}
                                 height={24}
@@ -100,7 +100,7 @@ const topBar = () => {
                                 <span>1</span>
                             </div>
 
-                        </div>
+                        </div> */}
                         <div className='icon_TopBar' onClick={toggleThongbaoSubMenu}>
                             <svg
                                 width={24}
@@ -132,7 +132,7 @@ const topBar = () => {
                                 </div>
                             </div>
                         )}
-                        <div className='icon_TopBar'>
+                        {/* <div className='icon_TopBar'>
                             <svg
                                 width={24}
                                 height={24}
@@ -150,7 +150,7 @@ const topBar = () => {
 
 
 
-                        </div>
+                        </div> */}
 
                     </div>
                     <div className='user_Admin' onClick={toggleUserAdminSubMenu}>

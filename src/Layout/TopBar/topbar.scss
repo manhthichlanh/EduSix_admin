@@ -7,7 +7,7 @@
         background-color: #fff;
         overflow: hidden;
         animation: topBar_truot 0.5s ease-in-out;
-        box-shadow: 5px 0px 5px 2px rgb(224, 224, 224);
+        box-shadow: 5px 0px 5px 0px rgb(224, 224, 224);
         // .icon_topBar_menu {
 
         // }
@@ -33,6 +33,7 @@
                 border-right: 3px solid #F0F1F3;
                 overflow: hidden;
                 float: left;
+                padding-right: 10px;
             }
 
             .seach_Admin {
