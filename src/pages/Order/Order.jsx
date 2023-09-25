@@ -27,13 +27,12 @@ export default function Home() {
                 <Tab as={Fragment}>
                   {({ selected }) => (
                     <button
-                      className={`${
-                        selected
+                      className={`${selected
                           ? "bg-blue-200 text-[#4543AE] font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
                           : " text-gray-400 font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
-                      }
-        transition hover:bg-[#EFEFFD] hover:text-[#5C59E8]
-      `}
+                        }
+                          transition hover:bg-[#EFEFFD] hover:text-[#5C59E8]
+                               `}
                     >
                       1 Ngày
                     </button>
@@ -42,11 +41,10 @@ export default function Home() {
                 <Tab as={Fragment}>
                   {({ selected }) => (
                     <button
-                      className={`${
-                        selected
+                      className={`${selected
                           ? "bg-blue-200 text-[#4543AE] font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
                           : " text-gray-400 font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
-                      }
+                        }
         transition hover:bg-[#EFEFFD] hover:text-[#5C59E8]
       `}
                     >
@@ -57,11 +55,10 @@ export default function Home() {
                 <Tab as={Fragment}>
                   {({ selected }) => (
                     <button
-                      className={`${
-                        selected
+                      className={`${selected
                           ? "bg-blue-200 text-[#4543AE] font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
                           : " text-gray-400 font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
-                      }
+                        }
         transition hover:bg-[#EFEFFD] hover:text-[#5C59E8]
       `}
                     >
@@ -72,11 +69,10 @@ export default function Home() {
                 <Tab as={Fragment}>
                   {({ selected }) => (
                     <button
-                      className={`${
-                        selected
+                      className={`${selected
                           ? "bg-blue-200 text-[#4543AE] font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
                           : " text-gray-400 font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
-                      }
+                        }
         transition hover:bg-[#EFEFFD] hover:text-[#5C59E8]
       `}
                     >
@@ -87,11 +83,10 @@ export default function Home() {
                 <Tab as={Fragment}>
                   {({ selected }) => (
                     <button
-                      className={`${
-                        selected
+                      className={`${selected
                           ? "bg-blue-200 text-[#4543AE] font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
                           : " text-gray-400 font-semibold outline-none rounded-md inline-block px-2 py-1 whitespace-nowrap"
-                      }
+                        }
         transition hover:bg-[#EFEFFD] hover:text-[#5C59E8]
       `}
                     >
@@ -111,9 +106,8 @@ export default function Home() {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`block px-4 py-2 rounded-md ${
-                      active ? "bg-blue-500 text-white" : "text-gray-700"
-                    }`}
+                    className={`block px-4 py-2 rounded-md ${active ? "bg-blue-500 text-white" : "text-gray-700"
+                      }`}
                     role="menuitem"
                   >
                     Account settings
@@ -123,9 +117,8 @@ export default function Home() {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`block px-4 py-2 rounded-md ${
-                      active ? "bg-blue-500 text-white" : "text-gray-700"
-                    }`}
+                    className={`block px-4 py-2 rounded-md ${active ? "bg-blue-500 text-white" : "text-gray-700"
+                      }`}
                     role="menuitem"
                   >
                     Documentation
