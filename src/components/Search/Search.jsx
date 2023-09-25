@@ -7,7 +7,7 @@ const Search = () => {
             <SearchIcon></SearchIcon>
         </div>
         <Input
-            className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
+            className="h-full w-full outline-none text-sm text-gray-700 pr-2"
             type="text"
             placeholder="Search something.."
         ></Input>
