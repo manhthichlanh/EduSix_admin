@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  /* table */
+  .rc-table table {
+    @apply !w-full rounded-t-lg;
+  }
+  .rc-table .rc-table-thead {
+    @apply border rounded-lg bg-gray-200;
+  }
+  .rc-table .rc-table-thead .rc-table-cell {
+    @apply !text-left py-[18px] px-[22px] whitespace-nowrap font-medium;
+  }
+
+  .rc-table .rc-table-tbody .rc-table-cell {
+    @apply py-[18px] px-[22px] whitespace-nowrap border-b;
+  }
+
+  .rc-table .rc-table-tbody .rc-table-row {
+    @apply hover:bg-gray-100;
+  }
+
+  /* pagination */
+  .rc-pagination {
+    @apply flex items-center gap-2 select-none;
+  }
+  .rc-pagination li {
+    @apply rounded-lg bg-indigo-100 cursor-pointer transition duration-300 text-indigo-500 flex-shrink-0 w-8 h-8 flex items-center justify-center hover:bg-indigo-500 hover:text-white hover:stroke-white;
+  }
+
+  .rc-pagination .rc-pagination-item-active {
+    @apply bg-indigo-500 text-white;
+  }
+
+  .rc-pagination .rc-pagination-disabled {
+    @apply cursor-default !opacity-50 !text-indigo-500 !bg-indigo-50;
+  }
+
+  .rc-pagination li.rc-pagination-options {
+    @apply !hidden;
+  }
+}
