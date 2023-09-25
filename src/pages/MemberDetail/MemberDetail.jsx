@@ -6,6 +6,7 @@ import MoneyIcon from "../../components/common/icon/MoneyIcon";
 import BlogIconDetail from "../../components/common/icon/BlogIconDetail"
 import CourseIcon from "../../components/common/icon/CourseIcon";
 import CardDetail from "../../components/card/CardDetail";
+
 export default function Home() {
   return (
     <div>

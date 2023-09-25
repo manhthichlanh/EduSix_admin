@@ -211,7 +211,7 @@ export default function Home() {
               <Button
                 text={"Thêm video"}
                 Class={
-                  "flex  font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
+                  "flex font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
                 }
               />
             </div>
