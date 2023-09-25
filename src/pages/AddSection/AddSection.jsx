@@ -1,9 +1,11 @@
+// import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import InputSelect from "../../components/Input/InputSelect";
 import Button from "../../components/Button/Button";
-import TableSection from "../../components/Table/TableSection";
+import TableSection from "../../components/Table/Course/TableSection";
+// import TableSection from "./../../components/Table/TableSection";
 export default function Home() {
   return (
     <>
@@ -84,16 +86,16 @@ export default function Home() {
             className={
               "w-full mt-2 px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
             }
-            onChange={(e) => { console.log(e.target.value); }}
+            onChange={(e) => {
+              console.log(e.target.value);
+            }}
           ></Input>
           <InputSelect
             label={"Trạng thái"}
-            array={
-              [
-                { value: "123", text: "Đang bật" },
-                { value: "213", text: "Đang tắt" },
-              ]
-            }
+            array={[
+              { value: "123", text: "Đang bật" },
+              { value: "213", text: "Đang tắt" },
+            ]}
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
             }
@@ -116,7 +118,9 @@ export default function Home() {
           />
         </div>
       </form>
+      <div className="p-6">
+        <TableSection></TableSection>
+      </div>
     </>
   );
 }
-

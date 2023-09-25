@@ -1,5 +1,5 @@
 // import React from 'react'
-import LayoutAdmin from "./SideBar/layout_admin"
+import LayoutAdmin from "./SideBar/layout_admin";
 export default function Header() {
   return (
     <header>
@@ -7,5 +7,5 @@ export default function Header() {
 
       <LayoutAdmin></LayoutAdmin>
     </header>
-  )
+  );
 }
