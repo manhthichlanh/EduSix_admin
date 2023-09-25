@@ -26,10 +26,9 @@ export default function Home() {
   };
   return (
     <>
-      {/* <form action=""> */}
       <div
         className={
-          "fixed top-0 left-0 w-full h-full " + (showUpload ? "" : "hidden")
+          "fixed top-0 left-0 w-full h-full z-10 " + (showUpload ? "" : "hidden")
         }
       >
         <div className="relative z-10 flex items-center justify-center w-full h-full">
@@ -209,7 +208,7 @@ export default function Home() {
               <Button
                 text={"Thêm video"}
                 Class={
-                  "flex  font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
+                  "flex font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
                 }
               />
             </div>
