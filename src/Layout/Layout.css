@@ -37,15 +37,6 @@
   }
 }
 
-@media (max-width: 1300px) {
-  .Site_Admin_Right {
-    width: 70%;
-  }
-  .Header_Admin {
-    width: 30%;
-  }
-}
-
 @media (max-width: 768px) {
   .Site_Admin_Right {
     width: 100%;
