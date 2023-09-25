@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button/Button";
+import TableOrder from "../../components/Table/TableOrder";
 export default function Home() {
   return (
     <>

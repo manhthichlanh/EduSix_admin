@@ -23,9 +23,25 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <div className="w-full flex">
-                <div className="w-1/3 my-6 ml-6">Cái cục thông tin màu xanh ở đây</div>
-                <div className="w-2/3">
+            <div className="grid grid-cols-2">
+                <div className="my-6 ml-6">
+                    <div class="w-full ">
+                        <div class="w-full border border-gray-200 p-2 pb-6 rounded-lg select-none">
+                            <div class="w-full bg-blue-500 rounded-lg relative h-36 mb-16">
+                                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-32 h-32 bg-gray-200 rounded-full"></div>
+                            </div>
+                            <div class="flex items-center justify-center flex-col text-center pt-2">
+                                <h4 class="flex items-center gap-2 text-base font-medium capitalize leading-[24px] tracking-[0.5%] mb-2">
+                                    Linda Blair
+                                    <span class="capitalize bg-blue-100 text-blue-500 rounded-full py-1 px-1.5 text-xs leading-[18px] font-semibold">Premium</span>
+                                </h4>
+                                <span class="text-xs font-medium text-gray-400 tracking-[0.5%] leading-[18px]">@linda_blair321</span>
+                            </div>
+                            <div class="block w-full h-px bg-gray-200 my-4" />
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full">
                     <div className="grid gap-6 m-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                         <Card
                             Icon={function Icon() {
@@ -102,14 +118,6 @@ export default function Home() {
                             content="1504"
                         ></Card>
                     </div>
-                    <TableMember
-                        title={"Thống kê"}
-                        column1Title="Order Id"
-                        column2Title="Khóa học"
-                        column3Title="Giá"
-                        column4Title={"Trạng thái"}
-                        column5Title="Thời gian"
-                    ></TableMember>
                 </div>
             </div>
 

@@ -1,9 +1,9 @@
-import { io } from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import InputSelect from "../../components/Input/InputSelect";
 import Button from "../../components/Button/Button";
+import TableSection from "../../components/Table/TableSection";
 export default function Home() {
   return (
     <>

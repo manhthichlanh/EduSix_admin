@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button/Button";
+import TableNineCols from "../../components/Table/TableNineCols"
 export default function Home() {
   return (
     <>
@@ -42,6 +43,7 @@ export default function Home() {
             />
           </div>
         </div>
+        
       </form>
     </>
   );
