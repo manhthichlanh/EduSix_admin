@@ -26,10 +26,10 @@ export default function Home() {
   };
   return (
     <>
-      {/* <form action=""> */}
+      <form action="">
       <div
         className={
-          "fixed top-0 left-0 w-full h-full " + (showUpload ? "" : "hidden")
+          "fixed top-0 left-0 w-full h-full z-10 " + (showUpload ? "" : "hidden")
         }
       >
         <div className="relative z-10 flex items-center justify-center w-full h-full">
@@ -73,6 +73,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      </form>
       <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
         {/* Breadcrumbs */}
         <div className="mt-6">
@@ -134,8 +135,8 @@ export default function Home() {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M5 2.5C3.61929 2.5 2.5 3.61929 2.5 5V15C2.5 16.3807 3.61929 17.5 5 17.5H15C16.3807 17.5 17.5 16.3807 17.5 15V7.47072C17.5 6.80768 17.2366 6.17179 16.7678 5.70295L14.297 3.23223C13.8282 2.76339 13.1923 2.5 12.5293 2.5H5ZM12.5293 4.16667H12.5V5.83333C12.5 6.75381 11.7538 7.5 10.8333 7.5H7.5C6.57953 7.5 5.83333 6.75381 5.83333 5.83333V4.16667H5C4.53976 4.16667 4.16667 4.53976 4.16667 5V15C4.16667 15.4602 4.53976 15.8333 5 15.8333H5.83333V10.8333C5.83333 9.91286 6.57953 9.16667 7.5 9.16667H12.5C13.4205 9.16667 14.1667 9.91286 14.1667 10.8333V15.8333H15C15.4602 15.8333 15.8333 15.4602 15.8333 15V7.47072C15.8333 7.24971 15.7455 7.03774 15.5893 6.88146L13.1185 4.41074C12.9623 4.25446 12.7503 4.16667 12.5293 4.16667ZM12.5 15.8333V10.8333H7.5V15.8333H12.5ZM7.5 4.16667H10.8333V5.83333H7.5V4.16667Z"
                     fill="white"
                   />
@@ -197,6 +198,7 @@ export default function Home() {
             value={""}
           ></InputDescription>
         </div>
+        </form>
         <div className="h-full px-6 py-4 m-6 bg-white border-2 rounded-lg">
           <label htmlFor="" className="text-left text-gray-500 ">
             Video
@@ -215,7 +217,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </form>
       <div className="px-6 pb-6">
         <TableLesson></TableLesson>
       </div>
