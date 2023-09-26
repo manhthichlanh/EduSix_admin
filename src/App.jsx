@@ -18,6 +18,7 @@ import CateBlog from "./pages/CateBlog/CateBlog"
 import ListBlog from "./pages/ListBlog/ListBlog"
 import AddBlog from "./pages/AddBlog/AddBlog"
 import Member from "./pages/Member/Member"
+import Login from "./Layout/Login/Login"
 import MemberDetail from "./pages/MemberDetail/MemberDetail"
 //||Components
 function App() {
@@ -41,6 +42,7 @@ function App() {
           <Route path="/member" element={<Member />} />
           <Route path="/member-detail" element={<MemberDetail />} />
         </Route>
+        <Route path="/admin/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

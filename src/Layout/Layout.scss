@@ -28,16 +28,19 @@
 @media (max-width: 1300px) {
   .Site_Admin_Right {
     width: 70%;
+    overflow: auto;
+
   }
   .TopBar_Admin {
-    position: relative;
-    width: 100%;
+    position: fixed;
+    width: 70%;
   }
   .Header_Admin {
     width: 30%;
+    position: fixed;
   }
   .Noidungchinh_Admin {
-    padding: 0px 0px;
+    padding: 60px 0px;
   }
 }
 
