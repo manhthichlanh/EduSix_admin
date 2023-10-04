@@ -5,13 +5,56 @@ import InputDescription from "../../components/Input/InputDescription";
 import { useState } from "react";
 import Button from "../../components/Button/Button";
 import TableLesson from "../../components/Table/Course/TableLesson";
+import "./AddLesson.scss"
 export default function Home() {
   const [showUpload, SetShowUpload] = useState(false);
   const [urlInputValue, setUrlInputValue] = useState(null);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isQuizOpen, setIsQuizOpen] = useState(false);
+  const [quizData, setQuizData] = useState([]);
   const [formValue, setFormValue] = useState({
     course_id: 1,
     courseName: "",
   });
+  const addQuestion = () => {
+    const newQuestion = {
+      question: "",
+      answers: [
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+        { text: "", isCorrect: false },
+      ],
+    };
+
+    setQuizData([...quizData, newQuestion]);
+  };
+
+  const updateQuestion = (index, field, value) => {
+    const updatedQuizData = [...quizData];
+    updatedQuizData[index][field] = value;
+    setQuizData(updatedQuizData);
+  };
+
+  const updateAnswer = (questionIndex, answerIndex, text) => {
+    const updatedQuizData = [...quizData];
+    updatedQuizData[questionIndex].answers[answerIndex].text = text;
+    setQuizData(updatedQuizData);
+  };
+
+  const setCorrectAnswer = (questionIndex, answerIndex) => {
+    const updatedQuizData = [...quizData];
+    updatedQuizData[questionIndex].answers.forEach((answer, index) => {
+      answer.isCorrect = index === answerIndex;
+    });
+    setQuizData(updatedQuizData);
+  };
+
+  const saveAnswers = () => {
+    // Gửi dữ liệu đáp án đi hoặc thực hiện xử lý lưu tại đây
+    console.log("Dữ liệu đáp án đã được lưu.");
+  };
+  
   const handleClickToUploadBg = () => {
     // Đặt showUpload về giá trị false để ẩn giao diện tải lên
     SetShowUpload(false);
@@ -19,6 +62,26 @@ export default function Home() {
   const handleClickToUploadBtn = () => {
     // Đặt showUpload về giá trị true để hiển thị giao diện tải lên
     SetShowUpload(true);
+  };
+
+  const toggleVideoOpen = () => {
+    setIsVideoOpen(!isVideoOpen);
+    setIsQuizOpen(false); // Đóng phần quiz khi mở phần video
+  };
+  
+  const toggleQuizOpen = () => {
+    setIsQuizOpen(!isQuizOpen);
+    setIsVideoOpen(false); // Đóng phần video khi mở phần quiz
+  };
+  const handleSelectChange = (e) => {
+    const selectedValue = e.target.value;
+    setIsVideoOpen(false); // Tắt phần video
+    setIsQuizOpen(false); // Tắt phần quiz
+    if (selectedValue === "video") {
+      toggleVideoOpen();
+    } else if (selectedValue === "quiz") {
+      toggleQuizOpen();
+    }
   };
   const handleChangeURL = (e) => {
     const newValue = e.target.value;
@@ -200,23 +263,98 @@ export default function Home() {
         </div>
         </form>
         <div className="h-full px-6 py-4 m-6 bg-white border-2 rounded-lg">
-          <label htmlFor="" className="text-left text-gray-500 ">
-            Video
-          </label>
-          <div className="grid p-6 my-2 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center">
-            <p className="mb-4 text-center text-gray-500 ">
-              Kéo thả video vào đây hoặc bấm thêm video
-            </p>
-            <div className="" onClick={handleClickToUploadBtn}>
-              <Button
-                text={"Thêm video"}
-                Class={
-                  "flex font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
+  <select name="" id="" onChange={handleSelectChange}
+   className={
+    "mt-2 px-4 py-2 w-full bg-neutral-100 mb-5 clear-both rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+  }>
+    <option value="">Chọn 1 mục</option>
+    <option value="video">Video</option>
+    <option value="quiz">Quiz</option>
+  </select>
+
+  {isVideoOpen && (
+    <div className="grid p-6 my-2 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center">
+      <p className="mb-4 text-center text-gray-500">
+        Kéo thả video vào đây hoặc bấm thêm video
+      </p>
+      <div className="" onClick={handleClickToUploadBtn}>
+        <Button
+          text={"Thêm video"}
+          Class={
+            "flex font-medium items-center bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
+          }
+        />
+      </div>
+    </div>
+  )}
+
+  {isQuizOpen && (
+       <div className="Quiz">
+      <h1>QUẢN LÝ CÂU HỎI VÀ ĐÁP ÁN</h1>
+      {quizData.map((question, questionIndex) => (
+        <div key={questionIndex}>
+          <Input
+            type="text"
+            className={
+              "mt-2 px-4 py-2 w-full bg-neutral-100 clear-both rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+            }
+            label={`Câu hỏi ${questionIndex + 1}:`}
+            placeholder="Nhập câu hỏi"
+            value={question.question}
+            onChange={(e) =>
+              updateQuestion(questionIndex, "question", e.target.value)
+            }
+          />
+          {question.answers.map((answer, answerIndex) => (
+            <div key={answerIndex} className="Answer">
+              <div className="Radio_Answer">
+              <input
+                type="radio"
+                name={`correct-answer-${questionIndex}`}
+                checked={answer.isCorrect}
+                className="radio"
+                onChange={() =>
+                  setCorrectAnswer(questionIndex, answerIndex)
+                }
+              />
+              </div>
+              <Input
+                type="text"
+                className="Input_Answer"
+                placeholder={`Đáp án ${answerIndex + 1}`}
+                value={answer.text}
+                onChange={(e) =>
+                  updateAnswer(
+                    questionIndex,
+                    answerIndex,
+                    e.target.value
+                  )
                 }
               />
             </div>
-          </div>
+          ))}
         </div>
+      ))}
+      <div className="Button_Quiz">
+      <Button
+        text="Thêm câu hỏi"
+        Class={
+          "flex font-medium items-center float-left bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
+        }
+        onClick={addQuestion}
+      />
+      <Button
+        text="Lưu lại đáp án"
+        Class={
+          "flex font-medium items-center float-right bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
+        }
+        onClick={saveAnswers}
+      />
+      </div>
+    </div>
+  )}
+</div>
+
       <div className="px-6 pb-6">
         <TableLesson></TableLesson>
       </div>
