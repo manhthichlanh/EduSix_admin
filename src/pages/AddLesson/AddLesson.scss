@@ -1,0 +1,31 @@
+.Quiz{
+    overflow: hidden;
+}
+.Quiz h1{
+    text-align: center;
+    font-weight: 700;
+}
+.Quiz .Input_Answer{
+    width: 90%;
+    float: right;
+    padding: 10px;
+    margin-top: -28px;
+    border-radius: 5px;
+    border: 1px solid #dddddd;
+}
+.Quiz .Radio_Answer{
+    margin-top: 30px;
+}
+.Quiz .radio{
+    float: left;
+    width: 10%;
+   
+    padding: 15px;
+}
+.Quiz .Answer{
+    padding: 10px;
+}
+.Quiz .Button_Quiz{
+    clear: both;
+    margin-top: 20px;
+}

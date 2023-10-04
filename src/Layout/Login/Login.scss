@@ -1,0 +1,71 @@
+.Login_Admin{
+   width: 480px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .Login_Admin_Box{
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0px 0px 5px 0px #d5d5d5;
+        border-radius: 10px;
+        overflow: hidden;
+                h2{
+                    color: rgba(92, 89, 232, 0.90);
+                    text-align: center;
+                    font-size: 25px;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                }
+                .form_Login{
+                    margin-top: 20px;
+                }
+                .password-input{
+                    position: relative;
+                    button{
+                        position: absolute;
+                        padding: 10px;
+                        top: 15px;
+                        right: 0;
+                        color: #b1b1b1;
+                    }
+                }
+                .password_tienich{
+                    .nho_mk{
+                        float: left;
+                        color: #8D8D8D;
+                    }
+
+                    .quen_mk{
+                        float: right;
+                        margin-top: 8px;
+                        font-size: 16px;
+                        color: #8D8D8D;
+                        text-decoration:underline;
+                    }
+                }
+                .submit_Login{
+                    clear: both;
+                    width: 100%;  
+                   padding-top: 20px;
+                    .submit{
+                        width: 100%;
+                        background-color: #5C59E8;
+                        border-radius: 8px;
+                        box-shadow: -2px -2px 4px 0px rgba(0, 0, 0, 0.25) inset, 2px 2px 12px 0px rgba(255, 255, 255, 0.25) inset;
+                        padding: 10px;
+                        color: #fff;
+                    } 
+                }
+    }
+    
+}
+
+@media (max-width: 500px) {
+    .Login_Admin{
+        width: 100%;
+        padding: 10px;
+    }
+  }
+
