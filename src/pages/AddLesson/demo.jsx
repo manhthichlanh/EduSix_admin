@@ -3,25 +3,17 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import InputDescription from "../../components/Input/InputDescription";
 import { useState } from "react";
-import { Switch } from '@headlessui/react'
 import Button from "../../components/Button/Button";
 import TableLesson from "../../components/Table/Course/TableLesson";
-import {
-  faTrash
-} from "@fortawesome/free-solid-svg-icons";
 import "./AddLesson.scss"
-
-
 export default function Home() {
   const [showUpload, SetShowUpload] = useState(false);
   const [urlInputValue, setUrlInputValue] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
-  const [enabled, setEnabled] = useState([]);
   const [quizData, setQuizData] = useState([]);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [singleCorrect, setSingleCorrect] = useState(true);
-  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
   const [formValue, setFormValue] = useState({
     course_id: 1,
     courseName: "",
@@ -29,7 +21,7 @@ export default function Home() {
   const addQuestion = () => {
     const newQuestion = {
       question: "",
-      answerType: "radio", // Mặc định là radio, bạn có thể đặt mặc định theo yêu cầu của bạn
+      singleCorrect: singleCorrect,
       answers: [
         { text: "", isCorrect: true },
         { text: "", isCorrect: false },
@@ -37,9 +29,8 @@ export default function Home() {
         { text: "", isCorrect: false },
       ],
     };
-  
+
     setQuizData([...quizData, newQuestion]);
-    setEnabled([...enabled, false]); // Thêm giá trị mặc định cho câu hỏi mới
   };
 
   const updateQuestion = (index, field, value) => {
@@ -56,44 +47,18 @@ export default function Home() {
 
   const setCorrectAnswer = (questionIndex, answerIndex) => {
     const updatedQuizData = [...quizData];
-    updatedQuizData[questionIndex].answers[answerIndex].isCorrect = !updatedQuizData[questionIndex].answers[answerIndex].isCorrect;
+    if (singleCorrect) {
+      updatedQuizData[questionIndex].answers.forEach((answer, index) => {
+        answer.isCorrect = index === answerIndex;
+      });
+    } else {
+      updatedQuizData[questionIndex].answers[answerIndex].isCorrect = !updatedQuizData[questionIndex].answers[answerIndex].isCorrect;
+    }
     setQuizData(updatedQuizData);
   };
-  
-
-  const toggleAnswerType = (questionIndex) => {
-    const updatedQuizData = [...quizData];
-    const currentAnswerType = updatedQuizData[questionIndex].answerType;
-    const newAnswerType = currentAnswerType === "radio" ? "checkbox" : "radio";
-    updatedQuizData[questionIndex].answerType = newAnswerType;
-    setQuizData(updatedQuizData);
-  };
-  
-  const deleteQuestion = (questionIndex) => {
-    const updatedQuizData = [...quizData];
-    updatedQuizData.splice(questionIndex, 1); // Xóa câu hỏi tại chỉ mục questionIndex
-    const updatedEnabled = [...enabled];
-    updatedEnabled.splice(questionIndex, 1); // Cập nhật mảng enabled
-    setQuizData(updatedQuizData);
-    setEnabled(updatedEnabled);
-  };
-  
-
-  const openDeleteConfirmationModal = (questionIndex) => {
-    setSelectedQuestionIndex(questionIndex);
-  };
-  const closeDeleteConfirmationModal = () => {
-    setSelectedQuestionIndex(null);
-  };
-
-  
   const toggleSingleCorrect = () => {
     setSingleCorrect(!singleCorrect);
   };
-  // const deleteQuestion = (questionIndex) => {
-  //   const updatedQuizData = quizData.filter((_, index) => index !== questionIndex);
-  //   setQuizData(updatedQuizData);
-  // };
 
   const saveAnswers = () => {
     // Gửi dữ liệu đáp án đi hoặc thực hiện xử lý lưu tại đây
@@ -119,8 +84,6 @@ export default function Home() {
     setIsVideoOpen(false); // Đóng phần video khi mở phần quiz
 
   };
-
-  
   const handleSelectChange = (e) => {
     const selectedValue = e.target.value;
     setIsVideoOpen(false); // Tắt phần video
@@ -135,9 +98,6 @@ export default function Home() {
     const newValue = e.target.value;
     if (newValue) setUrlInputValue(newValue);
   };
-
-
-  
   return (
     <>
       <form action="">
@@ -340,145 +300,81 @@ export default function Home() {
   )}
 
   {isQuizOpen && (
-       <div className="Quiz">
-      <h1>QUẢN LÝ CÂU HỎI VÀ ĐÁP ÁN</h1>
-      {quizData.map((question, questionIndex) => (
-  <div key={questionIndex} className="Quiz_Questions">
-    <Input
-      type="text"
-      className={
-        "mt-2 px-4 py-2 w-full bg-neutral-100  clear-both rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-      }
-      label={`Câu hỏi ${questionIndex + 1}:`}
-      placeholder="Nhập câu hỏi"
-      value={question.question}
-      onChange={(e) =>
-        updateQuestion(questionIndex, "question", e.target.value)
-      }
-    />
-    {question.answers.map((answer, answerIndex) => (
-  <div key={answerIndex} className="Answer">
-    {question.answerType === "checkbox" ? ( // Sử dụng checkbox nếu answerType là checkbox
-      <div className="Checkbox_Answer">
-        <input
-          type="checkbox"
-          className="checkbox"
-          checked={answer.isCorrect}
-          onChange={() =>
-            setCorrectAnswer(questionIndex, answerIndex)
-          }
-        />
-      </div>
-    ) : (
-      // Sử dụng radio button nếu answerType là radio
-      <div className="Radio_Answer">
-        <input
-          type="radio"
-          name={`correct-answer-${questionIndex}`}
-          checked={answer.isCorrect}
-          className="radio"
-          onChange={() =>
-            setCorrectAnswer(questionIndex, answerIndex)
-          }
-        />
-      </div>
-    )}
-    <Input
-      type="text"
-      className="Input_Answer"
-      placeholder={`Đáp án ${answerIndex + 1}`}
-      value={answer.text}
-      onChange={(e) =>
-        updateAnswer(
-          questionIndex,
-          answerIndex,
-          e.target.value
-        )
-      }
-    />
-  </div>
-))}
-<div className="Icon_Delete"  onClick={() => openDeleteConfirmationModal(questionIndex)}>
-<FontAwesomeIcon icon={faTrash} />
-  </div>
-
-
-
-
-
-
-<div className="Switch_Selection">
-<Switch
-      onClick={() => toggleAnswerType(questionIndex)}
-      checked={enabled[questionIndex]}
-      onChange={() => {
-        const updatedEnabled = [...enabled];
-        updatedEnabled[questionIndex] = !enabled[questionIndex];
-        setEnabled(updatedEnabled);
-      }}
-      className={`${
-        enabled[questionIndex] ? 'bg-blue-600' : 'bg-gray-200'
-      } relative inline-flex h-6 w-11 items-center rounded-full`}
-    >
-      <span className="sr-only">Chuyển sang nhiều đáp án</span>
-      <span
-        className={`${
-          enabled[questionIndex] ? 'translate-x-6' : 'translate-x-1'
-        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+  <div className="px-6 py-4 m-6 bg-white border-2 rounded-lg">
+  <h1>QUẢN LÝ CÂU HỎI VÀ ĐÁP ÁN</h1>
+  <div>
+    <label>
+      <input
+        type="checkbox"
+        checked={singleCorrect}
+        onChange={toggleSingleCorrect}
       />
-    </Switch>
-    <i>Chuyển sang lựa chọn nhiều đáp án</i>
- </div>
+      Câu hỏi có một đáp án đúng
+    </label>
   </div>
-  
-))}
-
-
-      <div className="Button_Quiz">
-      <Button
-        text="Thêm câu hỏi"
-        Class={
-          "flex font-medium items-center float-left bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
+  {quizData.map((question, questionIndex) => (
+    <div key={questionIndex}>
+      <Input
+        type="text"
+        className="mt-2 px-4 py-2 w-full bg-neutral-100 clear-both rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+        label={`Câu hỏi ${questionIndex + 1}:`}
+        placeholder="Nhập câu hỏi"
+        value={question.question}
+        onChange={(e) =>
+          updateQuestion(questionIndex, "question", e.target.value)
         }
-        onClick={addQuestion}
       />
-      <Button
-        text="Lưu lại đáp án"
-        Class={
-          "flex font-medium items-center float-right bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
-        }
-        onClick={saveAnswers}
-      />
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={question.singleCorrect}
+            onChange={() =>
+              setSingleCorrectForQuestion(questionIndex)
+            }
+          />
+          Câu hỏi này có một đáp án đúng
+        </label>
       </div>
+      {question.answers.map((answer, answerIndex) => (
+        <div key={answerIndex} className="Answer">
+          <div className="Radio_Answer">
+            <input
+              type={singleCorrect ? "radio" : "checkbox"}
+              name={`correct-answer-${questionIndex}`}
+              checked={answer.isCorrect}
+              onChange={() =>
+                setCorrectAnswer(questionIndex, answerIndex)
+              }
+            />
+          </div>
+          <Input
+            type="text"
+            className="Input_Answer"
+            placeholder={`Đáp án ${answerIndex + 1}`}
+            value={answer.text}
+            onChange={(e) =>
+              updateAnswer(
+                questionIndex,
+                answerIndex,
+                e.target.value
+              )
+            }
+          />
+        </div>
+      ))}
     </div>
+  ))}
+  <div className="Button_Quiz">
+    <Button
+      text="Thêm câu hỏi"
+      Class="flex font-medium items-center float-left bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg"
+      onClick={addQuestion}
+    />
+  </div>
+</div>
   )}
 </div>
-
-
-{selectedQuestionIndex !== null && (
-  <div className="fixed inset-0 flex  items-center justify-center z-50">
-    <div className="modal bg-white p-5 shadow-lg">
-      <p className="mb-4">Bạn có chắc muốn xóa câu hỏi {selectedQuestionIndex+1} này?</p>
-      <div className="flex justify-center">
-        <button
-          onClick={() => {
-            deleteQuestion(selectedQuestionIndex);
-            closeDeleteConfirmationModal();
-          }}
-          className="mr-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
-        >
-          Xóa
-        </button>
-        <button
-          onClick={closeDeleteConfirmationModal}
-          className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-600"
-        >
-          Hủy
-        </button>
-      </div>
-    </div>
-  </div>
-)}
 
       <div className="px-6 pb-6">
         <TableLesson></TableLesson>
