@@ -456,29 +456,31 @@ export default function Home() {
 
 
 {selectedQuestionIndex !== null && (
-  <div className="fixed inset-0 flex  items-center justify-center z-50">
-    <div className="modal bg-white p-5 shadow-lg">
+  <div className="Delete_Question fixed inset-0 flex items-center justify-center z-50">
+    <div className="Delete_Question_Box modal bg-white p-5 shadow-lg rounded-md">
       <p className="mb-4">Bạn có chắc muốn xóa câu hỏi {selectedQuestionIndex+1} này?</p>
       <div className="flex justify-center">
-        <button
+        <Button
+         text="Xóa"
           onClick={() => {
             deleteQuestion(selectedQuestionIndex);
             closeDeleteConfirmationModal();
           }}
-          className="mr-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
-        >
-          Xóa
-        </button>
-        <button
+          Class="mr-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
+        />
+         
+        <Button
+         text="Hủy"
           onClick={closeDeleteConfirmationModal}
-          className="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-600"
-        >
-          Hủy
-        </button>
+          Class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-600"
+        />
+       
       </div>
     </div>
   </div>
 )}
+
+
 
       <div className="px-6 pb-6">
         <TableLesson></TableLesson>
