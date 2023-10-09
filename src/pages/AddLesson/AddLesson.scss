@@ -1,31 +1,68 @@
 .Quiz{
     overflow: hidden;
+    h1{
+        text-align: center;
+        font-weight: 700;
+    } 
+    .Quiz_Questions{
+        position: relative;
+        padding-top: 15px;
+    .Answer{
+        padding: 10px;
+    .Input_Answer{
+        width: 90%;
+        float: right;
+        padding: 10px;
+        margin-top: -28px;
+        border-radius: 5px;
+        border: 1px solid #dddddd;
+    }
+    .Radio_Answer{
+        margin-top: 30px;
+        .radio{
+            float: left;
+            width: 10%;
+           
+            padding: 15px;
+        }
+    }
+    .Checkbox_Answer{
+        margin-top: 30px;
+        .checkbox{
+            float: left;
+            width: 10%;
+           
+            padding: 15px;
+        }
+    }
 }
-.Quiz h1{
-    text-align: center;
-    font-weight: 700;
-}
-.Quiz .Input_Answer{
-    width: 90%;
-    float: right;
-    padding: 10px;
-    margin-top: -28px;
-    border-radius: 5px;
-    border: 1px solid #dddddd;
-}
-.Quiz .Radio_Answer{
-    margin-top: 30px;
-}
-.Quiz .radio{
-    float: left;
-    width: 10%;
+        .Icon_Delete{
+            cursor: pointer;
+            position: absolute;
+            top: 15px;
+            right: 10px;
+            color: rgb(255, 255, 255);
+            padding: 5px 10px;
+            border-radius: 50%;
+            background-color: #ff0000;
+        }
+    }
+    .Button_Quiz{
+        clear: both;
+        margin-top: 10px;
+    }
+    
+    .Switch_Selection{
+        margin: 10px 0px;
+        i{
+            padding-left: 10px;
+        }
+    }
    
-    padding: 15px;
 }
-.Quiz .Answer{
-    padding: 10px;
-}
-.Quiz .Button_Quiz{
-    clear: both;
-    margin-top: 20px;
+.Delete_Question{
+    background-color: #000000d2;
+    .Delete_Question_Box{
+        opacity: 1;
+    }
 }
