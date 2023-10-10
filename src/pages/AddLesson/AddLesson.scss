@@ -9,21 +9,25 @@
         padding-top: 15px;
     .Answer{
         padding: 10px;
+    .Question{
+       border: 2px solid #00931b; 
+    }
     .Input_Answer{
-        width: 90%;
-        float: right;
-        padding: 10px;
+        width: 85%;
+        float: left;
+        padding: 10px 10px 10px 10px;
         margin-top: -28px;
         border-radius: 5px;
-        border: 1px solid #dddddd;
+        border: 2px solid #00931b;
     }
     .Radio_Answer{
         margin-top: 30px;
         .radio{
             float: left;
             width: 10%;
-           
-            padding: 15px;
+            transform: scale(1.5);
+            padding: 10px;
+            cursor: pointer;
         }
     }
     .Checkbox_Answer{
@@ -31,11 +35,27 @@
         .checkbox{
             float: left;
             width: 10%;
-           
-            padding: 15px;
+            transform: scale(1.5);
+            padding: 10px;
+            cursor: pointer;
+        }
+    }
+    .Answer_Item{
+        position: relative;
+        .Delete_Answer{
+            position: absolute;
+            top: -20px;
+            right: 0;
+            cursor: pointer;
         }
     }
 }
+.unfilled-answer {
+    .Question,
+    .Input_Answer{
+    /* Kiểu dáng cho các ô đáp án chưa được nhập */
+    border: 2px solid rgb(255, 169, 169); /* Ví dụ: đặt viền đỏ cho ô đáp án chưa nhập */
+  }}
         .Icon_Delete{
             cursor: pointer;
             position: absolute;
