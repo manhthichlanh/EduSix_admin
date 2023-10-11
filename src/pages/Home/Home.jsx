@@ -1,13 +1,9 @@
-// import { io } from "socket.io-client";
-// import { useState } from "react";
 import Card from "../../components/Card/Card";
-
 import TableIndex from "../../components/Table/TableIndex";
 import CashIcon from "../../components/common/icon/CashIcon";
 import ListIcon from "../../components/common/icon/ListIcon";
 import UserIcon from "../../components/common/icon/UserIcon";
 import BlogIcon from "../../components/common/icon/BlogIcon";
-import TableQuiz from "../../components/Table/TableQuiz";
 
 export default function Home() {
   return (
@@ -49,7 +45,6 @@ export default function Home() {
       </div>
       <div className="m-6">
         <TableIndex></TableIndex>
-        <TableQuiz></TableQuiz>
       </div>
     </div>
   );
