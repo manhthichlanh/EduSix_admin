@@ -3,20 +3,20 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { Menu } from "@headlessui/react";
 import FilterIcon from "../../components/common/icon/FilterIcon";
 import Search from "../../components/Search/Search";
-import TableMemberList from "../../components/Table/Member/TableMemberList";
+import TableMemberAdmin from "../../components/Table/Member/TableMemberAdmin";
 export default function Home() {
   return (
     <div className="px-6 py-6 max-h-full">
       <div className="items-end justify-between mb-6">
         {/* Breadcrumbs */}
         <div className="">
-          <div className="text-2xl font-medium pb-4">Danh sách người dùng</div>
+          <div className="text-2xl font-medium pb-4">Danh sách admin</div>
           <div className="flex items-center gap-2 whitespace-nowrap">
             <a href="/" className="text-indigo-500 text">
               Trang chủ
             </a>
             <FontAwesomeIcon icon={faAngleRight} className="" />
-            <p className="">Danh sách người dùng</p>
+            <p className="">Danh sách admin</p>
           </div>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default function Home() {
           </Menu>
         </div>
         <div className="mt-6">
-          <TableMemberList></TableMemberList>
+          <TableMemberAdmin></TableMemberAdmin>
         </div>
       </div>
     </div>

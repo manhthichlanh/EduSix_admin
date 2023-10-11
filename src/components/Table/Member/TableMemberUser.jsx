@@ -50,7 +50,7 @@ const data = [
   },
 ];
 
-function TableMemberList() {
+function TableMemberUser() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
@@ -85,22 +85,6 @@ function TableMemberList() {
         ),
       },
       {
-        title: "Loại tài khoản",
-        render: (item) => (
-          <div className="py-1">
-            <p
-              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
-                item.role === 0
-                  ? "text-[#13B2E4] bg-[#E8F8FD]"
-                  : "text-[#5C59E8] bg-[#EFEFFD]"
-              } rounded-lg`}
-            >
-              {item.role === 0 ? "Admin" : "Người dùng"}
-            </p>
-          </div>
-        ),
-      },
-      {
         title: "Trạng thái",
         render: (item) => (
           <div className="py-1">
@@ -127,9 +111,6 @@ function TableMemberList() {
         title: "Thao tác",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <button onClick={() => console.log(`I miss you Ngọc`)}>
-              <AddIcon className=" text-gray-500 hover:text-blue-500"></AddIcon>
-            </button>
             <button onClick={() => console.log(`I love you ${item?.id}`)}>
               <PencilIcon className="text-gray-500 hover:text-orange-600"></PencilIcon>
             </button>
@@ -170,4 +151,4 @@ function TableMemberList() {
     </div>
   );
 }
-export default TableMemberList;
+export default TableMemberUser;

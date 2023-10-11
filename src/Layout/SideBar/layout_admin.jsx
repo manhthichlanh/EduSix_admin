@@ -142,7 +142,7 @@ const LayoutAdmin = () => {
                         <NavLink to="/cate-course" activeclassname="active">
                           <h2>Danh mục</h2>
                         </NavLink>
-                        <NavLink to="/dsquiz" activeclassname="active">
+                        <NavLink to="/list-quiz" activeclassname="active">
                           <h2>Danh sách quiz</h2>
                         </NavLink>
                       </div>
@@ -246,10 +246,10 @@ const LayoutAdmin = () => {
                     </h1>
                     {isThanhVienSubMenuOpen && (
                       <div className="single_Menu_1">
-                        <NavLink to="/member" activeclassname="active">
+                        <NavLink to="/member-user" activeclassname="active">
                           <h2>Danh sách người dùng</h2>
                         </NavLink>
-                        <NavLink to="/dsadmin" activeclassname="active">
+                        <NavLink to="/member-admin" activeclassname="active">
                           <h2>Danh sách admin</h2>
                         </NavLink>
                       </div>

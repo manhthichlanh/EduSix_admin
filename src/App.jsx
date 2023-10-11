@@ -17,9 +17,10 @@ import Order from "./pages/Order/Order"
 import CateBlog from "./pages/CateBlog/CateBlog"
 import ListBlog from "./pages/ListBlog/ListBlog"
 import AddBlog from "./pages/AddBlog/AddBlog"
-import Member from "./pages/Member/Member"
+import MemberAdmin from "./pages/MemberAdmin/MemberAdmin"
+import MemberUser from "./pages/MemberUser/MemberUser"
 import Login from "./Layout/Login/Login"
-import MemberDetail from "./pages/MemberDetail/MemberDetail"
+import ListQuiz from "./pages/ListQuiz/ListQuiz"
 //||Components
 function App() {
   return (
@@ -39,8 +40,9 @@ function App() {
           <Route path="/cate-blog" element={<CateBlog />} />
           <Route path="/list-blog" element={<ListBlog />} />
           <Route path="/add-blog" element={<AddBlog />} />
-          <Route path="/member" element={<Member />} />
-          <Route path="/member-detail" element={<MemberDetail />} />
+          <Route path="/member-admin" element={<MemberAdmin />} />
+          <Route path="/member-user" element={<MemberUser />} />
+          <Route path="/list-quiz" element={<ListQuiz />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />
       </Routes>
