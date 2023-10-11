@@ -65,7 +65,7 @@ const LayoutAdmin = () => {
           <div className="menu-container-admin">
             <img
               src={
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Lazada_%282019%29.svg/2560px-Lazada_%282019%29.svg.png"
+                "https://i.imgur.com/AB2qbqm.png"
               }
               alt=""
             />
