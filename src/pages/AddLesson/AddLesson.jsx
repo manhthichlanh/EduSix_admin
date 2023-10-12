@@ -43,8 +43,8 @@ export default function Home() {
           { text: '', isCorrect: false },
           { text: '', isCorrect: false },
         ],
-      };
-  
+      };//10 câu 
+      
       setQuizData([...quizData, newQuestion]);
       setEnabled([...enabled, false]);
     } else {

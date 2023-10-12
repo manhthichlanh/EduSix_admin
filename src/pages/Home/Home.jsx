@@ -4,10 +4,19 @@ import CashIcon from "../../components/common/icon/CashIcon";
 import ListIcon from "../../components/common/icon/ListIcon";
 import UserIcon from "../../components/common/icon/UserIcon";
 import BlogIcon from "../../components/common/icon/BlogIcon";
-
+import ToastMessage from "../../utils/alert";
+import { Alert } from "@mui/material";
+import { useEffect } from "react";
 export default function Home() {
+  useEffect(() => {
+    ToastMessage(`Chúc mừng bạn kẻ chiến thắng!`).warn();
+  }, [])
+
   return (
     <div>
+      <Alert severity="success" color="info">
+        This is a success alert — check it out!
+      </Alert>
       <div className="grid gap-6 m-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         <Card
           Icon={function Icon() {
