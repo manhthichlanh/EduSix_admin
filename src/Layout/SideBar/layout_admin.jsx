@@ -12,6 +12,7 @@ import { NavLink } from "react-router-dom"; // Thêm import này
 const LayoutAdmin = () => {
   const [isKhaoHocSubMenuOpen, setIsKhaoHocSubMenuOpen] = useState(false);
   const [isBaiVietSubMenuOpen, setIsBaiVietSubMenuOpen] = useState(false);
+  const [isThanhVienSubMenuOpen, setIsThanhVienSubMenuOpen] = useState(false);
   const [isAnHienSubMenu, setIsAnHienSubMenu] = useState(
     window.innerWidth > 768
   );
@@ -27,6 +28,10 @@ const LayoutAdmin = () => {
     setIsBaiVietSubMenuOpen(!isBaiVietSubMenuOpen);
     // setIsKhaoHocSubMenuOpen(false);
     // setActiveMenu('BaiViet'); // Khi bấm vào BaiViet, setActiveMenu thành 'BaiViet'
+  };
+  const toggleThanhVienSubMenu = () => {
+    setIsThanhVienSubMenuOpen(!isThanhVienSubMenuOpen);
+  
   };
 
   const toggleAnHienSubMenu = () => {
@@ -60,7 +65,7 @@ const LayoutAdmin = () => {
           <div className="menu-container-admin">
             <img
               src={
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Lazada_%282019%29.svg/2560px-Lazada_%282019%29.svg.png"
+                "https://i.imgur.com/AB2qbqm.png"
               }
               alt=""
             />
@@ -137,6 +142,9 @@ const LayoutAdmin = () => {
                         <NavLink to="/cate-course" activeclassname="active">
                           <h2>Danh mục</h2>
                         </NavLink>
+                        <NavLink to="/list-quiz" activeclassname="active">
+                          <h2>Danh sách quiz</h2>
+                        </NavLink>
                       </div>
                     )}
                   </div>
@@ -203,10 +211,10 @@ const LayoutAdmin = () => {
                       </h1>
                     </NavLink>
                   </div>
-                  <div className="single_Menu">
-                    <NavLink to="/member" activeclassname="active">
-                      <h1>
-                        <div className="icon-menu">
+
+                  <div className="single_Menu dropdow_Focus">
+                    <h1 onClick={toggleThanhVienSubMenu}>
+                    <div className="icon-menu">
                           <svg
                             className="custom-svg"
                             width={24}
@@ -228,10 +236,27 @@ const LayoutAdmin = () => {
                             <path d="M14.919 8.96308C14.974 8.85341 15.0645 8.76601 15.1729 8.70836C15.9624 8.28814 16.5 7.45685 16.5 6.5C16.5 5.54315 15.9624 4.71186 15.1729 4.29164C15.0645 4.23399 14.974 4.14659 14.919 4.03692C14.6396 3.48001 14.2684 2.97712 13.8252 2.5481C13.623 2.35231 13.7185 2 14 2C16.4853 2 18.5 4.01472 18.5 6.5C18.5 8.98528 16.4853 11 14 11C13.7185 11 13.623 10.6477 13.8252 10.4519C14.2684 10.0229 14.6396 9.51999 14.919 8.96308Z" />
                           </svg>
                         </div>
-                        Thành viên
-                      </h1>
-                    </NavLink>
+                      Thành viên{" "}
+                      <FontAwesomeIcon
+                        className="faChevronIcon"
+                        icon={
+                          isThanhVienSubMenuOpen ? faChevronUp : faChevronDown
+                        }
+                      />
+                    </h1>
+                    {isThanhVienSubMenuOpen && (
+                      <div className="single_Menu_1">
+                        <NavLink to="/member-user" activeclassname="active">
+                          <h2>Danh sách người dùng</h2>
+                        </NavLink>
+                        <NavLink to="/member-admin" activeclassname="active">
+                          <h2>Danh sách admin</h2>
+                        </NavLink>
+                      </div>
+                    )}
                   </div>
+
+                  
                   {/* <div className='single_Menu'>
                     <NavLink to="/tk" activeclassname="active">
                       <h1>
