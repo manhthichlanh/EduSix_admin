@@ -97,7 +97,7 @@ function TableLesson() {
       },
       {
         title: "Thao tác",
-        render: (item) => (
+        render: (item, ) => (
           <div className="flex items-center gap-2">
             <button onClick={() => console.log(`I love you ${item?.id}`)}>
               <PencilIcon className="text-gray-500 hover:text-orange-600"></PencilIcon>
