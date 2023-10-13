@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
+import Jodit from "../../components/Jodit/Jodit";
+
 export default function Home() {
   return (
     <>
@@ -11,7 +13,7 @@ export default function Home() {
         <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
           {/* Breadcrumbs */}
           <div className="mt-6">
-            <div className="text-2xl font-medium pb-2">Thêm bài viết</div>
+            <div className="pb-2 text-2xl font-medium">Thêm bài viết</div>
             <div className="flex items-center gap-2 whitespace-nowrap">
               <a href="/" className="text-indigo-500 text">
                 Trang chủ
@@ -24,7 +26,7 @@ export default function Home() {
               <p className="">Thêm bài viết</p>
             </div>
           </div>
-          <div className="flex gap-2 whitespace-nowrap xl:mt-0 lg:mt-4 md:mt-4 md:justify-end mt-4 sm:mb-0 sm:mt-4 sm:justify-end">
+          <div className="flex gap-2 mt-4 whitespace-nowrap xl:mt-0 lg:mt-4 md:mt-4 md:justify-end sm:mb-0 sm:mt-4 sm:justify-end">
             <Button
               text={"Hủy"}
               Class={
@@ -85,9 +87,9 @@ export default function Home() {
               "w-full mt-2 px-3 py-2 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
             }
           ></Input>
+          <Jodit label={"Mô tả"} placeholder={"Nội dung bài viết"}></Jodit>
         </div>
       </form>
     </>
   );
 }
-

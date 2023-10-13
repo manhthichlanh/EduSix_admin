@@ -74,7 +74,10 @@ function TableLesson() {
       {
         title: "Tên bài học",
         render: (item) => (
-          <div className="capitalize font-medium  text-gray-500 text-base leading-[20px] whitespace-nowrap">
+          <div
+            className="capitalize font-medium  text-gray-500 text-base leading-[20px] whitespace-nowrap"
+            key={item.id}
+          >
             {item?.course}
           </div>
         ),
@@ -82,7 +85,7 @@ function TableLesson() {
       {
         title: "Trạng thái",
         render: (item) => (
-          <div className="py-1">
+          <div className="py-1" key={item.id}>
             <p
               className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
                 item.videoType === "upload"
@@ -98,12 +101,12 @@ function TableLesson() {
       {
         title: "Thao tác",
         render: (item) => (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" key={item.id}>
             <button onClick={() => console.log(`I love you ${item?.id}`)}>
               <PencilIcon className="text-gray-500 hover:text-orange-600"></PencilIcon>
             </button>
             <button onClick={() => console.log(`I miss you Ngọc`)}>
-              <TrashIcon className=" text-gray-500 hover:text-red-500"></TrashIcon>
+              <TrashIcon className="text-gray-500 hover:text-red-500"></TrashIcon>
             </button>
           </div>
         ),

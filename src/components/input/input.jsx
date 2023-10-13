@@ -1,8 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  // Add FontAwesome icons for hiding and showing the menu
-  faBars,
-} from "@fortawesome/free-solid-svg-icons";
 function Input({
   type,
   className,
@@ -13,7 +8,7 @@ function Input({
   disabled,
 }) {
   return (
-    <div className="py-2 w-full">
+    <div className="w-full py-2">
       <label htmlFor="" className="text-base font-medium text-gray-500">
         {label}
       </label>

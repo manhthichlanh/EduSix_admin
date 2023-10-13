@@ -7,12 +7,11 @@ import TableCourse from "../../components/Table/Course/TableCourse";
 import Search from "../../components/Search/Search";
 export default function Home() {
   return (
-    <div className="px-6 py-6 max-h-full">
-
+    <div className="max-h-full px-6 py-6">
       <div className="items-end justify-between mb-6 xl:flex lg:flex md:flex sm:flex">
         {/* Breadcrumbs */}
         <div className="">
-          <div className="text-2xl font-medium pb-4">Danh sách khóa học</div>
+          <div className="pb-4 text-2xl font-medium">Danh sách khóa học</div>
           <div className="flex items-center gap-2 whitespace-nowrap">
             <a href="/" className="text-indigo-500 text">
               Trang chủ
@@ -21,7 +20,7 @@ export default function Home() {
             <p className="">Danh sách khóa học</p>
           </div>
         </div>
-        <div className="flex gap-2 whitespace-nowrap mt-4 sm:mb-0 sm:mt-4 sm:justify-end">
+        <div className="flex gap-2 mt-4 whitespace-nowrap sm:mb-0 sm:mt-4 sm:justify-end">
           <Button
             text={"Thêm khóa học"}
             Class={
@@ -42,7 +41,9 @@ export default function Home() {
                 </svg>
               );
             }}
-            onClick={() => console.log("You will be mine")}
+            onClick={() => {
+              console.log("hello");
+            }}
           />
         </div>
       </div>
@@ -53,17 +54,18 @@ export default function Home() {
             <Search></Search>
           </div>
 
-          <Menu as="div" className=" relative inline-block text-left">
-            <Menu.Button className="px-4 py-2 border rounded-lg flex items-center gap-2 bg-white ">
+          <Menu as="div" className="relative inline-block text-left ">
+            <Menu.Button className="flex items-center gap-2 px-4 py-2 bg-white border rounded-lg ">
               <FilterIcon></FilterIcon>
               <p className="text-lg font-medium">Lọc</p>
             </Menu.Button>
-            <Menu.Items className="absolute right-0 mt-2 space-y-2 w-48 border bg-white border-gray-200 rounded-md shadow-lg origin-right">
+            <Menu.Items className="absolute right-0 w-48 mt-2 space-y-2 origin-right bg-white border border-gray-200 rounded-md shadow-lg">
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`block px-4 py-2 rounded-md ${active ? "bg-blue-500 text-white" : "text-gray-700"
-                      }`}
+                    className={`block px-4 py-2 rounded-md ${
+                      active ? "bg-blue-500 text-white" : "text-gray-700"
+                    }`}
                     role="menuitem"
                   >
                     Account settings
@@ -73,8 +75,9 @@ export default function Home() {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`block px-4 py-2 rounded-md ${active ? "bg-blue-500 text-white" : "text-gray-700"
-                      }`}
+                    className={`block px-4 py-2 rounded-md ${
+                      active ? "bg-blue-500 text-white" : "text-gray-700"
+                    }`}
                     role="menuitem"
                   >
                     Documentation
