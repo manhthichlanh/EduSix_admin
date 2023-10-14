@@ -54,7 +54,7 @@ function TableIndex() {
         title: "Khóa học",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <div className="w-12 h-12 bg-gray-300 rounded-lg overflow-hidden flex-shrink-0">
+            <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
               {/* Image here */}
             </div>
             <div>
@@ -115,16 +115,16 @@ function TableIndex() {
   );
 
   return (
-    <div className=" border rounded-lg">
-      <div className="flex justify-between items-center px-6 py-6">
+    <div className="border rounded-lg ">
+      <div className="flex items-center justify-between px-6 py-6">
         <p className="text-lg font-semibold">Thống kê</p>
         <div>
           <Menu as="div" className="relative inline-block text-left">
-            <Menu.Button className="px-4 py-2 border rounded-lg flex items-center gap-2">
+            <Menu.Button className="flex items-center gap-2 px-4 py-2 border rounded-lg">
               <FilterIcon></FilterIcon>
               <p className="text-lg font-medium">Lọc</p>
             </Menu.Button>
-            <Menu.Items className="absolute right-0 mt-2 space-y-2 w-48 border bg-white border-gray-200 rounded-md shadow-lg origin-right">
+            <Menu.Items className="absolute right-0 w-48 mt-2 space-y-2 origin-right bg-white border border-gray-200 rounded-md shadow-lg">
               <Menu.Item>
                 {({ active }) => (
                   <a
@@ -157,7 +157,7 @@ function TableIndex() {
         <Table
           columns={columns}
           data={data}
-          key="id"
+          rowKey="id"
           scroll={{
             x: true,
           }}

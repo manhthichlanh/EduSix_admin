@@ -125,7 +125,7 @@ function TableCate() {
               <PencilIcon className="text-gray-500 hover:text-orange-600"></PencilIcon>
             </button>
             <button onClick={() => console.log(`I miss you Ngọc`)}>
-              <TrashIcon className=" text-gray-500 hover:text-red-500"></TrashIcon>
+              <TrashIcon className="text-gray-500  hover:text-red-500"></TrashIcon>
             </button>
           </div>
         ),
@@ -135,12 +135,12 @@ function TableCate() {
   );
 
   return (
-    <div className=" border rounded-lg">
+    <div className="border rounded-lg ">
       <div className="">
         <Table
           columns={columns}
           data={data}
-          key="id"
+          rowKey="id"
           scroll={{
             x: true,
           }}

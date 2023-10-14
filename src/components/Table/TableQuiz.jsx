@@ -120,7 +120,7 @@ function TableQuiz() {
         <Table
           columns={columns}
           data={data}
-          key="id"
+          rowKey="id"
           scroll={{
             x: true,
           }}

@@ -102,7 +102,7 @@ function TableCourse() {
         title: "Khóa học",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <div className="w-12 h-12 bg-gray-300 rounded-lg overflow-hidden flex-shrink-0">
+            <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
               {/* Image here */}
             </div>
             <div>
@@ -182,13 +182,13 @@ function TableCourse() {
         render: (item) => (
           <div className="flex items-center gap-2">
             <button onClick={() => console.log(`I miss you Ngọc`)}>
-              <AddIcon className=" text-gray-500 hover:text-blue-500"></AddIcon>
+              <AddIcon className="text-gray-500  hover:text-blue-500"></AddIcon>
             </button>
             <button onClick={() => console.log(`I love you ${item?.id}`)}>
               <PencilIcon className="text-gray-500 hover:text-orange-600"></PencilIcon>
             </button>
             <button onClick={() => console.log(`I miss you Ngọc`)}>
-              <TrashIcon className=" text-gray-500 hover:text-red-500"></TrashIcon>
+              <TrashIcon className="text-gray-500  hover:text-red-500"></TrashIcon>
             </button>
           </div>
         ),
@@ -203,7 +203,7 @@ function TableCourse() {
         <Table
           columns={columns}
           data={data}
-          key="id"
+          rowKey="id"
           scroll={{
             x: true,
           }}
