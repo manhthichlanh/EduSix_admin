@@ -45,7 +45,6 @@ function App() {
           <Route path="/member-admin" element={<MemberAdmin />} />
           <Route path="/member-user" element={<MemberUser />} />
           <Route path="/member-user-detail" element={<MemberDetail />} />
-
           <Route path="/list-quiz" element={<ListQuiz />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />

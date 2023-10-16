@@ -3,9 +3,9 @@ import { useMemo } from "react";
 import Table from "rc-table";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../common/Pagination";
-import PencilIcon from "../../common/icon/PencilIcon";
-import TrashIcon from "../../common/icon/TrashIcon";
-import AddIcon from "../../common/icon/AddIcon";
+import Pencil from "../../common/icon/Pencil";
+import Trash from "../../common/icon/Trash";
+import Add from "../../common/icon/Add";
 
 const data = [
   {
@@ -101,13 +101,13 @@ function TableSection() {
         render: (item) => (
           <div className="flex items-center gap-2">
             <button onClick={() => console.log(`I miss you Ngọc`)}>
-              <AddIcon className="text-gray-500  hover:text-blue-500"></AddIcon>
+              <Add className="text-gray-500  hover:text-blue-500"></Add>
             </button>
             <button onClick={() => console.log(`I love you ${item?.id}`)}>
-              <PencilIcon className="text-gray-500 hover:text-orange-600"></PencilIcon>
+              <Pencil className="text-gray-500 hover:text-orange-600"></Pencil>
             </button>
             <button onClick={() => console.log(`I miss you Ngọc`)}>
-              <TrashIcon className="text-gray-500  hover:text-red-500"></TrashIcon>
+              <Trash className="text-gray-500  hover:text-red-500"></Trash>
             </button>
           </div>
         ),

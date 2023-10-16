@@ -1,4 +1,4 @@
-export default function PencilIcon(props) {
+export default function Pencil(props) {
   return (
     <svg
       width="28"

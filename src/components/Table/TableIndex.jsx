@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import Table from "rc-table";
 import { isNumber } from "lodash";
 import { Menu } from "@headlessui/react";
-import FilterIcon from "../common/icon/FilterIcon";
+import Filter from "../common/icon/Filter";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../common/Pagination";
 
@@ -121,7 +121,7 @@ function TableIndex() {
         <div>
           <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="flex items-center gap-2 px-4 py-2 border rounded-lg">
-              <FilterIcon></FilterIcon>
+              <Filter></Filter>
               <p className="text-lg font-medium">Lọc</p>
             </Menu.Button>
             <Menu.Items className="absolute right-0 w-48 mt-2 space-y-2 origin-right bg-white border border-gray-200 rounded-md shadow-lg">

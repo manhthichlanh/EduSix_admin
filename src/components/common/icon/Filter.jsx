@@ -1,4 +1,4 @@
-export default function FilterIcon(props) {
+export default function Filter(props) {
   return (
     <svg
       width="24"

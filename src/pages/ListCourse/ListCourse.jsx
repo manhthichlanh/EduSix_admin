@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button/Button";
 import { Menu } from "@headlessui/react";
-import FilterIcon from "../../components/common/icon/FilterIcon";
+import Filter from "../../components/common/icon/Filter";
 import TableCourse from "../../components/Table/Course/TableCourse";
 import Search from "../../components/Search/Search";
 export default function Home() {
@@ -56,7 +56,7 @@ export default function Home() {
 
           <Menu as="div" className="relative inline-block text-left ">
             <Menu.Button className="flex items-center gap-2 px-4 py-2 bg-white border rounded-lg ">
-              <FilterIcon></FilterIcon>
+              <Filter></Filter>
               <p className="text-lg font-medium">Lọc</p>
             </Menu.Button>
             <Menu.Items className="absolute right-0 w-48 mt-2 space-y-2 origin-right bg-white border border-gray-200 rounded-md shadow-lg">

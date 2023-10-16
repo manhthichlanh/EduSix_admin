@@ -1,4 +1,4 @@
-export default function ListIcon(props) {
+export default function Cart(props) {
   return (
     <svg
       className="mb-2"

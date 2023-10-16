@@ -2,10 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Card from "../../components/Card/Card";
 import TableMemberDetail from "../../components/Table/Member/TableMemberDetail";
-import MoneyIcon from "../../components/common/icon/MoneyIcon";
-import BlogIconDetail from "../../components/common/icon/BlogIconDetail";
-import CourseIcon from "../../components/common/icon/CourseIcon";
+import Check from "../../components/common/icon/Cart/CheckIcon";
 import CardDetail from "../../components/card/CardDetail";
+import CashIcon from "../../components/common/icon/Cart/CashIcon";
+import Course from "../../components/common/icon/Cart/CourseIcon";
 
 export default function Home() {
   return (
@@ -43,7 +43,7 @@ export default function Home() {
             <div className="col-span-full xl:col-span-4 lg:col-span-6 sm:col-span-full">
               <Card
                 Icon={function Icon() {
-                  return <MoneyIcon></MoneyIcon>;
+                  return <CashIcon></CashIcon>;
                 }}
                 title={"Doanh thu"}
                 content={`${Number(1000000).toLocaleString("vi-VN")} VND`}
@@ -52,17 +52,16 @@ export default function Home() {
             <div className="col-span-full xl:col-span-4 lg:col-span-6 sm:col-span-full">
               <Card
                 Icon={function Icon() {
-                  return <BlogIconDetail></BlogIconDetail>;
+                  return <Course></Course>;
                 }}
                 title={"Khóa học đang tham gia"}
                 content={"10"}
-                // content={`${Number(1000000).toLocaleString("vi-VN")} VND`}
               ></Card>
             </div>
             <div className="col-span-full xl:col-span-4 lg:col-span-12 sm:col-span-full">
               <Card
                 Icon={function Icon() {
-                  return <CourseIcon></CourseIcon>;
+                  return <Check></Check>;
                 }}
                 title={"Khóa học đã hoàn thành"}
                 content={"11"}

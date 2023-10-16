@@ -1,8 +1,8 @@
-import AddTimeIcon from "../common/icon/AddTimeIcon";
-import EmailIcon from "../common/icon/EmailIcon";
-import LockIcon from "../common/icon/LockIcon";
+import AddTime from "../common/icon/Cart/AddTime";
+import Email from "../common/icon/Cart/Email";
+import Lock from "../common/icon/Cart/Lock";
 
-const CarđDetail = (props) => {
+const CardDetail = (props) => {
   const { image, name, userId, email, addTime } = props;
   return (
     <div className="w-full border border-gray-200 p-2 pb-6 rounded-lg select-none">
@@ -22,21 +22,21 @@ const CarđDetail = (props) => {
       <div className="block w-full h-[1.5px] bg-gray-200 my-4"></div>
       <div className="">
         <div className="flex items-start gap-2 py-3">
-          <LockIcon></LockIcon>
+          <Lock></Lock>
           <div>
             <p className="font-semibold text-[#4D5464]">UserID</p>
             <p className="font-semibold ">{userId}</p>
           </div>
         </div>
         <div className="flex items-start gap-2 py-3">
-          <EmailIcon></EmailIcon>
+          <Email></Email>
           <div>
             <p className="font-semibold text-[#4D5464]">Email</p>
             <p className="font-semibold ">{email}</p>
           </div>
         </div>
         <div className="flex items-start gap-2 py-3">
-          <AddTimeIcon></AddTimeIcon>
+          <AddTime></AddTime>
           <div>
             <p className="font-semibold text-[#4D5464]">Sign up time</p>
             <p className="font-semibold ">{addTime}</p>
@@ -46,4 +46,4 @@ const CarđDetail = (props) => {
     </div>
   );
 };
-export default CarđDetail;
+export default CardDetail;
