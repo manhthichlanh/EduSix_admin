@@ -1,7 +1,7 @@
-export default function CheckIcon(props) {
+export default function CourseIcon(props) {
   return (
     <svg
-      className="mb-2"
+      className=""
       width="40"
       height="40"
       viewBox="0 0 40 40"
@@ -9,7 +9,7 @@ export default function CheckIcon(props) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <rect x="2" y="2" width="36" height="36" rx="18" fill="#CFE7DE" />
+      <rect x="2" y="2" width="36" height="36" rx="18" fill="#CFE7DC" />
       <path
         d="M16 22C16 21.4477 16.4477 21 17 21H23C23.5523 21 24 21.4477 24 22C24 22.5523 23.5523 23 23 23H17C16.4477 23 16 22.5523 16 22Z"
         fill="#0D894F"

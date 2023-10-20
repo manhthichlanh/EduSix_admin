@@ -1,4 +1,4 @@
-export default function TrashIcon(props) {
+export default function Trash(props) {
   return (
     <svg
       width="28"

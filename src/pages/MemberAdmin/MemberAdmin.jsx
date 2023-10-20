@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { Menu } from "@headlessui/react";
-import FilterIcon from "../../components/common/icon/FilterIcon";
+import Filter from "../../components/common/icon/Filter";
 import Search from "../../components/Search/Search";
 import TableMemberAdmin from "../../components/Table/Member/TableMemberAdmin";
 export default function Home() {
@@ -28,15 +28,16 @@ export default function Home() {
           </div>
           <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="px-4 py-2 border rounded-lg flex items-center gap-2">
-              <FilterIcon></FilterIcon>
+              <Filter></Filter>
               <p className="text-lg font-medium">Lọc</p>
             </Menu.Button>
             <Menu.Items className="absolute right-0 mt-2 space-y-2 w-48 border bg-white border-gray-200 rounded-md shadow-lg origin-right">
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`block px-4 py-2 rounded-md ${active ? "bg-blue-500 text-white" : "text-gray-700"
-                      }`}
+                    className={`block px-4 py-2 rounded-md ${
+                      active ? "bg-blue-500 text-white" : "text-gray-700"
+                    }`}
                     role="menuitem"
                   >
                     Account settings
@@ -46,8 +47,9 @@ export default function Home() {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`block px-4 py-2 rounded-md ${active ? "bg-blue-500 text-white" : "text-gray-700"
-                      }`}
+                    className={`block px-4 py-2 rounded-md ${
+                      active ? "bg-blue-500 text-white" : "text-gray-700"
+                    }`}
                     role="menuitem"
                   >
                     Documentation

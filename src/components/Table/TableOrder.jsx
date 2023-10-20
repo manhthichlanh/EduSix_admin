@@ -115,7 +115,7 @@ function TableOrder() {
         title: "Khóa học",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <div className="w-12 h-12 bg-gray-300 rounded-lg overflow-hidden flex-shrink-0">
+            <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
               {/* Image here */}
             </div>
             <div>
@@ -162,7 +162,7 @@ function TableOrder() {
       {
         title: "Phương thức thanh toán",
         render: (item) => (
-          <div className="py-1 text-gray-500 font-medium">
+          <div className="py-1 font-medium text-gray-500">
             {item?.paymentMethod}
           </div>
         ),
@@ -177,7 +177,7 @@ function TableOrder() {
         <Table
           columns={columns}
           data={data}
-          key="id"
+          rowKey="id"
           scroll={{
             x: true,
           }}

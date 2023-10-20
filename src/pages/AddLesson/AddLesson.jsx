@@ -193,17 +193,22 @@ export default function Home() {
         video.controls = true;
         videoPreview.innerHTML = "";
         videoPreview.appendChild(video);
+        setFormValue({ ...formValue, video: selectedFile });
       } else {
         videoPreview.innerHTML = "Tệp không hợp lệ. Chỉ chấp nhận tệp video.";
+        setFormValue({ ...formValue, video: null });
       }
     } else {
       videoPreview.innerHTML = "";
+      setFormValue({ ...formValue, video: null });
     }
   }
+
   function handleSubmit(event) {
     event.preventDefault();
     console.log(event.target.value);
   }
+
   useEffect(() => {
     console.log(formValue);
   }, [formValue]);
@@ -278,7 +283,9 @@ export default function Home() {
                 </svg>
               );
             }}
-            onClick={() => console.log("You are my dream")}
+            onClick={() => {
+              handleSubmit;
+            }}
           />
         </div>
       </div>
@@ -335,6 +342,10 @@ export default function Home() {
             }
             rows={"10"}
             cols={"30"}
+            onChange={(e) => {
+              const value = e.target.value;
+              setFormValue({ ...formValue, description: value });
+            }}
           ></InputDescription>
         </div>
         <div className="h-full px-6 py-4 m-6 bg-white border-2 rounded-lg">
@@ -363,18 +374,17 @@ export default function Home() {
                 type="file"
                 className={classNames(
                   "w-full border-2 rounded-lg ease-in-out",
-                  "text-sm text-salte-500",
+                  "text-sm text-slate-500",
                   "file:mx-2 file:my-3 file:px-4 file:py-2 file:rounded-md file:border-none file:bg-blue-500 file:text-white file:hover:bg-blue-700"
                 )}
                 accept="video/*"
                 onChange={handleFileChange}
               ></Input>
-              <div className="py-5">
-                <div id="video-preview" className="w-3/4 h-3/4"></div>
+              <div className="px-4 py-5">
+                <div id="video-preview" className=""></div>
               </div>
             </div>
           )}
-
           {isQuizOpen && (
             <div className="Quiz">
               <h1>QUẢN LÝ CÂU HỎI VÀ ĐÁP ÁN</h1>

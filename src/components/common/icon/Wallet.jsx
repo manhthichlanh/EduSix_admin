@@ -1,4 +1,4 @@
-export default function CartIcon(props) {
+export default function Wallet(props) {
   return (
     <svg
       className="mb-2"

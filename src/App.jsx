@@ -10,17 +10,19 @@ import Layout from "./Layout/Layout";
 import NoPage from "./pages/NoPage/NoPage";
 import AddSection from "./pages/AddSection/AddSection";
 import AddLesson from "./pages/AddLesson/AddLesson";
-import ListCourse from "./pages/ListCourse/ListCourse"
+import ListCourse from "./pages/ListCourse/ListCourse";
 import AddCateBlog from "./pages/AddCateBlog/AddCateBlog";
-import CateCourse from "./pages/CateCourse/CateCourse"
-import Order from "./pages/Order/Order"
-import CateBlog from "./pages/CateBlog/CateBlog"
-import ListBlog from "./pages/ListBlog/ListBlog"
-import AddBlog from "./pages/AddBlog/AddBlog"
-import MemberAdmin from "./pages/MemberAdmin/MemberAdmin"
-import MemberUser from "./pages/MemberUser/MemberUser"
-import Login from "./Layout/Login/Login"
-import ListQuiz from "./pages/ListQuiz/ListQuiz"
+import CateCourse from "./pages/CateCourse/CateCourse";
+import Order from "./pages/Order/Order";
+import CateBlog from "./pages/CateBlog/CateBlog";
+import ListBlog from "./pages/ListBlog/ListBlog";
+import AddBlog from "./pages/AddBlog/AddBlog";
+import MemberAdmin from "./pages/MemberAdmin/MemberAdmin";
+import MemberUser from "./pages/MemberUser/MemberUser";
+import MemberDetail from "./pages/MemberDetail/MemberDetail";
+
+import Login from "./Layout/Login/Login";
+import ListQuiz from "./pages/ListQuiz/ListQuiz";
 //||Components
 function App() {
   return (
@@ -42,6 +44,7 @@ function App() {
           <Route path="/add-blog" element={<AddBlog />} />
           <Route path="/member-admin" element={<MemberAdmin />} />
           <Route path="/member-user" element={<MemberUser />} />
+          <Route path="/member-user-detail" element={<MemberDetail />} />
           <Route path="/list-quiz" element={<ListQuiz />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />

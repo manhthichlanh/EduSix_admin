@@ -1,13 +1,12 @@
-export default function CashIcon(props) {
+export default function Money(props) {
   return (
     <svg
-      className="mb-2"
+      {...props}
       width="40"
       height="40"
       viewBox="0 0 40 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
     >
       <rect x="2" y="2" width="36" height="36" rx="18" fill="#DEDEFA" />
       <path

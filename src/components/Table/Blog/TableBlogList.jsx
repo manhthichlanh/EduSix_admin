@@ -1,7 +1,7 @@
 import Table from "rc-table";
 import { useMemo } from "react";
-import PencilIcon from "../../common/icon/PencilIcon";
-import TrashIcon from "../../common/icon/TrashIcon";
+import Pencil from "../../common/icon/Pencil";
+import Trash from "../../common/icon/Trash";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../common/Pagination";
 
@@ -78,14 +78,14 @@ function TableBlogList() {
         title: "Khóa học",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <div className="w-12 h-12 bg-gray-300 rounded-lg overflow-hidden flex-shrink-0">
+            <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
               {/* Image here */}
             </div>
             <div className="">
               <p className="capitalize font-medium text-base leading-[20px]">
                 {item?.courseName}
               </p>
-              <p className="text-gray-500 w-80 truncate overflow-ellipsis">
+              <p className="text-gray-500 truncate w-80 overflow-ellipsis">
                 {item?.description}
               </p>
             </div>
@@ -111,10 +111,10 @@ function TableBlogList() {
         render: (item) => (
           <div className="flex items-center gap-2">
             <button onClick={() => console.log(`I love you ${item?.id}`)}>
-              <PencilIcon className="text-gray-500 hover:text-orange-600"></PencilIcon>
+              <Pencil className="text-gray-500 hover:text-orange-600"></Pencil>
             </button>
             <button onClick={() => console.log(`I miss you Ngọc`)}>
-              <TrashIcon className=" text-gray-500 hover:text-red-500"></TrashIcon>
+              <Trash className="text-gray-500  hover:text-red-500"></Trash>
             </button>
           </div>
         ),
@@ -129,7 +129,7 @@ function TableBlogList() {
         <Table
           columns={columns}
           data={data}
-          key="id"
+          rowKey="id"
           scroll={{
             x: true,
           }}

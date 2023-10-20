@@ -1,7 +1,7 @@
 export default function BlogIcon(props) {
   return (
     <svg
-      className="mb-2"
+      className=""
       width="40"
       height="40"
       viewBox="0 0 40 40"

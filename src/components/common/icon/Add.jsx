@@ -1,4 +1,4 @@
-export default function AddIcon(props) {
+export default function Add(props) {
   return (
     <svg
       width="28"
