@@ -15,5 +15,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ToastContainer/>
     </QueryClientProvider>
 
-  </React.StrictMode>,
+  </React.StrictMode>
 )

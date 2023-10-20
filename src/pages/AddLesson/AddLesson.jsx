@@ -9,6 +9,7 @@ import TableLesson from "../../components/Table/Course/TableLesson";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./AddLesson.scss";
 import classNames from "classnames";
+import axios from "axios";
 // classNames
 export default function Home() {
   const [showUpload, SetShowUpload] = useState(false);
@@ -20,6 +21,8 @@ export default function Home() {
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [singleCorrect, setSingleCorrect] = useState(true);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
+  // const [courseId, setCourseId] = useState(1); // Giá trị khởi tạo ban đầu
+
   // const [initialAnswerCount, setInitialAnswerCount] = useState(2);
   const [formValue, setFormValue] = useState({
     course_id: 1,
@@ -28,10 +31,10 @@ export default function Home() {
     lessonName: "",
     description: "",
     video: "",
+    quizData: [],
   });
 
   const addQuestion = () => {
-    // Kiểm tra xem tất cả câu hỏi đã được điền (không để trống) và tất cả đáp án đã được điền
     const areAllQuestionsFilled = quizData.every(
       (question) => question.question.trim() !== ""
     );
@@ -53,13 +56,14 @@ export default function Home() {
 
       setQuizData([...quizData, newQuestion]);
       setEnabled([...enabled, false]);
+      // setCourseId(courseId + 1); // Tăng courseId lên 1
     } else {
-      // Hiển thị thông báo về việc chưa điền đủ câu hỏi và đáp án trước khi thêm câu hỏi mới
       alert(
         "Vui lòng điền câu hỏi và đáp án cho tất cả các câu hỏi trước khi thêm câu hỏi mới."
       );
     }
   };
+
 
   const updateQuestion = (index, field, value) => {
     const updatedQuizData = [...quizData];
@@ -90,9 +94,9 @@ export default function Home() {
 
   const deleteQuestion = (questionIndex) => {
     const updatedQuizData = [...quizData];
-    updatedQuizData.splice(questionIndex, 1); // Xóa câu hỏi tại chỉ mục questionIndex
+    updatedQuizData.splice(questionIndex, 1);
     const updatedEnabled = [...enabled];
-    updatedEnabled.splice(questionIndex, 1); // Cập nhật mảng enabled
+    updatedEnabled.splice(questionIndex, 1);
     setQuizData(updatedQuizData);
     setEnabled(updatedEnabled);
   };
@@ -106,23 +110,18 @@ export default function Home() {
 
   const addAnswer = (questionIndex) => {
     const currentQuestion = quizData[questionIndex];
-    // Kiểm tra xem tất cả đáp án của câu hỏi đã có nội dung chưa
     const allAnswersFilled = currentQuestion.answers.every(
       (answer) => answer.text.trim() !== ""
     );
 
     if (allAnswersFilled) {
-      // Tất cả đáp án đã có nội dung, cho phép thêm đáp án mới
       const updatedQuizData = [...quizData];
       const newAnswer = { text: "", isCorrect: false };
       updatedQuizData[questionIndex].answers.push(newAnswer);
       setQuizData(updatedQuizData);
     } else {
-      // Hiển thị thông báo về đáp án chưa được nhập
       alert(
-        `Có đáp án chưa có nội dung ở câu hỏi số ${
-          questionIndex + 1
-        }. Vui lòng nhập nội dung cho tất cả các đáp án trước khi thêm đáp án mới.`
+        `Có đáp án chưa có nội dung ở câu hỏi số ${questionIndex + 1}. Vui lòng nhập nội dung cho tất cả các đáp án trước khi thêm đáp án mới.`
       );
     }
   };
@@ -132,6 +131,19 @@ export default function Home() {
     updatedQuizData[questionIndex].answers.splice(answerIndex, 1);
     setQuizData(updatedQuizData);
   };
+
+
+  const [formErrors, setFormErrors] = useState({
+    courseName: false,
+    sectionName: false,
+    lessonName: false,
+    description: false,
+    quizData: quizData.map((question) => ({
+      question: false,
+      answers: question.answers.map(() => false),
+    })),
+  });
+
 
   const toggleSingleCorrect = () => {
     setSingleCorrect(!singleCorrect);
@@ -203,11 +215,59 @@ export default function Home() {
       setFormValue({ ...formValue, video: null });
     }
   }
-
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
-  }
+
+    // Kiểm tra nếu bất kỳ trường nào không hợp lệ (chưa được nhập)
+    const isFormValid =
+      // formValue.courseName.trim() !== '' &&
+      // formValue.sectionName.trim() !== '' &&
+      formValue.lessonName.trim() !== '' &&
+      formValue.description.trim() !== '' &&
+      quizData.every((question, questionIndex) => {
+        return (
+          question.question.trim() !== '' &&
+          question.answers.every((answer, answerIndex) => {
+            return answer.text.trim() !== '' || answer.isCorrect;
+          })
+        );
+      });
+
+    if (isFormValid) {
+
+      // Tạo một đối tượng dữ liệu để gửi lên máy chủ, bao gồm course_id
+      const dataToSave = {
+        course_id: formValue.course_id,
+        courseName: formValue.courseName,
+        sectionName: formValue.sectionName,
+        lessonName: formValue.lessonName,
+        description: formValue.description,
+        video: formValue.video,
+        quizData: quizData,
+      };
+
+      // Gửi yêu cầu POST đến máy chủ (thay đổi URL của máy chủ và endpoint tương ứng)
+      axios
+        .post("http://localhost:3000/lessons", dataToSave)
+        .then((response) => {
+          // Xử lý phản hồi từ máy chủ (thông báo hoặc điều hướng sau khi lưu)
+          console.log("Dữ liệu đã được lưu:", response.data);
+        })
+        .catch((error) => {
+          // Xử lý lỗi (hiển thị thông báo lỗi hoặc thực hiện các biện pháp cần thiết)
+          console.error("Lỗi khi lưu dữ liệu:", error);
+        });
+      // Cập nhật id cho bài học tiếp theo
+      // setFormValue((prevFormValue) => ({
+      //   ...prevFormValue,
+      //   course_id: prevFormValue.course_id + 1,
+      // }));
+    } else {
+      alert("Vui lòng điền đầy đủ thông tin cho tất cả các trường trước khi lưu.");
+    }
+  };
+
+
 
   useEffect(() => {
     console.log(formValue);
@@ -283,275 +343,316 @@ export default function Home() {
                 </svg>
               );
             }}
-            onClick={() => {
-              handleSubmit;
-            }}
+            onClick={handleSubmit}
           />
         </div>
       </div>
-      <form action="" onSubmit={handleSubmit}>
-        <div className="px-6 py-4 m-6 bg-white border-2 rounded-lg ">
-          <p htmlFor="" className="text-xl font-medium text-left">
-            Chi tiết
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <Input
-              type="text"
-              className={
-                "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-              }
-              label="Tên khóa học"
-              placeholder="Nhập tên khóa học"
-              disabled={true}
-            ></Input>
-            <Input
-              type="text"
-              className={
-                "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-              }
-              label="Tên phần học"
-              placeholder="Nhập tên phần học"
-              disabled={true}
-            ></Input>
-          </div>
-        </div>
-
-        <div className="px-6 py-4 m-6 bg-white border-2 rounded-lg ">
-          <p htmlFor="" className="text-xl font-medium text-left">
-            Thêm bài học
-          </p>
+      {/* <form action="" onSubmit={handleSubmit}> */}
+      <div className="px-6 py-4 m-6 bg-white border-2 rounded-lg ">
+        <p htmlFor="" className="text-xl font-medium text-left">
+          Chi tiết
+        </p>
+        <div className="grid grid-cols-2 gap-4">
           <Input
             type="text"
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
             }
-            label="Tên bài học"
-            placeholder="Nhập tên bài học"
-            disabled={false}
-            onChange={(e) => {
-              const value = e.target.value;
-              setFormValue({ ...formValue, lessonName: value });
-            }}
+            label="Tên khóa học"
+            placeholder="Nhập tên khóa học"
+            disabled={true}
           ></Input>
-          <InputDescription
-            type={"text"}
-            label={"Mô tả"}
-            placeholder={"Nhập mô tả"}
+          <Input
+            type="text"
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
             }
-            rows={"10"}
-            cols={"30"}
-            onChange={(e) => {
-              const value = e.target.value;
-              setFormValue({ ...formValue, description: value });
-            }}
-          ></InputDescription>
+            label="Tên phần học"
+            placeholder="Nhập tên phần học"
+            disabled={true}
+          ></Input>
         </div>
-        <div className="h-full px-6 py-4 m-6 bg-white border-2 rounded-lg">
-          <p htmlFor="" className="text-xl font-medium text-left">
-            Dạng bài học
-          </p>
-          <select
-            name=""
-            id=""
-            onChange={handleSelectChange}
-            className={
-              "mt-2 px-4 py-2 w-full bg-neutral-100 mb-5 clear-both rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-            }
-          >
-            <option value="">Chọn 1 mục</option>
-            <option value="video">Video</option>
-            <option value="quiz">Quiz</option>
-          </select>
+      </div>
 
-          {isVideoOpen && (
-            <div className="p-6 my-2 bg-gray-100 border-2 border-dashed rounded-lg">
-              <p className="mb-4 text-gray-500">
-                Kéo thả video vào đây hoặc bấm thêm video
-              </p>
-              <Input
-                type="file"
-                className={classNames(
-                  "w-full border-2 rounded-lg ease-in-out",
-                  "text-sm text-slate-500",
-                  "file:mx-2 file:my-3 file:px-4 file:py-2 file:rounded-md file:border-none file:bg-blue-500 file:text-white file:hover:bg-blue-700"
-                )}
-                accept="video/*"
-                onChange={handleFileChange}
-              ></Input>
-              <div className="px-4 py-5">
-                <div id="video-preview" className=""></div>
-              </div>
+      <div className="px-6 py-4 m-6 bg-white border-2 rounded-lg ">
+        <p htmlFor="" className="text-xl font-medium text-left">
+          Thêm bài học
+        </p>
+        <Input
+          type="text"
+          className={
+            "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+          }
+          label="Tên bài học"
+          placeholder="Nhập tên bài học"
+          disabled={false}
+          onChange={(e) => {
+            const value = e.target.value;
+            setFormValue({ ...formValue, lessonName: value });
+            setFormErrors({ ...formErrors, lessonName: value.trim() === '' });
+
+          }}
+        ></Input>
+        <InputDescription
+          type={"text"}
+          label={"Mô tả"}
+          placeholder={"Nhập mô tả"}
+          className={
+            "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+          }
+          rows={"10"}
+          cols={"30"}
+          onChange={(e) => {
+            const value = e.target.value;
+            setFormValue({ ...formValue, description: value });
+            setFormErrors({ ...formErrors, description: value.trim() === '' });
+
+          }}
+        ></InputDescription>
+      </div>
+      <div className="h-full px-6 py-4 m-6 bg-white border-2 rounded-lg">
+        <p htmlFor="" className="text-xl font-medium text-left">
+          Dạng bài học
+        </p>
+        <select
+          name=""
+          id=""
+          onChange={handleSelectChange}
+          className={
+            "mt-2 px-4 py-2 w-full bg-neutral-100 mb-5 clear-both rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+          }
+        >
+          <option value="">Chọn 1 mục</option>
+          <option value="video">Video</option>
+          <option value="quiz">Quiz</option>
+        </select>
+
+        {isVideoOpen && (
+          <div className="p-6 my-2 bg-gray-100 border-2 border-dashed rounded-lg">
+            <p className="mb-4 text-gray-500">
+              Kéo thả video vào đây hoặc bấm thêm video
+            </p>
+            <Input
+              type="file"
+              className={classNames(
+                "w-full border-2 rounded-lg ease-in-out",
+                "text-sm text-slate-500",
+                "file:mx-2 file:my-3 file:px-4 file:py-2 file:rounded-md file:border-none file:bg-blue-500 file:text-white file:hover:bg-blue-700"
+              )}
+              accept="video/*"
+              onChange={handleFileChange}
+            ></Input>
+            <div className="px-4 py-5">
+              <div id="video-preview" className=""></div>
             </div>
-          )}
-          {isQuizOpen && (
-            <div className="Quiz">
-              <h1>QUẢN LÝ CÂU HỎI VÀ ĐÁP ÁN</h1>
-              {quizData.map((question, questionIndex) => (
-                <div key={questionIndex} className="Quiz_Questions">
-                  <Input
-                    type="text"
-                    className={
-                      "Question mt-2 px-4 py-2 w-full bg-neutral-100 clear-both rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-                    }
-                    label={`Câu hỏi ${questionIndex + 1}:`}
-                    placeholder="Nhập câu hỏi"
-                    value={question.question}
-                    onChange={(e) =>
-                      updateQuestion(questionIndex, "question", e.target.value)
-                    }
-                  />
-                  {question.answers.map((answer, answerIndex) => (
-                    <div
-                      key={answerIndex}
-                      className={`Answer ${
-                        answer.text.trim() === "" ? "unfilled-answer" : ""
-                      }`}
-                    >
-                      <div className="Answer_Item">
-                        {question.answerType === "checkbox" ? (
-                          <div className="Checkbox_Answer">
-                            <input
-                              type="checkbox"
-                              className="checkbox"
-                              checked={answer.isCorrect}
-                              onChange={() =>
-                                setCorrectAnswer(questionIndex, answerIndex)
-                              }
-                            />
-                          </div>
-                        ) : (
-                          <div className="Radio_Answer">
-                            <input
-                              type="radio"
-                              name={`correct-answer-${questionIndex}`}
-                              checked={answer.isCorrect}
-                              className="radio"
-                              onChange={() =>
-                                setCorrectAnswer(questionIndex, answerIndex)
-                              }
-                            />
-                          </div>
-                        )}
-                        <Input
-                          type="text"
-                          className="Input_Answer"
-                          placeholder={`Đáp án ${answerIndex + 1}`}
-                          value={answer.text}
-                          onChange={(e) =>
-                            updateAnswer(
-                              questionIndex,
-                              answerIndex,
-                              e.target.value
-                            )
-                          }
-                        />
-
-                        {answerIndex > 1 && ( // Giới hạn số lượng tối đa là 6
-                          <div className="Delete_Answer">
-                            <FontAwesomeIcon
-                              icon={faTrash}
-                              onClick={() =>
-                                deleteAnswer(questionIndex, answerIndex)
-                              }
-                              className="px-4 py-4 text-white bg-red-500 rounded-md"
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                  {question.answers.length < 6 && ( // Giới hạn số lượng tối thiểu là 2
-                    <div className="Add_Answer">
-                      <Button
-                        text="Thêm đáp án"
-                        onClick={() => addAnswer(questionIndex)}
-                        Class="px-2 py-1 bg-green-500 text-white rounded-md mt-3"
-                      />
-                    </div>
-                  )}
-
-                  <div
-                    className="Icon_Delete"
-                    onClick={() => openDeleteConfirmationModal(questionIndex)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </div>
-
-                  <div className="Switch_Selection">
-                    <Switch
-                      onClick={() => toggleAnswerType(questionIndex)}
-                      checked={enabled[questionIndex]}
-                      onChange={() => {
-                        const updatedEnabled = [...enabled];
-                        updatedEnabled[questionIndex] = !enabled[questionIndex];
-                        setEnabled(updatedEnabled);
-                      }}
-                      className={`${
-                        enabled[questionIndex] ? "bg-blue-600" : "bg-gray-200"
-                      } relative inline-flex h-6 w-11 items-center rounded-full`}
-                    >
-                      <span className="sr-only">Chuyển sang nhiều đáp án</span>
-                      <span
-                        className={`${
-                          enabled[questionIndex]
-                            ? "translate-x-6"
-                            : "translate-x-1"
-                        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                      />
-                    </Switch>
-                    <i>Chuyển sang lựa chọn nhiều đáp án</i>
-                  </div>
-                </div>
-              ))}
-
-              <div className="Button_Quiz">
-                <Button
-                  text="Thêm câu hỏi"
-                  Class={
-                    "flex font-medium items-center float-left bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
-                  }
-                  onClick={addQuestion}
+          </div>
+        )}
+        {isQuizOpen && (
+          <div className="Quiz">
+            <h1>QUẢN LÝ CÂU HỎI VÀ ĐÁP ÁN</h1>
+            {quizData.map((question, questionIndex) => (
+              <div key={questionIndex} className="Quiz_Questions">
+                <Input
+                  type="text"
+                  className="Question mt-2 px-4 py-2 w-full bg-neutral-100 clear-both rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+                  label={`Câu hỏi ${questionIndex + 1}:`}
+                  placeholder="Nhập câu hỏi"
+                  value={question.question}
+                  onChange={(e) => {
+                    updateQuestion(questionIndex, "question", e.target.value);
+                    setFormErrors({
+                      ...formErrors,
+                      quizData: formErrors.quizData.map((item, idx) => {
+                        if (idx === questionIndex) {
+                          return e.target.value.trim() === "" ? true : false;
+                        }
+                        return item;
+                      }),
+                    });
+                  }}
                 />
-                <Button
+                {/* {formErrors.quizData[questionIndex] && (
+  <div className="text-red-500 clear-both">
+    Vui lòng điền nội dung câu hỏi này.
+  </div>
+)} */}
+
+                {question.question.trim() === "" && (
+                  <div className="text-red-500 clear-both text-xs">
+                    Vui lòng điền nội dung câu hỏi này.
+                  </div>
+                )}
+                {question.answers.map((answer, answerIndex) => (
+                  <div
+                    key={answerIndex}
+                    className={`Answer ${answer.text.trim() === "" ? "unfilled-answer" : ""
+                      }`}
+                  >
+                    <div className="Answer_Item">
+                      {question.answerType === "checkbox" ? (
+                        <div className="Checkbox_Answer">
+                          <input
+                            type="checkbox"
+                            className="checkbox"
+                            checked={answer.isCorrect}
+                            onChange={() =>
+                              setCorrectAnswer(questionIndex, answerIndex)
+                            }
+                          />
+                        </div>
+                      ) : (
+                        <div className="Radio_Answer">
+                          <input
+                            type="radio"
+                            name={`correct-answer-${questionIndex}`}
+                            checked={answer.isCorrect}
+                            className="radio"
+                            onChange={() =>
+                              setCorrectAnswer(questionIndex, answerIndex)
+                            }
+                          />
+
+                        </div>
+                      )}
+
+                      <Input
+                        type="text"
+                        className="Input_Answer"
+                        placeholder={`Đáp án ${answerIndex + 1}`}
+                        value={answer.text}
+                        onChange={(e) => {
+                          updateAnswer(questionIndex, answerIndex, e.target.value);
+                          setFormErrors({
+                            ...formErrors,
+                            quizData: formErrors.quizData.map((item, idx) => {
+                              if (idx === questionIndex) {
+                                return {
+                                  ...item,
+                                  answers: item.answers.map((ans, ansIdx) => {
+                                    if (ansIdx === answerIndex) {
+                                      return e.target.value.trim() === "" ? true : false;
+                                    }
+                                    return ans;
+                                  }),
+                                };
+                              }
+                              return item;
+                            }),
+                          });
+                        }}
+                      />
+                      {answer.text.trim() === "" && (
+                        <div className="text-red-500 clear-both ml-5 mt-5 mb-[-1.2rem] text-xs">
+                          Vui lòng điền nội dung cho đáp án này.
+                        </div>
+                      )}
+
+                      {answerIndex > 1 && ( // Giới hạn số lượng tối đa là 6
+                        <div className="Delete_Answer">
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            onClick={() =>
+                              deleteAnswer(questionIndex, answerIndex)
+                            }
+                            className="px-4 py-4 text-white bg-red-500 rounded-md"
+                          />
+                        </div>
+
+                      )}
+                    </div>
+
+
+                  </div>
+                ))}
+
+                {question.answers.length < 6 && ( // Giới hạn số lượng tối thiểu là 2
+                  <div className="Add_Answer">
+                    <Button
+                      text="Thêm đáp án"
+                      onClick={() => addAnswer(questionIndex)}
+                      Class="px-2 py-1 bg-green-500 text-white rounded-md mt-3"
+                    />
+                  </div>
+                )}
+
+                <div
+                  className="Icon_Delete"
+                  onClick={() => openDeleteConfirmationModal(questionIndex)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </div>
+
+                <div className="Switch_Selection">
+                  <Switch
+                    onClick={() => toggleAnswerType(questionIndex)}
+                    checked={enabled[questionIndex]}
+                    onChange={() => {
+                      const updatedEnabled = [...enabled];
+                      updatedEnabled[questionIndex] = !enabled[questionIndex];
+                      setEnabled(updatedEnabled);
+                    }}
+                    className={`${enabled[questionIndex] ? "bg-blue-600" : "bg-gray-200"
+                      } relative inline-flex h-6 w-11 items-center rounded-full`}
+                  >
+                    <span className="sr-only">Chuyển sang nhiều đáp án</span>
+                    <span
+                      className={`${enabled[questionIndex]
+                          ? "translate-x-6"
+                          : "translate-x-1"
+                        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                    />
+                  </Switch>
+                  <i>Chuyển sang lựa chọn nhiều đáp án</i>
+                </div>
+              </div>
+            ))}
+
+            <div className="Button_Quiz">
+              <Button
+                text="Thêm câu hỏi"
+                Class={
+                  "flex font-medium items-center float-left bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
+                }
+                onClick={addQuestion}
+              />
+              {/* <Button
                   text="Lưu lại đáp án"
                   Class={
                     "flex font-medium items-center float-right bg-indigo-100 hover:bg-indigo-700 hover:text-white  transition ease-in-out text-indigo-500 py-2 px-4 rounded-lg  "
                   }
                   onClick={saveAnswers}
-                />
-              </div>
-            </div>
-          )}
-        </div>
-
-        {selectedQuestionIndex !== null && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center Delete_Question">
-            <div className="p-5 bg-white rounded-md shadow-lg Delete_Question_Box modal">
-              <p className="mb-4">
-                Bạn có chắc muốn xóa câu hỏi {selectedQuestionIndex + 1} này?
-              </p>
-              <div className="flex justify-center">
-                <Button
-                  text="Xóa"
-                  onClick={() => {
-                    deleteQuestion(selectedQuestionIndex);
-                    closeDeleteConfirmationModal();
-                  }}
-                  Class="mr-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
-                />
-
-                <Button
-                  text="Hủy"
-                  onClick={closeDeleteConfirmationModal}
-                  Class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-600"
-                />
-              </div>
+                /> */}
             </div>
           </div>
         )}
-      </form>
+      </div>
+
+      {selectedQuestionIndex !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center Delete_Question">
+          <div className="p-5 bg-white rounded-md shadow-lg Delete_Question_Box modal">
+            <p className="mb-4">
+              Bạn có chắc muốn xóa câu hỏi {selectedQuestionIndex + 1} này?
+            </p>
+            <div className="flex justify-center">
+              <Button
+                text="Xóa"
+                onClick={() => {
+                  deleteQuestion(selectedQuestionIndex);
+                  closeDeleteConfirmationModal();
+                }}
+                Class="mr-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700"
+              />
+
+              <Button
+                text="Hủy"
+                onClick={closeDeleteConfirmationModal}
+                Class="px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-600"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      {/* </form> */}
 
       <div className="px-6 pb-6">
         <TableLesson></TableLesson>
