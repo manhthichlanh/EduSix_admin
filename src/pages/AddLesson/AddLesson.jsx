@@ -39,26 +39,26 @@ export default function Home() {
 
   const addQuestion = () => {
     //Đây chỉ để check nhận dữ liệu không áp dụng dữ liệu chính 
-    const updatedFormValue = {
-      ...formValue,
-      quizData: [
-        ...formValue.quizData,
-        {
-          question: "",
-          answerType: "radio", // Đặt kiểu đáp án mặc định cho câu hỏi mới
-          answers: [
-            { text: "", isCorrect: true },
-            { text: "", isCorrect: false },
-            { text: "", isCorrect: false },
-            { text: "", isCorrect: false },
-            { text: "", isCorrect: false },
-            { text: "", isCorrect: false },
-          ],
-        },
+    // const updatedFormValue = {
+    //   ...formValue,
+    //   quizData: [
+    //     ...formValue.quizData,
+    //     {
+    //       question: "",
+    //       answerType: "radio", // Đặt kiểu đáp án mặc định cho câu hỏi mới
+    //       answers: [
+    //         { text: "", isCorrect: true },
+    //         { text: "", isCorrect: false },
+    //         { text: "", isCorrect: false },
+    //         { text: "", isCorrect: false },
+    //         { text: "", isCorrect: false },
+    //         { text: "", isCorrect: false },
+    //       ],
+    //     },
 
-      ],
-    };
-    setFormValue(updatedFormValue);
+    //   ],
+    // };
+    // setFormValue(updatedFormValue);
     // Xử lý dữ liệu chính ở đây
     const areAllQuestionsFilled = quizData.every(
       (question) => question.question.trim() !== ""
@@ -629,9 +629,9 @@ export default function Home() {
                               return item;
                             }),
                           });
-                          const updatedFormValue = { ...formValue };
-                          updatedFormValue.quizData[questionIndex].answers[answerIndex].text = e.target.value;
-                          setFormValue(updatedFormValue);
+                          // const updatedFormValue = { ...formValue };
+                          // updatedFormValue.quizData[questionIndex].answers[answerIndex].text = e.target.value;
+                          // setFormValue(updatedFormValue);
                         }}
                       />
                       {answer.text.trim() === "" && (
