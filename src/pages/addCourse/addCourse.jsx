@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React,{useState} from "react";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import InputSelect from "../../components/Input/InputSelect";
@@ -6,6 +7,18 @@ import InputDescription from "../../components/Input/InputDescription";
 import Button from "../../components/Button/Button";
 import InputFile from "../../components/Input/InputFile";
 export default function Home() {
+  const [selectedValue, setSelectedValue] = useState('');
+  const [price, setPrice] = useState('');
+
+  // Xử lý sự kiện thay đổi giá trị của dropdown
+  const handleSelectChange = (e) => {
+    setSelectedValue(e.target.value);
+  };
+
+  // Xử lý sự kiện thay đổi giá trị của input price
+  const handlePriceChange = (e) => {
+    setPrice(e.target.value);
+  };
   return (
     <>
       <form action="">
@@ -76,7 +89,7 @@ export default function Home() {
               Thông tin
             </p>
             <InputSelect
-              label={"Tên bài học"}
+              label={"Danh mục khóa học"}
               array={
                 [
                   { value: "123", text: "Hello" },
@@ -106,17 +119,26 @@ export default function Home() {
               value={""}
             ></Input>
             <InputSelect
-              label={"Giá"}
-              array={
-                [
-                  { value: "123", text: "Miễn phí" },
-                  { value: "213", text: "Có phí" },
-                ]
-              }
-              className={
-                "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-              }
-            ></InputSelect>
+        label={"Loại khóa học"}
+        array={[
+          { value: "0", text: "Miễn phí" },
+          { value: "1", text: "Có phí" },
+        ]}
+        value={selectedValue}
+        onChange={handleSelectChange}
+        className={
+          "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+        }
+      />
+      {selectedValue === "1" && (
+        <input
+          type="text"
+          value={price}
+          onChange={handlePriceChange}
+          placeholder="Nhập giá"
+          className="mt-2 px-4 py-2 w-full bg-white rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+        />
+      )}
             <InputSelect
               label={"Trạng thái"}
               array={

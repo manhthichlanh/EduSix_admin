@@ -5,88 +5,29 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../common/Pagination";
 import Pencil from "../common/icon/Pencil";
 import Trash from "../common/icon/Trash";
-
-const data = [
-  {
-    course: "HTML, CSS",
-    id: "00001",
-    lesson: "1000",
-    views: "10000",
-    price: 0,
-    status: "inactive",
-  },
-  {
-    course: "JavaScript",
-    id: "00002",
-    lesson: "800",
-    views: "150",
-    price: 1200000,
-    status: "inactive",
-  },
-  {
-    course: "ReactJS",
-    id: "00003",
-    lesson: "1200",
-    views: 200,
-    price: 0,
-    status: "Active",
-  },
-  {
-    course: "AngularJS",
-    id: "00004",
-    lesson: "1200",
-    views: 200,
-    price: 1000000,
-    status: "Active",
-  },
-  {
-    course: "Node.js",
-    id: "00005",
-    lesson: "900",
-    views: "800",
-    price: 1500000,
-    status: "Active",
-  },
-  {
-    course: "Python",
-    id: "00006",
-    lesson: "1500",
-    views: "5000",
-    price: 0,
-    status: "Active",
-  },
-  {
-    course: "Ruby on Rails",
-    id: "00007",
-    lesson: "700",
-    views: "300",
-    price: 800000,
-    status: "Inactive",
-  },
-  {
-    course: "Vue.js",
-    id: "00008",
-    lesson: "1100",
-    views: "1200",
-    price: 0,
-    status: "Active",
-  },
-  {
-    course: "Django",
-    id: "00009",
-    lesson: "1000",
-    views: "10000",
-    price: 2000000,
-    status: "Active",
-  },
-];
-
+import { useQuery } from "react-query";
+import { ServerApi } from "../../utils/http";
 function TableCate() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
   const LIMIT = 10;
-
+  // const fetchCategoryData = async () => {
+  //   const response = await fetch('http://localhost:8080/category');
+  //   if (!response.ok) {
+  //     throw new Error('Network response was not ok');
+  //   }
+  //   return response.json();
+  // };
+  const fetchCategoryData = async () => {
+    try {
+      const response = await ServerApi.get("/category");
+      return response.data;
+    } catch (error) {
+      throw new Error("Error fetching category data");
+    }
+  };
+  const { data: categoryData, isLoading, isError } = useQuery('categoryData', fetchCategoryData);
   const columns = useMemo(
     () => [
       {
@@ -95,10 +36,10 @@ function TableCate() {
           <div className="flex items-center gap-2">
             <div>
               <h5 className="capitalize font-medium text-base leading-[20px] whitespace-nowrap">
-                {item?.course}
+                {item?.cate_name}
               </h5>
               <span className="capitalize text-gray-400 text-sm font-normal leading-[18px]">
-                {item?.id}
+                {item?.category_id}
               </span>
             </div>
           </div>
@@ -121,7 +62,7 @@ function TableCate() {
         title: "Thao tác",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <button onClick={() => console.log(`I love you ${item?.id}`)}>
+            <button onClick={() => console.log(`I love you ${item?.category_id}`)}>
               <Pencil className="text-gray-500 hover:text-orange-600"></Pencil>
             </button>
             <button onClick={() => console.log(`I miss you Ngọc`)}>
@@ -139,7 +80,7 @@ function TableCate() {
       <div className="">
         <Table
           columns={columns}
-          data={data}
+          data={categoryData}
           rowKey="id"
           scroll={{
             x: true,
@@ -148,7 +89,7 @@ function TableCate() {
         <div className="flex items-center justify-end p-4">
           <Pagination
             limit={LIMIT}
-            total={100}
+            total={categoryData ? categoryData.length : 0}
             current={page}
             onChange={(value) =>
               navigate({
