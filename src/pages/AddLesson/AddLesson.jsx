@@ -24,17 +24,42 @@ export default function Home() {
   // const [courseId, setCourseId] = useState(1); // Giá trị khởi tạo ban đầu
 
   // const [initialAnswerCount, setInitialAnswerCount] = useState(2);
-  const [formValue, setFormValue] = useState({
+  const [formValue, setFormValue] = useState(() => ({
     course_id: 1,
     courseName: "",
     sectionName: "",
     lessonName: "",
     description: "",
     video: "",
-    quizData: [],
-  });
+    quizData: [
+     
+    ],
+  }));
+
 
   const addQuestion = () => {
+    //Đây chỉ để check nhận dữ liệu không áp dụng dữ liệu chính 
+    // const updatedFormValue = {
+    //   ...formValue,
+    //   quizData: [
+    //     ...formValue.quizData,
+    //     {
+    //       question: "",
+    //       answerType: "radio", // Đặt kiểu đáp án mặc định cho câu hỏi mới
+    //       answers: [
+    //         { text: "", isCorrect: true },
+    //         { text: "", isCorrect: false },
+    //         { text: "", isCorrect: false },
+    //         { text: "", isCorrect: false },
+    //         { text: "", isCorrect: false },
+    //         { text: "", isCorrect: false },
+    //       ],
+    //     },
+
+    //   ],
+    // };
+    // setFormValue(updatedFormValue);
+    // Xử lý dữ liệu chính ở đây
     const areAllQuestionsFilled = quizData.every(
       (question) => question.question.trim() !== ""
     );
@@ -62,6 +87,7 @@ export default function Home() {
         "Vui lòng điền câu hỏi và đáp án cho tất cả các câu hỏi trước khi thêm câu hỏi mới."
       );
     }
+
   };
 
 
@@ -74,23 +100,55 @@ export default function Home() {
   const updateAnswer = (questionIndex, answerIndex, text) => {
     const updatedQuizData = [...quizData];
     updatedQuizData[questionIndex].answers[answerIndex].text = text;
+
+    // Đảm bảo đáp án đầu tiên luôn được chọn nếu đáp án không phải kiểu "checkbox"
+    if (answerIndex === 0 && updatedQuizData[questionIndex].answerType !== "checkbox") {
+      updatedQuizData[questionIndex].answers[answerIndex].isCorrect = true;
+    }
+
     setQuizData(updatedQuizData);
   };
 
+
   const setCorrectAnswer = (questionIndex, answerIndex) => {
     const updatedQuizData = [...quizData];
-    updatedQuizData[questionIndex].answers[answerIndex].isCorrect =
-      !updatedQuizData[questionIndex].answers[answerIndex].isCorrect;
+    const currentAnswerType = updatedQuizData[questionIndex].answerType;
+
+    if (currentAnswerType === "radio") {
+      updatedQuizData[questionIndex].answers = updatedQuizData[questionIndex].answers.map((answer, index) => ({
+        text: answer.text,
+        isCorrect: index === answerIndex,
+      }));
+    } else {
+      updatedQuizData[questionIndex].answers[answerIndex].isCorrect = !updatedQuizData[questionIndex].answers[answerIndex].isCorrect;
+    }
+
+    // Cập nhật quizData và trường isCorrect
     setQuizData(updatedQuizData);
   };
+
+
 
   const toggleAnswerType = (questionIndex) => {
     const updatedQuizData = [...quizData];
     const currentAnswerType = updatedQuizData[questionIndex].answerType;
-    const newAnswerType = currentAnswerType === "radio" ? "checkbox" : "radio";
-    updatedQuizData[questionIndex].answerType = newAnswerType;
+
+    updatedQuizData[questionIndex].answerType =
+      currentAnswerType === "radio" ? "checkbox" : "radio";
+
+    if (updatedQuizData[questionIndex].answerType === "radio") {
+      updatedQuizData[questionIndex].answers = updatedQuizData[questionIndex].answers.map((answer, index) => ({
+        text: answer.text,
+        isCorrect: index === 0, // Đáp án đầu tiên tự động được đánh dấu là true
+      }));
+    }
+
+    // Cập nhật quizData và trường isCorrect
     setQuizData(updatedQuizData);
   };
+
+
+
 
   const deleteQuestion = (questionIndex) => {
     const updatedQuizData = [...quizData];
@@ -114,7 +172,7 @@ export default function Home() {
       (answer) => answer.text.trim() !== ""
     );
 
-    if (allAnswersFilled) {
+    if (allAnswersFilled && currentQuestion.answers.length < 6) {
       const updatedQuizData = [...quizData];
       const newAnswer = { text: "", isCorrect: false };
       updatedQuizData[questionIndex].answers.push(newAnswer);
@@ -125,6 +183,7 @@ export default function Home() {
       );
     }
   };
+
 
   const deleteAnswer = (questionIndex, answerIndex) => {
     const updatedQuizData = [...quizData];
@@ -218,22 +277,34 @@ export default function Home() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Kiểm tra nếu bất kỳ trường nào không hợp lệ (chưa được nhập)
-    const isFormValid =
-      // formValue.courseName.trim() !== '' &&
-      // formValue.sectionName.trim() !== '' &&
-      formValue.lessonName.trim() !== '' &&
-      formValue.description.trim() !== '' &&
-      quizData.every((question, questionIndex) => {
-        return (
-          question.question.trim() !== '' &&
-          question.answers.every((answer, answerIndex) => {
-            return answer.text.trim() !== '' || answer.isCorrect;
-          })
-        );
-      });
+  const questionsWithMissingAnswers = [];
+  const isVideoSelected = isVideoOpen;
+  const isQuizSelected = isQuizOpen;
 
-    if (isFormValid) {
+  const isFormValid =
+    formValue.lessonName.trim() !== '' &&
+    formValue.description.trim() !== '' &&
+    quizData.every((question, questionIndex) => {
+      const hasAtLeastTwoAnswers = question.answers.length >= 2;
+      const answersWithMissingText = question.answers.some(
+        (answer) => answer.text.trim() === '' && !answer.isCorrect
+      );
+
+      if (!hasAtLeastTwoAnswers || answersWithMissingText) {
+        questionsWithMissingAnswers.push(questionIndex + 1);
+      }
+
+      return (
+        question.question.trim() !== '' &&
+        hasAtLeastTwoAnswers &&
+        !answersWithMissingText
+      );
+    });
+
+  // Check if either video or quiz is selected
+  if (!(isVideoSelected || isQuizSelected)) {
+    alert("Vui lòng chọn ít nhất một dạng bài học (video hoặc quiz).");
+  } else if (isFormValid) {
 
       // Tạo một đối tượng dữ liệu để gửi lên máy chủ, bao gồm course_id
       const dataToSave = {
@@ -263,7 +334,16 @@ export default function Home() {
       //   course_id: prevFormValue.course_id + 1,
       // }));
     } else {
-      alert("Vui lòng điền đầy đủ thông tin cho tất cả các trường trước khi lưu.");
+      if (questionsWithMissingAnswers.length > 0) {
+        alert(
+          `Câu hỏi ${questionsWithMissingAnswers.length > 1 ? 'thứ' : 'số'
+          } ${questionsWithMissingAnswers.join(', ')} đang thiếu đáp án (ít nhất 2 đáp án) hoặc chưa nhập nội dung đáp án. Vui lòng kiểm tra lại.`
+        );
+      } else {
+        alert(
+          "Vui lòng điền đầy đủ thông tin cho tất cả các trường."
+        );
+      }
     }
   };
 
@@ -278,7 +358,7 @@ export default function Home() {
         {/* Breadcrumbs */}
         <div className="mt-6">
           <div className="pb-2 text-2xl font-medium">Thêm bài học</div>
-          <div className="flex items-center gap-2 whitespace-nowrap">
+          <div className="flex items-center gap-2 whitespace-nowrap Link">
             <a href="/" className="text-indigo-500 text">
               Trang chủ
             </a>
@@ -454,12 +534,20 @@ export default function Home() {
               <div key={questionIndex} className="Quiz_Questions">
                 <Input
                   type="text"
-                  className="Question mt-2 px-4 py-2 w-full bg-neutral-100 clear-both rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+                  className="Question mt-2 px-4 py-2 w-full bg-neutral-100 clear-both rounded-3xl border-2 focus:border-indigo-500 focus:outline-none"
                   label={`Câu hỏi ${questionIndex + 1}:`}
                   placeholder="Nhập câu hỏi"
                   value={question.question}
                   onChange={(e) => {
                     updateQuestion(questionIndex, "question", e.target.value);
+                    const updatedFormValue = {
+                      ...formValue,
+                      quizData: {
+                        ...formValue.quizData,
+                        question: e.target.value,
+                      },
+                    };
+                    setFormValue(updatedFormValue);
                     setFormErrors({
                       ...formErrors,
                       quizData: formErrors.quizData.map((item, idx) => {
@@ -497,6 +585,7 @@ export default function Home() {
                             checked={answer.isCorrect}
                             onChange={() =>
                               setCorrectAnswer(questionIndex, answerIndex)
+
                             }
                           />
                         </div>
@@ -509,6 +598,7 @@ export default function Home() {
                             className="radio"
                             onChange={() =>
                               setCorrectAnswer(questionIndex, answerIndex)
+
                             }
                           />
 
@@ -539,6 +629,9 @@ export default function Home() {
                               return item;
                             }),
                           });
+                          // const updatedFormValue = { ...formValue };
+                          // updatedFormValue.quizData[questionIndex].answers[answerIndex].text = e.target.value;
+                          // setFormValue(updatedFormValue);
                         }}
                       />
                       {answer.text.trim() === "" && (
@@ -547,14 +640,14 @@ export default function Home() {
                         </div>
                       )}
 
-                      {answerIndex > 1 && ( // Giới hạn số lượng tối đa là 6
+                      {answerIndex > -1 && ( // Giới hạn số lượng tối đa là 6
                         <div className="Delete_Answer">
                           <FontAwesomeIcon
                             icon={faTrash}
                             onClick={() =>
                               deleteAnswer(questionIndex, answerIndex)
                             }
-                            className="px-4 py-4 text-white bg-red-500 rounded-md"
+                            className="px-3 py-3 text-white text-xs bg-red-500 rounded-full"
                           />
                         </div>
 
@@ -597,8 +690,8 @@ export default function Home() {
                     <span className="sr-only">Chuyển sang nhiều đáp án</span>
                     <span
                       className={`${enabled[questionIndex]
-                          ? "translate-x-6"
-                          : "translate-x-1"
+                        ? "translate-x-6"
+                        : "translate-x-1"
                         } inline-block h-4 w-4 transform rounded-full bg-white transition`}
                     />
                   </Switch>
