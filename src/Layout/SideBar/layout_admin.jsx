@@ -98,6 +98,9 @@ const LayoutAdmin = () => {
                         <NavLink to="/cate-course" activeclassname="active">
                           <h2>Danh mục khóa học</h2>
                         </NavLink>
+                        <NavLink to="/list-section" activeclassname="active">
+                          <h2>Danh sách phần học</h2>
+                        </NavLink>
                         <NavLink to="/list-quiz" activeclassname="active">
                           <h2>Danh sách quiz</h2>   
                         </NavLink>

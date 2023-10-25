@@ -20,6 +20,7 @@ import AddBlog from "./pages/AddBlog/AddBlog";
 import MemberAdmin from "./pages/MemberAdmin/MemberAdmin";
 import MemberUser from "./pages/MemberUser/MemberUser";
 import MemberDetail from "./pages/MemberDetail/MemberDetail";
+import ListSection from "./pages/ListSection/ListSection";
 
 import Login from "./Layout/Login/Login";
 import ListQuiz from "./pages/ListQuiz/ListQuiz";
@@ -46,6 +47,7 @@ function App() {
           <Route path="/member-user" element={<MemberUser />} />
           <Route path="/member-user-detail" element={<MemberDetail />} />
           <Route path="/list-quiz" element={<ListQuiz />} />
+          <Route path="/list-section" element={<ListSection />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />
       </Routes>

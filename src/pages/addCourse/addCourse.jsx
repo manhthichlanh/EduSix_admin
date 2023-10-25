@@ -71,7 +71,7 @@ export default function AddCourse() {
           <div className="w-full px-6 py-4 border-2 rounded-lg">
             <p className="pb-2 text-xl font-medium text-left">Thông tin</p>
             <InputSelect
-              label={"Tên bài học"}
+              label={"Danh mục"}
               array={[
                 { value: "123", text: "Hello" },
                 { value: "213", text: "Hello2" },
@@ -123,6 +123,7 @@ export default function AddCourse() {
               label={"Image"}
               className="grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center"
               value={""}
+              
             />
           </div>
         </div>
