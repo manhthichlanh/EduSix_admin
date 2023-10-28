@@ -10,8 +10,44 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./AddLesson.scss";
 import classNames from "classnames";
 import axios from "axios";
+import { LinearProgress } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+
+function LinearProgressWithLabel(props) {
+  return (
+    <>
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ width: '100%', mr: 1 }}>
+        <LinearProgress
+          variant="determinate"
+          {...props}
+          sx={{
+            height: 20,
+            borderRadius: 5, // Thêm border-radius 5px
+            backgroundColor: '#fff', // Màu nền trắng
+            '& .MuiLinearProgress-bar': {
+              backgroundColor: '#4CAF50', // Màu xanh lá
+            },
+          }}
+        />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ color: '#fff' }}>{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+    </>
+  );
+}
+
+
 // classNames
 export default function Home() {
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   const [showUpload, SetShowUpload] = useState(false);
   const [urlInputValue, setUrlInputValue] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -32,7 +68,7 @@ export default function Home() {
     description: "",
     video: "",
     quizData: [
-     
+
     ],
   }));
 
@@ -86,6 +122,7 @@ export default function Home() {
       alert(
         "Vui lòng điền câu hỏi và đáp án cho tất cả các câu hỏi trước khi thêm câu hỏi mới."
       );
+      setLoading(false);
     }
 
   };
@@ -181,6 +218,7 @@ export default function Home() {
       alert(
         `Có đáp án chưa có nội dung ở câu hỏi số ${questionIndex + 1}. Vui lòng nhập nội dung cho tất cả các đáp án trước khi thêm đáp án mới.`
       );
+      setLoading(false);
     }
   };
 
@@ -267,6 +305,7 @@ export default function Home() {
         setFormValue({ ...formValue, video: selectedFile });
       } else {
         videoPreview.innerHTML = "Tệp không hợp lệ. Chỉ chấp nhận tệp video.";
+        setLoading(false);
         setFormValue({ ...formValue, video: null });
       }
     } else {
@@ -274,39 +313,54 @@ export default function Home() {
       setFormValue({ ...formValue, video: null });
     }
   }
-  const handleSubmit = (event) => {
+  const wait = (second) => {
+    return new Promise((resovle) => {
+      setTimeout(() => {
+        resovle()
+      }, second)
+    })
+  }
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-  const questionsWithMissingAnswers = [];
-  const isVideoSelected = isVideoOpen;
-  const isQuizSelected = isQuizOpen;
-
-  const isFormValid =
-    formValue.lessonName.trim() !== '' &&
-    formValue.description.trim() !== '' &&
-    quizData.every((question, questionIndex) => {
-      const hasAtLeastTwoAnswers = question.answers.length >= 2;
-      const answersWithMissingText = question.answers.some(
-        (answer) => answer.text.trim() === '' && !answer.isCorrect
-      );
-
-      if (!hasAtLeastTwoAnswers || answersWithMissingText) {
-        questionsWithMissingAnswers.push(questionIndex + 1);
+  
+    const questionsWithMissingAnswers = [];
+    const isVideoSelected = isVideoOpen;
+    const isQuizSelected = isQuizOpen;
+    
+    const isValidForm =
+      formValue.lessonName.trim() !== '' &&
+      formValue.description.trim() !== '' &&
+      quizData.every((question, questionIndex) => {
+        const hasAtLeastTwoAnswers = question.answers.length >= 2;
+        const answersWithMissingText = question.answers.some(
+          (answer) => answer.text.trim() === '' && !answer.isCorrect
+        );
+  
+        if (!hasAtLeastTwoAnswers || answersWithMissingText) {
+          questionsWithMissingAnswers.push(questionIndex + 1);
+        }
+  
+        return (
+          question.question.trim() !== '' &&
+          hasAtLeastTwoAnswers &&
+          !answersWithMissingText
+        );
+      });
+  
+    if (!(isVideoSelected || isQuizSelected)) {
+      alert("Vui lòng chọn ít nhất một dạng bài học (video hoặc quiz).");
+    } else if (isValidForm) {
+      setLoading(true);
+      setProgress(0); // Đặt giá trị tiến độ ban đầu thành 0
+  
+      // Khai báo hàm để chờ một khoảng thời gian (milliseconds)
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  
+      for (let index = 0; index <= 100; index++) { // Sửa điều kiện dừng thành index <= 100
+        await wait(100);
+        setProgress(index);
       }
-
-      return (
-        question.question.trim() !== '' &&
-        hasAtLeastTwoAnswers &&
-        !answersWithMissingText
-      );
-    });
-
-  // Check if either video or quiz is selected
-  if (!(isVideoSelected || isQuizSelected)) {
-    alert("Vui lòng chọn ít nhất một dạng bài học (video hoặc quiz).");
-  } else if (isFormValid) {
-
-      // Tạo một đối tượng dữ liệu để gửi lên máy chủ, bao gồm course_id
+  
       const dataToSave = {
         course_id: formValue.course_id,
         courseName: formValue.courseName,
@@ -316,33 +370,29 @@ export default function Home() {
         video: formValue.video,
         quizData: quizData,
       };
-
-      // Gửi yêu cầu POST đến máy chủ (thay đổi URL của máy chủ và endpoint tương ứng)
+  
       axios
         .post("http://localhost:3000/lessons", dataToSave)
         .then((response) => {
-          // Xử lý phản hồi từ máy chủ (thông báo hoặc điều hướng sau khi lưu)
           console.log("Dữ liệu đã được lưu:", response.data);
+          alert("Lưu thành công!");
+          setLoading(false);
         })
         .catch((error) => {
-          // Xử lý lỗi (hiển thị thông báo lỗi hoặc thực hiện các biện pháp cần thiết)
           console.error("Lỗi khi lưu dữ liệu:", error);
+          setLoading(false);
         });
-      // Cập nhật id cho bài học tiếp theo
-      // setFormValue((prevFormValue) => ({
-      //   ...prevFormValue,
-      //   course_id: prevFormValue.course_id + 1,
-      // }));
     } else {
       if (questionsWithMissingAnswers.length > 0) {
         alert(
-          `Câu hỏi ${questionsWithMissingAnswers.length > 1 ? 'thứ' : 'số'
-          } ${questionsWithMissingAnswers.join(', ')} đang thiếu đáp án (ít nhất 2 đáp án) hoặc chưa nhập nội dung đáp án. Vui lòng kiểm tra lại.`
+          `Câu hỏi ${
+            questionsWithMissingAnswers.length > 1 ? "thứ" : "số"
+          } ${questionsWithMissingAnswers.join(", ")} đang thiếu đáp án (ít nhất 2 đáp án) hoặc chưa nhập nội dung đáp án. Vui lòng kiểm tra lại.`
         );
+        setLoading(false);
       } else {
-        alert(
-          "Vui lòng điền đầy đủ thông tin cho tất cả các trường."
-        );
+        alert("Vui lòng điền đầy đủ thông tin cho tất cả các trường.");
+         setLoading(false);
       }
     }
   };
@@ -399,34 +449,48 @@ export default function Home() {
             }}
             onClick={() => console.log("You are my dream")}
           />
-          <Button
-            text={"Lưu"}
-            Class={
-              "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
-            }
-            Icon={function Icon() {
-              return (
-                <svg
-                  className="pr-2 "
-                  width="24"
-                  height="24"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M5 2.5C3.61929 2.5 2.5 3.61929 2.5 5V15C2.5 16.3807 3.61929 17.5 5 17.5H15C16.3807 17.5 17.5 16.3807 17.5 15V7.47072C17.5 6.80768 17.2366 6.17179 16.7678 5.70295L14.297 3.23223C13.8282 2.76339 13.1923 2.5 12.5293 2.5H5ZM12.5293 4.16667H12.5V5.83333C12.5 6.75381 11.7538 7.5 10.8333 7.5H7.5C6.57953 7.5 5.83333 6.75381 5.83333 5.83333V4.16667H5C4.53976 4.16667 4.16667 4.53976 4.16667 5V15C4.16667 15.4602 4.53976 15.8333 5 15.8333H5.83333V10.8333C5.83333 9.91286 6.57953 9.16667 7.5 9.16667H12.5C13.4205 9.16667 14.1667 9.91286 14.1667 10.8333V15.8333H15C15.4602 15.8333 15.8333 15.4602 15.8333 15V7.47072C15.8333 7.24971 15.7455 7.03774 15.5893 6.88146L13.1185 4.41074C12.9623 4.25446 12.7503 4.16667 12.5293 4.16667ZM12.5 15.8333V10.8333H7.5V15.8333H12.5ZM7.5 4.16667H10.8333V5.83333H7.5V4.16667Z"
-                    fill="white"
-                  />
-                </svg>
-              );
-            }}
-            onClick={handleSubmit}
-          />
+              <Button
+                text={"Lưu"}
+                Class={
+                  "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
+                }
+                Icon={function Icon() {
+                  return (
+                    <svg
+                      className="pr-2 "
+                      width="24"
+                      height="24"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M5 2.5C3.61929 2.5 2.5 3.61929 2.5 5V15C2.5 16.3807 3.61929 17.5 5 17.5H15C16.3807 17.5 17.5 16.3807 17.5 15V7.47072C17.5 6.80768 17.2366 6.17179 16.7678 5.70295L14.297 3.23223C13.8282 2.76339 13.1923 2.5 12.5293 2.5H5ZM12.5293 4.16667H12.5V5.83333C12.5 6.75381 11.7538 7.5 10.8333 7.5H7.5C6.57953 7.5 5.83333 6.75381 5.83333 5.83333V4.16667H5C4.53976 4.16667 4.16667 4.53976 4.16667 5V15C4.16667 15.4602 4.53976 15.8333 5 15.8333H5.83333V10.8333C5.83333 9.91286 6.57953 9.16667 7.5 9.16667H12.5C13.4205 9.16667 14.1667 9.91286 14.1667 10.8333V15.8333H15C15.4602 15.8333 15.8333 15.4602 15.8333 15V7.47072C15.8333 7.24971 15.7455 7.03774 15.5893 6.88146L13.1185 4.41074C12.9623 4.25446 12.7503 4.16667 12.5293 4.16667ZM12.5 15.8333V10.8333H7.5V15.8333H12.5ZM7.5 4.16667H10.8333V5.83333H7.5V4.16667Z"
+                        fill="white"
+                      />
+                    </svg>
+                  );
+                }}
+                onClick={handleSubmit}
+                variant="contained" color="primary"
+              />
+         
+
         </div>
       </div>
+      {loading && (
+      <div className="Loading">
+      <div className="box_Loading">
+      <Box >
+           
+              <LinearProgressWithLabel value={progress} />
+           
+          </Box>
+      </div>
+      </div>
+         )}  
       {/* <form action="" onSubmit={handleSubmit}> */}
       <div className="px-6 py-4 m-6 bg-white border-2 rounded-lg ">
         <p htmlFor="" className="text-xl font-medium text-left">

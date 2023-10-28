@@ -1,3 +1,21 @@
+.Loading{
+    background-color: #000000d8;
+    width: 100%;
+   min-height: 100vh;
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: 2;
+//    backdrop-filter: blur(10px);
+}
+.box_Loading{
+    margin: 20px;
+    position: absolute;
+    width: 80%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
 .Link{
     overflow: auto;
     padding-bottom: 10px;
