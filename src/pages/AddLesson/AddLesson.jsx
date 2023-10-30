@@ -25,7 +25,7 @@ function LinearProgressWithLabel(props) {
           sx={{
             height: 20,
             borderRadius: 5, // Thêm border-radius 5px
-            backgroundColor: '#fff', // Màu nền trắng
+            backgroundColor: '#b3b3b3', // Màu nền trắng
             '& .MuiLinearProgress-bar': {
               backgroundColor: '#4CAF50', // Màu xanh lá
             },
@@ -33,7 +33,7 @@ function LinearProgressWithLabel(props) {
         />
       </Box>
       <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ color: '#fff' }}>{`${Math.round(
+        <Typography variant="body2" color="text.secondary" sx={{ color: '#000' }}>{`${Math.round(
           props.value,
         )}%`}</Typography>
       </Box>
@@ -47,7 +47,9 @@ function LinearProgressWithLabel(props) {
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
+  const buttonText = isPaused ? 'Tiếp tục' : 'Tạm dừng';
   const [showUpload, SetShowUpload] = useState(false);
   const [urlInputValue, setUrlInputValue] = useState(null);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -57,6 +59,7 @@ export default function Home() {
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [singleCorrect, setSingleCorrect] = useState(true);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
+  
   // const [courseId, setCourseId] = useState(1); // Giá trị khởi tạo ban đầu
 
   // const [initialAnswerCount, setInitialAnswerCount] = useState(2);
@@ -397,7 +400,10 @@ export default function Home() {
     }
   };
 
-
+  const handleToggle = () => {
+    setIsPaused(!isPaused);
+    // You can add your logic for pausing or continuing here
+  };
 
   useEffect(() => {
     console.log(formValue);
@@ -483,12 +489,24 @@ export default function Home() {
       {loading && (
       <div className="Loading">
       <div className="box_Loading">
+        <h2>Trạng thái tải lên</h2>
       <Box >
-           
               <LinearProgressWithLabel value={progress} />
-           
           </Box>
+          <div className="button_loading">
+      <Button
+                      text="Hủy"
+                      Class="px-3 py-1 bg-rose-600 text-white rounded-md mt-3"
+                    />
+                     <button
+      onClick={handleToggle}
+      className="px-3 py-1 bg-green-500 text-white rounded-md mt-3"
+    >
+      {buttonText}
+    </button>
       </div>
+      </div>
+    
       </div>
          )}  
       {/* <form action="" onSubmit={handleSubmit}> */}
