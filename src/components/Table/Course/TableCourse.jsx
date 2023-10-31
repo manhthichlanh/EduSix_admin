@@ -1,94 +1,13 @@
+import React, { useMemo } from "react";
 import Table from "rc-table";
-import { useMemo } from "react";
 import { isNumber } from "lodash";
 import Pencil from "../../common/icon/Pencil";
 import Trash from "../../common/icon/Trash";
 import Add from "../../common/icon/Add";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../common/Pagination";
-
-const data = [
-  {
-    id: "1",
-    courseName: "When I left, I was just a boy. When I return",
-    category: "Danh mục 1",
-    numberOfLessons: "12",
-    price: 200000,
-    status: "Active",
-    duration: "25:08:03",
-    addTime: "1 Dec 2023",
-  },
-  {
-    id: "2",
-    courseName: "Khóa học B",
-    category: "Danh mục 2",
-    numberOfLessons: "3",
-    price: 0,
-    status: "Inactive",
-    duration: "15:04:03",
-    addTime: "1 Dec 2023",
-  },
-  {
-    id: "3",
-    courseName: "Khóa học C",
-    category: "Danh mục 1",
-    numberOfLessons: "10",
-    price: 15000000,
-    status: "Active",
-    duration: "09:09:23",
-    addTime: "1 Dec 2023",
-  },
-  {
-    id: "4",
-    courseName: "Advanced React Masterclass",
-    category: "Danh mục 2",
-    numberOfLessons: "15",
-    price: 250000,
-    status: "Active",
-    duration: "12:45:00",
-    addTime: "2 Dec 2023",
-  },
-  {
-    id: "5",
-    courseName: "Machine Learning Basics",
-    category: "Danh mục 3",
-    numberOfLessons: "8",
-    price: 1000000,
-    status: "Active",
-    duration: "18:30:15",
-    addTime: "2 Dec 2023",
-  },
-  {
-    id: "6",
-    courseName: "Web Development Fundamentals",
-    category: "Danh mục 1",
-    numberOfLessons: "20",
-    price: 500000,
-    status: "Inactive",
-    duration: "30:20:45",
-    addTime: "2 Dec 2023",
-  },
-  {
-    id: "7",
-    courseName: "Data Science for Beginners",
-    category: "Danh mục 4",
-    numberOfLessons: "6",
-    price: 800000,
-    status: "Active",
-    duration: "08:15:30",
-    addTime: "3 Dec 2023",
-  },
-  {
-    id: "8",
-    courseName: "Python Programming Basics",
-    category: "Danh mục 3",
-    numberOfLessons: "10",
-    price: 1200000,
-    status: "Active",
-    duration: "22:10:10",
-    addTime: "3 Dec 2023",
-  },
-];
+import { useQuery } from "react-query";
+import { ServerApi } from "../../../utils/http";
 
 function TableCourse() {
   const navigate = useNavigate();
@@ -96,6 +15,19 @@ function TableCourse() {
   const page = Number(searchParams.get("page") || 1);
 
   const LIMIT = 10;
+
+  // Define a query function to fetch course data
+  const getCourseData = async () => {
+    try {
+      const response = await ServerApi.get("/course");
+      return response.data;
+    } catch (error) {
+      throw new Error("Error fetching course data");
+    }
+  };
+
+  // Use React Query to fetch and manage course data
+  const { data: courseData, isLoading, isError } = useQuery("courseData", getCourseData);
   const columns = useMemo(
     () => [
       {
@@ -103,11 +35,11 @@ function TableCourse() {
         render: (item) => (
           <div className="flex items-center gap-2">
             <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
-              {/* Image here */}
+              <img src={item?.thumbnail} alt={item?.thumbnail} />
             </div>
             <div>
               <p className="capitalize font-medium text-base leading-[20px]">
-                {item?.courseName}
+                {item?.name}
               </p>
             </div>
           </div>
@@ -116,38 +48,43 @@ function TableCourse() {
       {
         title: "ID",
         render: (item) => (
-          <div className="py-1 text-[#5C59E8] font-medium">{item?.id}</div>
+          <div className="py-1 text-[#5C59E8] font-medium">{item?.course_id}</div>
         ),
       },
       {
         title: "Danh mục",
         render: (item) => (
           <div className="py-1 text-[#667085] font-medium">
-            {item?.category}
+            {item?.category_id}
           </div>
         ),
       },
-      {
-        title: "Số bài học",
-        render: (item) => (
-          <div className="py-1 text-[#667085] font-medium">
-            {item?.numberOfLessons}
-          </div>
-        ),
-      },
+      // {
+      //   title: "Số bài học",
+      //   render: (item) => (
+      //     <div className="py-1 text-[#667085] font-medium">
+      //       {item?.numberOfLessons}
+      //     </div>
+      //   ),
+      // },
       {
         title: "Giá",
-        render: (item) => (
-          <span
-            className={`font-medium tracking-[0.5%] leading-[18px] ${
-              item?.price === 0 ? "text-emerald-600" : "text-red-500"
-            }`}
-          >
-            {isNumber(item?.price) && item?.price === 0
-              ? "Miễn phí"
-              : `${Number(item?.price).toLocaleString("vi-VN")}đ`}
-          </span>
-        ),
+          render: (item) => (
+            <span
+              className={`font-medium tracking-[0.5%] leading-[18px] ${
+                item?.type === 0 ? "text-emerald-600" : (item?.type === 2 ? "text-red-500" : "")
+              }`}
+            >
+              {item?.type === 0
+                ? "Free"
+                : (item?.type === 1 
+                  ? `${Number(item?.price).toLocaleString("vi-VN")}đ`
+                  : "N/A"
+                )
+              }
+            </span>
+          ),
+
       },
       {
         title: "Trạng thái",
@@ -168,13 +105,13 @@ function TableCourse() {
       {
         title: "Thời lượng",
         render: (item) => (
-          <div className="py-1 font-medium text-gray-500">{item?.duration}</div>
+          <div className="py-1 font-medium text-gray-500">{item?.total_course_time}</div>
         ),
       },
       {
         title: "Ngày thêm",
         render: (item) => (
-          <div className="py-1 font-medium text-gray-500">{item?.addTime}</div>
+          <div className="py-1 font-medium text-gray-500">{item?.created_at}</div>
         ),
       },
       {
@@ -197,12 +134,20 @@ function TableCourse() {
     []
   );
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading data</div>;
+  }
+
   return (
     <div className="">
       <div className="border rounded-lg">
         <Table
           columns={columns}
-          data={data}
+          data={courseData}
           rowKey="id"
           scroll={{
             x: true,
@@ -212,7 +157,7 @@ function TableCourse() {
       <div className="flex items-center justify-end p-4">
         <Pagination
           limit={LIMIT}
-          total={100}
+          total={courseData.length} // Replace with the total count from your API
           current={page}
           onChange={(value) =>
             navigate({
@@ -224,4 +169,5 @@ function TableCourse() {
     </div>
   );
 }
+
 export default TableCourse;

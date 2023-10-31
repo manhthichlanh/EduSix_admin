@@ -5,7 +5,7 @@ import "./App.css";
 //||Components
 import Home from "./pages/Home/Home";
 import AddCateCourse from "./pages/AddCateCourse/AddCateCourse";
-import AddCourse from "./pages/AddCourse/AddCourse";
+import AddCourse from "./pages/AddCourse/addCourse";
 import Layout from "./Layout/Layout";
 import NoPage from "./pages/NoPage/NoPage";
 import AddSection from "./pages/AddSection/AddSection";
