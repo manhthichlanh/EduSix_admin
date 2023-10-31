@@ -2,14 +2,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import InputDescription from "../../components/Input/InputDescription";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Switch } from "@headlessui/react";
 import Button from "../../components/Button/Button";
 import TableLesson from "../../components/Table/Course/TableLesson";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./AddLesson.scss";
 import classNames from "classnames";
-import axios from "axios";
+// import socket from "../../utils/socket";
 import { ServerApi } from "../../utils/http";
 import { LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -43,9 +43,9 @@ function LinearProgressWithLabel(props) {
   );
 }
 
-
 // classNames
 export default function Home() {
+  const [userSI, setUserSI] = useState("")
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -387,6 +387,8 @@ export default function Home() {
       //   await wait(100);
       //   setProgress(index);
       // }
+      let headers = {};
+      let end_point = "";
       let newLessonWith = {
         section_id: 1,
         name: "Bài học 1",
@@ -398,6 +400,10 @@ export default function Home() {
           ...newLessonWith,
           quizData: formValue.quizData
         };
+        end_point = "your_api_end_point";
+        headers = {
+          'Content-Type': `application/json`,
+        }
       } else if (isVideoSelected) {
 
         const videoFile = formValue.video;
@@ -407,10 +413,18 @@ export default function Home() {
           youtube_id: null,
           video_type: 1
         };
+        end_point = "admin-query/lesson-with-video";
+        headers = {
+          'Content-Type': `multipart/form-data; boundary=${videoFile._boundary}`,
+          // 'Socket-ID': streamRoomID
+        }
       }
       // setLoading(false);
       try {
-        const res = await ServerApi.post("/end-point", newLessonWith)
+        const res = await ServerApi.post(end_point, newLessonWith,
+          headers && {
+            headers: headers
+          })
         const resData = res.data;
         console.log("Dữ liệu đã được lưu:", resData);
         alert("Lưu thành công!");
@@ -436,12 +450,13 @@ export default function Home() {
 
   const handleToggle = () => {
     setIsPaused(!isPaused);
-    // You can add your logic for pausing or continuing here
   };
 
   // useEffect(() => {
-  //   console.log(formValue);
-  // }, [formValue]);
+  //   // socket.on("get-stream-id", (userSocketID) => {
+  //   //   if (userSI!==userSocketID) setUserSI(userSocketID)
+  //   // })
+  // }, []);
   return (
     <>
       <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
