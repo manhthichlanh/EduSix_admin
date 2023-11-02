@@ -55,6 +55,7 @@ export default function Home() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [enabled, setEnabled] = useState([]);
+  
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [singleCorrect, setSingleCorrect] = useState(true);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
@@ -68,7 +69,6 @@ export default function Home() {
 
     sectionName: "",
     //lesson information
-
     section_id: 1,
     lessonName: "",
     description: "",//content
@@ -471,7 +471,9 @@ export default function Home() {
     }
   }, [isVideoOpen, userSI])
 
-
+ useEffect(() => {
+    console.log(formValue);
+  }, [formValue]);
   return (
     <>
       <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
@@ -683,14 +685,19 @@ export default function Home() {
                   value={question.question}
                   onChange={(e) => {
                     updateQuestion(questionIndex, "question", e.target.value);
-                    const updatedFormValue = {
-                      ...formValue,
-                      quizData: {
-                        ...formValue.quizData,
-                        question: e.target.value,
-                      },
-                    };
-                    setFormValue(updatedFormValue);
+                    // const updatedFormValue = {
+                    //   ...formValue,
+                    //   quizData: [
+                    //     ...formValue.quizData.slice(0, questionIndex),
+                    //     {
+                    //       ...formValue.quizData[questionIndex],
+                    //       question: e.target.value,
+                    //     },
+                    //     ...formValue.quizData.slice(questionIndex + 1),
+                    //   ],
+                    // };
+                    
+                    // setFormValue(updatedFormValue);
                     setFormErrors({
                       ...formErrors,
                       quizData: formErrors.quizData.map((item, idx) => {
