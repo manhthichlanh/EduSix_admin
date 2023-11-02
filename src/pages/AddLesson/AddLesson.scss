@@ -1,14 +1,15 @@
-.Loading{
+.Loading {
     background-color: #000000d8;
     width: 100%;
-   min-height: 100vh;
-   position: absolute;
-   top: 0;
-   left: 0;
-   z-index: 2;
-//    backdrop-filter: blur(10px);
+    min-height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    //    backdrop-filter: blur(10px);
 }
-.box_Loading{
+
+.box_Loading {
     position: absolute;
     width: 80%;
     left: 50%;
@@ -17,95 +18,121 @@
     background-color: #fff;
     border-radius: 5px;
     padding: 20px 20px;
-    h2{
+
+    h2 {
         font-weight: 600;
         font-size: 18px;
         margin-bottom: 10px;
     }
-    .button_loading{
+
+    .button_loading {
         display: flex;
         gap: 10px;
         justify-content: center;
     }
 }
-.Link{
+
+.Link {
     overflow: auto;
     padding-bottom: 10px;
-    
+
 }
+
 .Link::-webkit-scrollbar {
-    height: 5px; /* Điều chỉnh độ rộng của thanh trượt ngang */
-  }
-  .Link::-webkit-scrollbar-thumb {
-    background-color: #4260e6; /* Điều chỉnh màu nút trượt */
-    border-radius: 5px;
-  }
-  .Link::-webkit-scrollbar-track {
-    background-color: #e0e0e0; /* Điều chỉnh màu của phần phía sau thanh trượt */
+    height: 5px;
+    /* Điều chỉnh độ rộng của thanh trượt ngang */
+}
+
+.Link::-webkit-scrollbar-thumb {
+    background-color: #4260e6;
+    /* Điều chỉnh màu nút trượt */
     border-radius: 5px;
 }
-.Quiz{
+
+.Link::-webkit-scrollbar-track {
+    background-color: #e0e0e0;
+    /* Điều chỉnh màu của phần phía sau thanh trượt */
+    border-radius: 5px;
+}
+
+.Quiz {
     overflow: hidden;
-    h1{
+
+    h1 {
         text-align: center;
         font-weight: 700;
-    } 
-    .Quiz_Questions{
+    }
+
+    .Quiz_Questions {
         position: relative;
         padding-top: 15px;
-    .Answer{
-        padding: 10px;
-    .Question{
-       border: 2px solid #00931b; 
-    }
-    .Input_Answer{
-        width: 85%;
-        float: left;
-        padding: 10px 10px 10px 10px;
-        margin-top: -28px;
-        border-radius: 25px;
-        border: 2px solid #00931b;
-        background-color: #edfff0;
-    }
-    .Radio_Answer{
-        margin-top: 30px;
-        .radio{
-            float: left;
-            width: 10%;
-            transform: scale(1.5);
+
+        .Answer {
             padding: 10px;
-            cursor: pointer;
+
+            .Question {
+                border: 2px solid #00931b;
+            }
+
+            .Input_Answer {
+                width: 85%;
+                float: left;
+                padding: 10px 10px 10px 10px;
+                margin-top: -28px;
+                border-radius: 25px;
+                border: 2px solid #00931b;
+                background-color: #edfff0;
+            }
+
+            .Radio_Answer {
+                margin-top: 30px;
+
+                .radio {
+                    float: left;
+                    width: 10%;
+                    transform: scale(1.5);
+                    padding: 10px;
+                    cursor: pointer;
+                }
+            }
+
+            .Checkbox_Answer {
+                margin-top: 30px;
+
+                .checkbox {
+                    float: left;
+                    width: 10%;
+                    transform: scale(1.5);
+                    padding: 10px;
+                    cursor: pointer;
+                }
+            }
+
+            .Answer_Item {
+                position: relative;
+
+                .Delete_Answer {
+                    position: absolute;
+                    top: -15px;
+                    right: 0;
+                    cursor: pointer;
+
+                }
+            }
         }
-    }
-    .Checkbox_Answer{
-        margin-top: 30px;
-        .checkbox{
-            float: left;
-            width: 10%;
-            transform: scale(1.5);
-            padding: 10px;
-            cursor: pointer;
+
+        .unfilled-answer {
+
+            .Question,
+            .Input_Answer {
+                /* Kiểu dáng cho các ô đáp án chưa được nhập */
+                border: 2px solid rgb(255, 169, 169);
+                /* Ví dụ: đặt viền đỏ cho ô đáp án chưa nhập */
+                background-color: hsl(0, 100%, 98%);
+            }
         }
-    }
-    .Answer_Item{
-        position: relative;
-        .Delete_Answer{
-            position: absolute;
-            top: -15px;
-            right: 0;
-            cursor: pointer;
-            
-        }
-    }
-}
-.unfilled-answer {
-    .Question,
-    .Input_Answer{
-    /* Kiểu dáng cho các ô đáp án chưa được nhập */
-    border: 2px solid rgb(255, 169, 169); /* Ví dụ: đặt viền đỏ cho ô đáp án chưa nhập */
-    background-color: hsl(0, 100%, 98%);
-  }}
-        .Icon_Delete{
+
+        .Icon_Delete {
             cursor: pointer;
             position: absolute;
             top: 15px;
@@ -116,22 +143,26 @@
             background-color: #ff0000;
         }
     }
-    .Button_Quiz{
+
+    .Button_Quiz {
         clear: both;
         margin-top: 10px;
     }
-    
-    .Switch_Selection{
+
+    .Switch_Selection {
         margin: 10px 0px;
-        i{
+
+        i {
             padding-left: 10px;
         }
     }
-   
+
 }
-.Delete_Question{
+
+.Delete_Question {
     background-color: #000000d2;
-    .Delete_Question_Box{
+
+    .Delete_Question_Box {
         opacity: 1;
     }
 }
