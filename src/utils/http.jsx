@@ -8,4 +8,5 @@ const binanceApi = axios.create({
 const cexApi = axios.create({
   baseURL: 'https://api.plus.cex.io/rest-public',
 })
-export { ServerApi, binanceApi, cexApi };
+
+export { binanceApi, cexApi, ServerApi };
