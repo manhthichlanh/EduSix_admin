@@ -85,7 +85,7 @@ export default function Home() {
     sectionName: false,
     lessonName: false,
     description: false,
-    quizData: formValue?.quizData.length>0 && formValue.quizData.map((question) => ({
+    quizData: formValue.quizData.map((question) => ({
       question: false,
       answers: question.answers.map(() => false),
     })),
@@ -385,6 +385,7 @@ export default function Home() {
           ...newLessonWith,
           quizData: formValue.quizData
         };
+        return console.lo(newLessonWith)
         end_point = "your_api_end_point";
         headers = {
           'Content-Type': `application/json`,
@@ -471,6 +472,7 @@ export default function Home() {
         return item;
       }),
     });
+    console.log(formErrors)
   }
 
 
