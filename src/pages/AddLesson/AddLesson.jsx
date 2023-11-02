@@ -35,7 +35,7 @@ function LinearProgressWithLabel(props) {
         </Box>
         <Box sx={{ minWidth: 35 }}>
           <Typography variant="body2" color="text.secondary" sx={{ color: '#000' }}>{`${Math.round(
-            props.value,
+            props?.value,
           )}%`}</Typography>
         </Box>
       </Box>
@@ -85,7 +85,7 @@ export default function Home() {
     sectionName: false,
     lessonName: false,
     description: false,
-    quizData: formValue.quizData.map((question) => ({
+    quizData: formValue?.quizData.length>0 && formValue.quizData.map((question) => ({
       question: false,
       answers: question.answers.map(() => false),
     })),
@@ -362,7 +362,6 @@ export default function Home() {
         if (!hasAtLeastTwoAnswers || answersWithMissingText) {
           questionsWithMissingAnswers.push(questionIndex + 1);
         }
-
         return (
           question.question.trim() !== '' &&
           hasAtLeastTwoAnswers &&
@@ -460,6 +459,21 @@ export default function Home() {
     e.preventDefault();
     socket.emit("process-action", { actionId: 3, actionName: "Cancel" })
   }
+  const handleChangeQuestionInput = (e, questionIndex) => {
+    updateQuestion(questionIndex, "question", e.target.value);
+
+    setFormErrors({
+      ...formErrors,
+      quizData: formErrors.quizData.map((item, idx) => {
+        if (idx === questionIndex) {
+          return e.target.value.trim() === "" ? true : false;
+        }
+        return item;
+      }),
+    });
+  }
+
+
   useEffect(() => {
     if (isVideoOpen && !userSI) {
       console.log(isVideoOpen && !userSI)
@@ -474,6 +488,7 @@ export default function Home() {
  useEffect(() => {
     console.log(formValue);
   }, [formValue]);
+
   return (
     <>
       <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
@@ -684,29 +699,7 @@ export default function Home() {
                   placeholder="Nhập câu hỏi"
                   value={question.question}
                   onChange={(e) => {
-                    updateQuestion(questionIndex, "question", e.target.value);
-                    // const updatedFormValue = {
-                    //   ...formValue,
-                    //   quizData: [
-                    //     ...formValue.quizData.slice(0, questionIndex),
-                    //     {
-                    //       ...formValue.quizData[questionIndex],
-                    //       question: e.target.value,
-                    //     },
-                    //     ...formValue.quizData.slice(questionIndex + 1),
-                    //   ],
-                    // };
-                    
-                    // setFormValue(updatedFormValue);
-                    setFormErrors({
-                      ...formErrors,
-                      quizData: formErrors.quizData.map((item, idx) => {
-                        if (idx === questionIndex) {
-                          return e.target.value.trim() === "" ? true : false;
-                        }
-                        return item;
-                      }),
-                    });
+                    handleChangeQuestionInput(e, questionIndex)
                   }}
                 />
                 {/* {formErrors.quizData[questionIndex] && (
