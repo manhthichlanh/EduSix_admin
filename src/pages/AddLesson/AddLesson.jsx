@@ -14,7 +14,7 @@ import { ServerApi } from "../../utils/http";
 import { LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-
+import { useLocation } from 'react-router-dom';
 function LinearProgressWithLabel(props) {
   return (
     <>
@@ -43,7 +43,12 @@ function LinearProgressWithLabel(props) {
   );
 }
 // classNames
-export default function Home() {
+export default function AddLesson() {
+  const location = useLocation();
+  const coursesName = location.state?.courseName;
+  const courseId = location.state?.courseId;
+  const sectionName = location.state?.sectionName;
+  const sectionId = location.state?.sectionId;
   const [userSI, setUserSI] = useState("")
   const [isLoading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -64,12 +69,12 @@ export default function Home() {
 
   // const [initialAnswerCount, setInitialAnswerCount] = useState(2);
   const [formValue, setFormValue] = useState(() => ({
-    course_id: 1,
-    courseName: "",
+    course_id: courseId,
+    courseName: coursesName,
 
-    sectionName: "",
+    sectionName: sectionName,
     //lesson information
-    section_id: 1,
+    section_id: sectionId,
     lessonName: "",
     description: "",//content
     lesson_type: 1,
@@ -79,7 +84,8 @@ export default function Home() {
 
     ],
   }));
-
+  const lessonName = formValue.lessonName;
+  const description = formValue.description;
   const [formErrors, setFormErrors] = useState({
     courseName: false,
     sectionName: false,
@@ -375,18 +381,20 @@ export default function Home() {
       let headers = {};
       let end_point = "";
       let newLessonWith = {
-        section_id: 1,
-        name: "Bài học 1",
-        content: "Nội dung bài 1",
+        section_id: sectionId,
+        courseName: coursesName,
+        courseId: courseId,
+        sectionName: sectionName,
+        name: lessonName, // Use the lessonName from formValue
+        content: description, // Use the description from formValue
         lesson_type: 1,
-      }
+      };
       if (isQuizSelected) {
         newLessonWith = {
           ...newLessonWith,
           quizData: formValue.quizData
         };
-        return console.lo(newLessonWith)
-        end_point = "your_api_end_point";
+        end_point = "http://localhost:3000/lessons";
         headers = {
           'Content-Type': `application/json`,
         }
@@ -602,8 +610,8 @@ export default function Home() {
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
             }
             label="Tên khóa học"
-            placeholder="Nhập tên khóa học"
-            disabled={true}
+            value={coursesName}
+            disabled
           ></Input>
           <Input
             type="text"
@@ -611,8 +619,8 @@ export default function Home() {
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
             }
             label="Tên phần học"
-            placeholder="Nhập tên phần học"
-            disabled={true}
+            value={sectionName}
+            disabled
           ></Input>
         </div>
       </div>
