@@ -15,6 +15,7 @@ import { LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
+import ToastMessage from "../../utils/alert";
 function LinearProgressWithLabel(props) {
   return (
     <>
@@ -65,6 +66,7 @@ export default function AddLesson() {
   const [singleCorrect, setSingleCorrect] = useState(true);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
 
+
   // const [courseId, setCourseId] = useState(1); // Giá trị khởi tạo ban đầu
 
   // const [initialAnswerCount, setInitialAnswerCount] = useState(2);
@@ -97,8 +99,6 @@ export default function AddLesson() {
   });
 
   const addQuestion = () => {
-    // setFormValue(updatedFormValue);
-    // Xử lý dữ liệu chính ở đây
     const areAllQuestionsFilled = formValue.quizData.every(
       (question) => question.question.trim() !== ""
     );
@@ -117,17 +117,13 @@ export default function AddLesson() {
           { text: "", isCorrect: false },
         ],
       };
-
-      // setQuizData([...quizData, newQuestion]);
-      // console.log(newQuestion)
       const currentQuizData = formValue.quizData;
       setFormValue({ ...formValue, quizData: [...currentQuizData, newQuestion] })
       setEnabled([...enabled, false]);
-      // setCourseId(courseId + 1); // Tăng courseId lên 1
     } else {
-      alert(
+      ToastMessage(
         "Vui lòng điền câu hỏi và đáp án cho tất cả các câu hỏi trước khi thêm câu hỏi mới."
-      );
+      ).warn();
       setLoading(false);
     }
 
@@ -228,58 +224,18 @@ export default function AddLesson() {
       updatedQuizData[questionIndex].answers.push(newAnswer);
       setFormValue({ ...formValue, quizData: updatedQuizData })
     } else {
-      alert(
+      ToastMessage(
         `Có đáp án chưa có nội dung ở câu hỏi số ${questionIndex + 1}. Vui lòng nhập nội dung cho tất cả các đáp án trước khi thêm đáp án mới.`
-      );
+      ).warn();
       setLoading(false);
     }
   };
-
-
   const deleteAnswer = (questionIndex, answerIndex) => {
     const currentQuizData = formValue.quizData;
     const updatedQuizData = [...currentQuizData];
     updatedQuizData[questionIndex].answers.splice(answerIndex, 1);
     setFormValue({ ...formValue, quizData: updatedQuizData })
   };
-
-
-
-  // const deleteQuestion = (questionIndex) => {
-  //   const updatedQuizData = quizData.filter((_, index) => index !== questionIndex);
-  //   setQuizData(updatedQuizData);
-  // };
-
-
-  //Tắt tạm đấy========================
-  // const toggleSingleCorrect = () => {
-  //   setSingleCorrect(!singleCorrect);
-  // };
-  // const saveAnswers = () => {
-  //   // Gửi dữ liệu đáp án đi hoặc thực hiện xử lý lưu tại đây
-  //   console.log("Dữ liệu đáp án đã được lưu.");
-  // };
-
-  // const handleClickToUploadBg = () => {
-  //   // Đặt showUpload về giá trị false để ẩn giao diện tải lên
-  //   SetShowUpload(false);
-  // };
-  // const handleClickToUploadBtn = () => {
-  //   // Đặt showUpload về giá trị true để hiển thị giao diện tải lên
-  //   SetShowUpload(true);
-  // };
-  // const handleChangeURL = (e) => {
-  //   const newValue = e.target.value;
-  //   if (newValue) setUrlInputValue(newValue);
-  // };
-  // const wait = (second) => {
-  //   return new Promise((resovle) => {
-  //     setTimeout(() => {
-  //       resovle()
-  //     }, second)
-  //   })
-  // }
-  //Tắt tạm đấy========================
 
   const toggleVideoOpen = () => {
     setIsVideoOpen(!isVideoOpen);
@@ -327,7 +283,6 @@ export default function AddLesson() {
     }
   }
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -355,7 +310,7 @@ export default function AddLesson() {
       });
 
     if (!(isVideoSelected || isQuizSelected)) {
-      alert("Vui lòng chọn ít nhất một dạng bài học (video hoặc quiz).");
+      ToastMessage("Vui lòng chọn ít nhất một dạng bài học (video hoặc quiz).").warn();
     } else if (isValidForm) {
       let headers = {};
       let end_point = "";
@@ -415,9 +370,10 @@ export default function AddLesson() {
         console.log("Dữ liệu đã được lưu:", resData);
         setLoading(false);
         socket.off("process_info")
-        alert("Lưu thành công!");
+        ToastMessage("Lưu thành công!").error();
       } catch (error) {
         console.error("Lỗi khi lưu dữ liệu:", error);
+        ToastMessage(error.message).error();
         setLoading(false);
       }
     } else {
@@ -428,7 +384,7 @@ export default function AddLesson() {
         );
         setLoading(false);
       } else {
-        alert("Vui lòng điền đầy đủ thông tin cho tất cả các trường.");
+        ToastMessage("Vui lòng điền đầy đủ thông tin cho tất cả các trường.").error();
         setLoading(false);
       }
     }
@@ -439,10 +395,12 @@ export default function AddLesson() {
     if (isPaused) socket.emit("process-action", { actionId: 2, actionName: "Remuse" });
     else socket.emit("process-action", { actionId: 1, actionName: "Pause" });
   };
+
   const handleCancleUpload = (e) => {
     e.preventDefault();
     socket.emit("process-action", { actionId: 3, actionName: "Cancel" })
-  }
+  };
+
   const handleChangeQuestionInput = (e, questionIndex) => {
     updateQuestion(questionIndex, "question", e.target.value);
 
@@ -554,7 +512,7 @@ export default function AddLesson() {
         <div className="Loading">
           <div className="box_Loading">
             <h2>Trạng thái tải lên</h2>
-            <Box >
+            <Box>
               <LinearProgressWithLabel value={progress} />
             </Box>
             <div className="button_loading">
