@@ -60,7 +60,7 @@ export default function AddLesson() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [enabled, setEnabled] = useState([]);
-  
+
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [singleCorrect, setSingleCorrect] = useState(true);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
@@ -71,7 +71,6 @@ export default function AddLesson() {
   const [formValue, setFormValue] = useState(() => ({
     course_id: courseId,
     courseName: coursesName,
-
     sectionName: sectionName,
     //lesson information
     section_id: sectionId,
@@ -98,26 +97,6 @@ export default function AddLesson() {
   });
 
   const addQuestion = () => {
-    //Đây chỉ để check nhận dữ liệu không áp dụng dữ liệu chính 
-    // const updatedFormValue = {
-    //   ...formValue,
-    //   quizData: [
-    //     ...formValue.quizData,
-    //     {
-    //       question: "",
-    //       answerType: "radio", // Đặt kiểu đáp án mặc định cho câu hỏi mới
-    //       answers: [
-    //         { text: "", isCorrect: true },
-    //         { text: "", isCorrect: false },
-    //         { text: "", isCorrect: false },
-    //         { text: "", isCorrect: false },
-    //         { text: "", isCorrect: false },
-    //         { text: "", isCorrect: false },
-    //       ],
-    //     },
-
-    //   ],
-    // };
     // setFormValue(updatedFormValue);
     // Xử lý dữ liệu chính ở đây
     const areAllQuestionsFilled = formValue.quizData.every(
@@ -411,10 +390,8 @@ export default function AddLesson() {
           'Content-Type': `multipart/form-data`,
           'Socket-ID': userSI
         }
-        console.log("cóa selected video", isVideoSelected)
         socket.on("process_info", (process_info) => {
           const { progress_percent, actionId, actionActive } = process_info;
-          console.log(progress_percent)
           switch (actionId) {
             case 1:
               if (actionActive) setIsPaused(true)
@@ -423,12 +400,10 @@ export default function AddLesson() {
               if (actionActive) setIsPaused(false)
               break;
             default:
-
               break;
           }
-          setProgress(progress_percent);
+          progress_percent != "undefined" && setProgress(progress_percent);
         })
-
         setLoading(true);
       }
       try {
@@ -495,7 +470,7 @@ export default function AddLesson() {
     }
   }, [isVideoOpen, userSI])
 
- useEffect(() => {
+  useEffect(() => {
     console.log(formValue);
   }, [formValue]);
 
