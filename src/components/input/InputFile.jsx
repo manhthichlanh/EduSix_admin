@@ -1,5 +1,10 @@
 import Input from "./Input";
 function InputFile({ title, label, className, placeholder, value, onChange }) {
+  const handleFileChange = (e) => {
+    onChange(e);
+  }
+  
+  console.log(className)
   return (
     <div className="p-6 border-2 rounded-lg">
       <div className="text-lg font-medium">{title}</div>
@@ -39,6 +44,7 @@ function InputFile({ title, label, className, placeholder, value, onChange }) {
         </p>
         <Input
           type={"file"}
+          onChange={handleFileChange}
           className={
             "w-full text-sm text-slate-500 file:mr-2 file:px-4 file:py-2 file:rounded-md file:border-none file:bg-blue-500 file:text-white file:hover:bg-blue-700 ease-in-out transition"
           }
