@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
 import ToastMessage from "../../utils/alert";
+import { convertViToEn } from "../../utils/helper";
 function LinearProgressWithLabel(props) {
   return (
     <>
@@ -271,6 +272,11 @@ export default function AddLesson() {
         video.controls = true;
         videoPreview.innerHTML = "";
         videoPreview.appendChild(video);
+        const newName = convertViToEn(selectedFile.name); // Đặt tên mới ở đây
+
+        // 3. Gửi tệp lên server
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0], newName);
         setFormValue({ ...formValue, video: selectedFile });
       } else {
         videoPreview.innerHTML = "Tệp không hợp lệ. Chỉ chấp nhận tệp video.";
@@ -315,20 +321,31 @@ export default function AddLesson() {
       let headers = {};
       let end_point = "";
       let newLessonWith = {
-        section_id: sectionId,
-        courseName: coursesName,
-        courseId: courseId,
-        sectionName: sectionName,
+        section_id: sectionId || 1,
         name: lessonName, // Use the lessonName from formValue
         content: description, // Use the description from formValue
         lesson_type: 1,
       };
       if (isQuizSelected) {
+        const newQuizzes = formValue.quizData.map(quiz => {
+          return {
+            question: quiz.question,
+            status: true,
+            answer_type: quiz.answerType,
+            answers: quiz.answers.map(answer => {
+              return {
+                answer: answer.text,
+                is_correct: answer.isCorrect,
+                explain: `Explanation for ${answer.text}` // Thay đổi nội dung của explain theo nhu cầu
+              };
+            })
+          };
+        });
         newLessonWith = {
           ...newLessonWith,
-          quizData: formValue.quizData
+          quizzes: newQuizzes
         };
-        end_point = "http://localhost:3000/lessons";
+        end_point = "admin-query/createLessonQuizz";
         headers = {
           'Content-Type': `application/json`,
         }
@@ -370,7 +387,7 @@ export default function AddLesson() {
         console.log("Dữ liệu đã được lưu:", resData);
         setLoading(false);
         socket.off("process_info")
-        ToastMessage("Lưu thành công!").error();
+        ToastMessage("Lưu thành công!").success();
       } catch (error) {
         console.error("Lỗi khi lưu dữ liệu:", error);
         ToastMessage(error.message).error();
