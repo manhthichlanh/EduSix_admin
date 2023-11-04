@@ -406,11 +406,11 @@ export default function AddLesson() {
           youtube_id: null,
           video_type: 1
         };
-        end_point = "admin-query/lesson-with-video";
-        headers = {
-          'Content-Type': `multipart/form-data`,
-          'Socket-ID': userSI
-        }
+        // end_point = "admin-query/lesson-with-video";
+        // headers = {
+        //   'Content-Type': `multipart/form-data`,
+        //   'Socket-ID': userSI
+        // }
         console.log("cóa selected video", isVideoSelected)
         socket.on("process_info", (process_info) => {
           const { progress_percent, actionId, actionActive } = process_info;
