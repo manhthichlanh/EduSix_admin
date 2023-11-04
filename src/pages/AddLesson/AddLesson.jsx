@@ -14,7 +14,7 @@ import { ServerApi } from "../../utils/http";
 import { LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ToastMessage from "../../utils/alert";
 import { convertViToEn } from "../../utils/helper";
 function LinearProgressWithLabel(props) {
@@ -47,10 +47,12 @@ function LinearProgressWithLabel(props) {
 // classNames
 export default function AddLesson() {
   const location = useLocation();
+  const navigate = useNavigate();
   const coursesName = location.state?.courseName;
   const courseId = location.state?.courseId;
   const sectionName = location.state?.sectionName;
   const sectionId = location.state?.sectionId;
+
   const [userSI, setUserSI] = useState("")
   const [isLoading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -277,7 +279,7 @@ export default function AddLesson() {
         // 3. Gửi tệp lên server
         const formData = new FormData();
         formData.append('file', fileInput.files[0], newName);
-        setFormValue({ ...formValue, video: selectedFile });
+        setFormValue({ ...formValue, video: formData.get("file") });
       } else {
         videoPreview.innerHTML = "Tệp không hợp lệ. Chỉ chấp nhận tệp video.";
         setLoading(false);
@@ -341,16 +343,21 @@ export default function AddLesson() {
             })
           };
         });
+        delete newLessonWith.video;
         newLessonWith = {
           ...newLessonWith,
           quizzes: newQuizzes
         };
+
         end_point = "admin-query/createLessonQuizz";
         headers = {
           'Content-Type': `application/json`,
         }
       } else if (isVideoSelected) {
         const videoFile = formValue.video;
+
+        delete newLessonWith.quizzes;
+
         newLessonWith = {
           ...newLessonWith,
           file_videos: videoFile,
@@ -448,6 +455,11 @@ export default function AddLesson() {
   useEffect(() => {
     console.log(formValue);
   }, [formValue]);
+  // useEffect(() => {
+  //   if (!coursesName || !courseId || !sectionName || !sectionId) {
+  //     navigate(-1);
+  //   }
+  // }, [])
 
   return (
     <>
