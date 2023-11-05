@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
@@ -8,6 +7,8 @@ import Button from "../../components/Button/Button";
 import TableSection from "../../components/Table/Course/TableSection";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { ServerApi } from '../../utils/http';
+import ToastMessage from '../../utils/alert';
 
 export default function AddSection() {
   const location = useLocation();
@@ -16,16 +17,17 @@ export default function AddSection() {
   const navigate = useNavigate();
 
   const [sectionData, setSectionData] = useState({
-    courseName: coursesName,
-    courseId: courseId,
-    sectionName: '',
+    course_id: courseId,
+    name: '',
     status: '1',
   });
+
+ 
 
   const handleSectionNameChange = (e) => {
     setSectionData({
       ...sectionData,
-      sectionName: e.target.value,
+      name: e.target.value,
     });
   };
 
@@ -36,44 +38,79 @@ export default function AddSection() {
       status: newStatus,
     });
   };
-
-  const handleAddSection = () => {
-    if (!sectionData.sectionName) {
+  const handleAddSection = async () => {
+    if (!sectionData.name) {
       alert('Hãy nhập tên phần'); // Show an alert if section name is empty
       return;
     }
-
+  
     const shouldContinue = window.confirm("Bạn có muốn tiếp tục không?");
-
+  
     if (shouldContinue) {
-      // Chuyển đổi trạng thái thành 1 hoặc 0
-      const sectionDataToSend = {
-        ...sectionData,
-        status: sectionData.status === "1" ? 1 : 0,
-      };
-
-      axios.post('http://localhost:3000/sections', sectionDataToSend)
-        .then(response => {
-          console.log('Data saved:', response.data);
-          // Xử lý sau khi dữ liệu đã được lưu
-          const sectionId = response.data.id;
-          // Sau khi lưu, chuyển hướng đến trang AddLesson bằng navigate
+      try {
+        const response = await ServerApi.get('section');
+        const sections = response.data; // Assuming the API returns an array of sections
+    
+        // Sort sections in descending order based on section_id
+        sections.sort((a, b) => b.section_id - a.section_id);
+    
+        let lastSectionId = 0;
+    
+        if (sections.length > 0) {
+          const latestSection = sections[0]; // The first section is the latest one
+          lastSectionId = latestSection.section_id;
+          console.log('Latest Section ID:', lastSectionId); // Log the latest section ID
+        } else {
+          console.error('No sections found');
+          // Handle the case where there are no sections
+        }
+    
+        // Set name, section_id, and ordinal_number in sectionDataToSend
+        const sectionDataToSend = {
+          ...sectionData,
+          status: sectionData.status === "1" ? 1 : 0,
+          name: sectionData.name,
+          section_id: lastSectionId,
+          ordinal_number: sections.length + 1, // Calculate the next ordinal_number
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+    
+        const headers = {
+          'Content-Type': 'application/json',
+        };
+    
+        const saveResponse = await ServerApi.post('section', sectionDataToSend, { headers });
+        console.log('Data saved:', saveResponse.data);
+    
+        const sectionId = saveResponse.data.section_id;
+        ToastMessage("Thêm mới phần học thành công!").success();
+        setTimeout(() => {
           navigate('/add-lesson', {
             state: {
-              courseName: sectionData.courseName,
-              courseId: sectionData.courseId,
-              sectionName: sectionData.sectionName,
-              sectionId // Thay `selectedSectionId` bằng ID của phần mà người dùng đã chọn
-            }
+              courseName: coursesName,
+              course_id: sectionData.course_id,
+              name: sectionData.name,
+              sectionId,
+            },
           });
-          // console.log(sectionId)
-        })
-        .catch(error => {
-          console.error('Error saving data:', error);
-          // Xử lý lỗi ở đây
-        });
+        }, 500);
+      } catch (error) {
+        console.error('Error saving data:', error);
+        if (error.response) {
+          console.error('Response Data:', error.response.data);
+          console.error('Status Code:', error.response.status);
+        }
+        ToastMessage(error.message).error();
+        // Handle the error here
+      }
     }
-  };
+    
+    
+};
+  
+  
+
 
 
 
@@ -162,7 +199,7 @@ export default function AddSection() {
             type={"text"}
             placeholder="Nhập tên phần"
             className="w-full mt-2 px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus:border-indigo-500 focus:outline-none"
-            value={sectionData.sectionName}
+            value={sectionData.name}
             onChange={handleSectionNameChange}
           />
           <InputSelect

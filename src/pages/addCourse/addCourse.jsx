@@ -74,10 +74,11 @@ export default function AddCourse() {
     ServerApi.post('course', formValue, { headers })
       .then(response => {
         console.log('Data saved:', response.data);
-        const courseId = response.data.id;
+        const courseId = response.data.course_id;
+        const coursesName = response.data.name
         ToastMessage("Thêm mới khóa học thành công!").success();
         setTimeout(() => {
-          navigate('/add-section', { state: { coursesName: inputValue, courseId } })
+          navigate('/add-section', { state: { coursesName: coursesName, courseId } })
         }, 500
         )
       })
@@ -153,7 +154,8 @@ export default function AddCourse() {
             onClick={() => {
               const newFormError = {
                 "Tên": formValue.name,
-                "mô tả": formValue.content
+                "mô tả": formValue.content,
+                "Hình ảnh": formValue.thumbnail
               }
 
               let errCount = 0;
@@ -233,7 +235,7 @@ export default function AddCourse() {
               { value: true, text: "Đang bật" },
               { value: false, text: "Tắt" },
             ]}
-            value={selectedStatus}
+            value={formValue.status}
             onChange={handleStatusChange}
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
