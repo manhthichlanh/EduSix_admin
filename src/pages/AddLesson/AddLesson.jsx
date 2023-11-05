@@ -14,7 +14,9 @@ import { ServerApi } from "../../utils/http";
 import { LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import ToastMessage from "../../utils/alert";
+import { convertViToEn } from "../../utils/helper";
 function LinearProgressWithLabel(props) {
   return (
     <>
@@ -45,10 +47,12 @@ function LinearProgressWithLabel(props) {
 // classNames
 export default function AddLesson() {
   const location = useLocation();
+  const navigate = useNavigate();
   const coursesName = location.state?.courseName;
   const courseId = location.state?.courseId;
   const sectionName = location.state?.sectionName;
   const sectionId = location.state?.sectionId;
+
   const [userSI, setUserSI] = useState("")
   const [isLoading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -60,10 +64,11 @@ export default function AddLesson() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [enabled, setEnabled] = useState([]);
-  
+
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [singleCorrect, setSingleCorrect] = useState(true);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
+
 
   // const [courseId, setCourseId] = useState(1); // Giá trị khởi tạo ban đầu
 
@@ -71,7 +76,6 @@ export default function AddLesson() {
   const [formValue, setFormValue] = useState(() => ({
     course_id: courseId,
     courseName: coursesName,
-
     sectionName: sectionName,
     //lesson information
     section_id: sectionId,
@@ -98,28 +102,6 @@ export default function AddLesson() {
   });
 
   const addQuestion = () => {
-    //Đây chỉ để check nhận dữ liệu không áp dụng dữ liệu chính 
-    // const updatedFormValue = {
-    //   ...formValue,
-    //   quizData: [
-    //     ...formValue.quizData,
-    //     {
-    //       question: "",
-    //       answerType: "radio", // Đặt kiểu đáp án mặc định cho câu hỏi mới
-    //       answers: [
-    //         { text: "", isCorrect: true },
-    //         { text: "", isCorrect: false },
-    //         { text: "", isCorrect: false },
-    //         { text: "", isCorrect: false },
-    //         { text: "", isCorrect: false },
-    //         { text: "", isCorrect: false },
-    //       ],
-    //     },
-
-    //   ],
-    // };
-    // setFormValue(updatedFormValue);
-    // Xử lý dữ liệu chính ở đây
     const areAllQuestionsFilled = formValue.quizData.every(
       (question) => question.question.trim() !== ""
     );
@@ -138,17 +120,13 @@ export default function AddLesson() {
           { text: "", isCorrect: false },
         ],
       };
-
-      // setQuizData([...quizData, newQuestion]);
-      // console.log(newQuestion)
       const currentQuizData = formValue.quizData;
       setFormValue({ ...formValue, quizData: [...currentQuizData, newQuestion] })
       setEnabled([...enabled, false]);
-      // setCourseId(courseId + 1); // Tăng courseId lên 1
     } else {
-      alert(
+      ToastMessage(
         "Vui lòng điền câu hỏi và đáp án cho tất cả các câu hỏi trước khi thêm câu hỏi mới."
-      );
+      ).warn();
       setLoading(false);
     }
 
@@ -249,58 +227,18 @@ export default function AddLesson() {
       updatedQuizData[questionIndex].answers.push(newAnswer);
       setFormValue({ ...formValue, quizData: updatedQuizData })
     } else {
-      alert(
+      ToastMessage(
         `Có đáp án chưa có nội dung ở câu hỏi số ${questionIndex + 1}. Vui lòng nhập nội dung cho tất cả các đáp án trước khi thêm đáp án mới.`
-      );
+      ).warn();
       setLoading(false);
     }
   };
-
-
   const deleteAnswer = (questionIndex, answerIndex) => {
     const currentQuizData = formValue.quizData;
     const updatedQuizData = [...currentQuizData];
     updatedQuizData[questionIndex].answers.splice(answerIndex, 1);
     setFormValue({ ...formValue, quizData: updatedQuizData })
   };
-
-
-
-  // const deleteQuestion = (questionIndex) => {
-  //   const updatedQuizData = quizData.filter((_, index) => index !== questionIndex);
-  //   setQuizData(updatedQuizData);
-  // };
-
-
-  //Tắt tạm đấy========================
-  // const toggleSingleCorrect = () => {
-  //   setSingleCorrect(!singleCorrect);
-  // };
-  // const saveAnswers = () => {
-  //   // Gửi dữ liệu đáp án đi hoặc thực hiện xử lý lưu tại đây
-  //   console.log("Dữ liệu đáp án đã được lưu.");
-  // };
-
-  // const handleClickToUploadBg = () => {
-  //   // Đặt showUpload về giá trị false để ẩn giao diện tải lên
-  //   SetShowUpload(false);
-  // };
-  // const handleClickToUploadBtn = () => {
-  //   // Đặt showUpload về giá trị true để hiển thị giao diện tải lên
-  //   SetShowUpload(true);
-  // };
-  // const handleChangeURL = (e) => {
-  //   const newValue = e.target.value;
-  //   if (newValue) setUrlInputValue(newValue);
-  // };
-  // const wait = (second) => {
-  //   return new Promise((resovle) => {
-  //     setTimeout(() => {
-  //       resovle()
-  //     }, second)
-  //   })
-  // }
-  //Tắt tạm đấy========================
 
   const toggleVideoOpen = () => {
     setIsVideoOpen(!isVideoOpen);
@@ -336,7 +274,12 @@ export default function AddLesson() {
         video.controls = true;
         videoPreview.innerHTML = "";
         videoPreview.appendChild(video);
-        setFormValue({ ...formValue, video: selectedFile });
+        const newName = convertViToEn(selectedFile.name); // Đặt tên mới ở đây
+
+        // 3. Gửi tệp lên server
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0], newName);
+        setFormValue({ ...formValue, video: formData.get("file") });
       } else {
         videoPreview.innerHTML = "Tệp không hợp lệ. Chỉ chấp nhận tệp video.";
         setLoading(false);
@@ -347,7 +290,6 @@ export default function AddLesson() {
       setFormValue({ ...formValue, video: null });
     }
   }
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -376,45 +318,60 @@ export default function AddLesson() {
       });
 
     if (!(isVideoSelected || isQuizSelected)) {
-      alert("Vui lòng chọn ít nhất một dạng bài học (video hoặc quiz).");
+      ToastMessage("Vui lòng chọn ít nhất một dạng bài học (video hoặc quiz).").warn();
     } else if (isValidForm) {
       let headers = {};
       let end_point = "";
       let newLessonWith = {
-        section_id: sectionId,
-        courseName: coursesName,
-        courseId: courseId,
-        sectionName: sectionName,
+        section_id: sectionId || 1,
         name: lessonName, // Use the lessonName from formValue
         content: description, // Use the description from formValue
         lesson_type: 1,
       };
       if (isQuizSelected) {
+        const newQuizzes = formValue.quizData.map(quiz => {
+          return {
+            question: quiz.question,
+            status: true,
+            answer_type: quiz.answerType,
+            answers: quiz.answers.map(answer => {
+              return {
+                answer: answer.text,
+                is_correct: answer.isCorrect,
+                explain: `Explanation for ${answer.text}` // Thay đổi nội dung của explain theo nhu cầu
+              };
+            })
+          };
+        });
+        delete newLessonWith.video;
         newLessonWith = {
           ...newLessonWith,
-          quizData: formValue.quizData
+          quizzes: newQuizzes
         };
-        end_point = "http://localhost:3000/lessons";
+
+        end_point = "admin-query/createLessonQuizz";
         headers = {
           'Content-Type': `application/json`,
         }
       } else if (isVideoSelected) {
         const videoFile = formValue.video;
+
+        delete newLessonWith.quizzes;
+
         newLessonWith = {
           ...newLessonWith,
           file_videos: videoFile,
           youtube_id: null,
           video_type: 1
         };
-        // end_point = "admin-query/lesson-with-video";
-        // headers = {
-        //   'Content-Type': `multipart/form-data`,
-        //   'Socket-ID': userSI
-        // }
+        end_point = "admin-query/lesson-with-video";
+        headers = {
+          'Content-Type': `multipart/form-data`,
+          'Socket-ID': userSI
+        }
         console.log("cóa selected video", isVideoSelected)
         socket.on("process_info", (process_info) => {
           const { progress_percent, actionId, actionActive } = process_info;
-          console.log(progress_percent)
           switch (actionId) {
             case 1:
               if (actionActive) setIsPaused(true)
@@ -423,12 +380,10 @@ export default function AddLesson() {
               if (actionActive) setIsPaused(false)
               break;
             default:
-
               break;
           }
-          setProgress(progress_percent);
+          progress_percent != "undefined" && setProgress(progress_percent);
         })
-
         setLoading(true);
       }
       try {
@@ -440,9 +395,10 @@ export default function AddLesson() {
         console.log("Dữ liệu đã được lưu:", resData);
         setLoading(false);
         socket.off("process_info")
-        alert("Lưu thành công!");
+        ToastMessage("Lưu thành công!").success();
       } catch (error) {
         console.error("Lỗi khi lưu dữ liệu:", error);
+        ToastMessage(error.message).error();
         setLoading(false);
       }
     } else {
@@ -453,7 +409,7 @@ export default function AddLesson() {
         );
         setLoading(false);
       } else {
-        alert("Vui lòng điền đầy đủ thông tin cho tất cả các trường.");
+        ToastMessage("Vui lòng điền đầy đủ thông tin cho tất cả các trường.").error();
         setLoading(false);
       }
     }
@@ -464,10 +420,12 @@ export default function AddLesson() {
     if (isPaused) socket.emit("process-action", { actionId: 2, actionName: "Remuse" });
     else socket.emit("process-action", { actionId: 1, actionName: "Pause" });
   };
+
   const handleCancleUpload = (e) => {
     e.preventDefault();
     socket.emit("process-action", { actionId: 3, actionName: "Cancel" })
-  }
+  };
+
   const handleChangeQuestionInput = (e, questionIndex) => {
     updateQuestion(questionIndex, "question", e.target.value);
 
@@ -495,9 +453,14 @@ export default function AddLesson() {
     }
   }, [isVideoOpen, userSI])
 
- useEffect(() => {
+  useEffect(() => {
     console.log(formValue);
   }, [formValue]);
+  // useEffect(() => {
+  //   if (!coursesName || !courseId || !sectionName || !sectionId) {
+  //     navigate(-1);
+  //   }
+  // }, [])
 
   return (
     <>
@@ -579,7 +542,7 @@ export default function AddLesson() {
         <div className="Loading">
           <div className="box_Loading">
             <h2>Trạng thái tải lên</h2>
-            <Box >
+            <Box>
               <LinearProgressWithLabel value={progress} />
             </Box>
             <div className="button_loading">
