@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Table from "rc-table";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Pagination from "../../common/Pagination";
 import Pencil from "../../common/icon/Pencil";
 import Trash from "../../common/icon/Trash";
@@ -11,8 +11,13 @@ function TableSection() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("courseId");
+  console.log(courseId);
+  // const [queryParams, setQueryParams] = useState({
+  //   courseId: 28,
+  //   courseName: "",
+  // })
   const coursesName = searchParams.get("coursesName");
-  console.log(coursesName);
+  // console.log(courseId);
   const page = Number(searchParams.get("page") || 1);
   const LIMIT = 5;
   const [sectionData, setSectionData] = useState([]);
@@ -22,7 +27,12 @@ function TableSection() {
       fetchSectionData(courseId, page);
     }
   }, [courseId, page]);
-
+  // useEffect(() => {
+  //   const searchParams = new URLSearchParams(window.location.search);
+  //   const courseId = searchParams.get('courseId');
+  //   console.log("123"+courseId);
+  //   // if (!courseId) setQueryParams({ courseId: courseId})
+  // }, [])
   const fetchSectionData = async (course_id, currentPage) => {
     try {
       const response = await ServerApi.get(`/section?course_id=${course_id}`);
@@ -55,11 +65,10 @@ function TableSection() {
       render: (item) => (
         <div className="py-1">
           <p
-            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
-              item.status === "Active"
-                ? "text-emerald-700 bg-red-100"
-                : "text-orange-600 bg-emerald-100"
-            } rounded-lg`}
+            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === "Active"
+              ? "text-emerald-700 bg-red-100"
+              : "text-orange-600 bg-emerald-100"
+              } rounded-lg`}
           >
             {item.status === true ? "Đang bật" : "Đã tắt"}
           </p>

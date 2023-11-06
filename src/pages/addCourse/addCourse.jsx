@@ -248,6 +248,7 @@ export default function AddCourse() {
               value={formValue.course_price}
               onChange={handlePriceChange}
               placeholder="Nhập giá"
+              min={0}
               className="mt-2 px-4 py-2 w-full bg-white rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             />
           )}

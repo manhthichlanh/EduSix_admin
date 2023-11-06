@@ -94,7 +94,7 @@ function TableCourse() {
           {item.type === 0
             ? "Free"
             : item.type === 1
-              ? `${Number(item.price).toLocaleString("vi-VN")}đ`
+              ? `${Number(item.course_price).toLocaleString("vi-VN")}đ`
               : "N/A"}
         </span>
       ),

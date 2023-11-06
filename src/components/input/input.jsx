@@ -6,6 +6,7 @@ function Input({
   value,
   onChange,
   disabled,
+  min
 }) {
   return (
     <div className="w-full py-2">
@@ -19,6 +20,7 @@ function Input({
         value={value}
         onChange={onChange}
         disabled={disabled}
+        min={min}
       />
     </div>
   );
