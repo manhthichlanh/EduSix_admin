@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from "../../components/Button/Button";
 import {
@@ -7,11 +7,12 @@ import {
 
 } from '@fortawesome/free-solid-svg-icons';
 import './topbar.scss';
-const topBar = () => {
+import { getLocalData } from '../../utils/helper';
+const TopBar = () => {
     const [isUser_AdminOpen, setIsUser_AdminOpen] = useState(false);
     const [isSeachOpen, setIsSeachOpen] = useState(false);
     const [isThongbaoOpen, setIsThongbaoOpen] = useState(false);
-
+    const [userInfo, setUserInfo] = useState("");
     const toggleUserAdminSubMenu = () => {
         setIsUser_AdminOpen(!isUser_AdminOpen);
         setIsSeachOpen(false);
@@ -29,6 +30,11 @@ const topBar = () => {
         setIsUser_AdminOpen(false);
         setIsSeachOpen(false);
     };
+    useEffect(() => {
+        const user = getLocalData("auth_info").user;
+        setUserInfo(user.fullname);
+    }, []
+    )
     return (
         <div className='topbar'>
             <div className='thanh_topBar'>
@@ -161,7 +167,7 @@ const topBar = () => {
                             </div>
                         </div>
                         <div className='tt_user_Admin'>
-                            <h1>Phạm Trường Đạt</h1>
+                            <h1>{userInfo}</h1>
                             <p>Admin</p>
                         </div>
                         <div className='icon_User_Admin'>
@@ -186,4 +192,4 @@ const topBar = () => {
     );
 };
 
-export default topBar;
+export default TopBar;
