@@ -22,7 +22,7 @@ export default function AddSection() {
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("courseId");
   const navigate = useNavigate();
-  const { isLoading, error, data: course } = useQuery("courseById", () => getCourseById(courseId));
+  const { isLoading, error, data: course } = useQuery(["courseById", courseId], () => getCourseById(courseId));
   const [sectionData, setSectionData] = useState({
     course_id: courseId,
     name: '',
