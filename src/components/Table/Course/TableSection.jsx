@@ -7,11 +7,10 @@ import Trash from "../../common/icon/Trash";
 import Add from "../../common/icon/Add";
 import { ServerApi } from "../../../utils/http";
 
-function TableSection() {
+function TableSection(props) {
+  const { courseName, courseId } = props;
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const courseId = searchParams.get("courseId");
-  const courseName = searchParams.get("courseName");
   const page = Number(searchParams.get("page") || 1);
   const LIMIT = 5;
   const [sectionData, setSectionData] = useState([]);
@@ -26,7 +25,7 @@ function TableSection() {
     try {
       const response = await ServerApi.get(`/section?course_id=${course_id}`);
       setSectionData(response.data);
-      navigate(`?courseId=${course_id}&courseName=${courseName}&page=${currentPage}`, { replace: true });
+      navigate(`?courseId=${course_id}&page=${currentPage}`, { replace: true });
     } catch (error) {
       console.error("Error fetching section data:", error);
       setSectionData([]); // Set data to an empty array in case of an error
