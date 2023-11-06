@@ -11,8 +11,7 @@ function TableSection() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("courseId");
-  const coursesName = searchParams.get("coursesName");
-  console.log(coursesName);
+  const courseName = searchParams.get("courseName");
   const page = Number(searchParams.get("page") || 1);
   const LIMIT = 5;
   const [sectionData, setSectionData] = useState([]);
@@ -27,7 +26,7 @@ function TableSection() {
     try {
       const response = await ServerApi.get(`/section?course_id=${course_id}`);
       setSectionData(response.data);
-      navigate(`?courseId=${course_id}&page=${currentPage}`, { replace: true });
+      navigate(`?courseId=${course_id}&courseName=${courseName}&page=${currentPage}`, { replace: true });
     } catch (error) {
       console.error("Error fetching section data:", error);
       setSectionData([]); // Set data to an empty array in case of an error
@@ -55,11 +54,10 @@ function TableSection() {
       render: (item) => (
         <div className="py-1">
           <p
-            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
-              item.status === "Active"
-                ? "text-emerald-700 bg-red-100"
-                : "text-orange-600 bg-emerald-100"
-            } rounded-lg`}
+            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === "Active"
+              ? "text-emerald-700 bg-red-100"
+              : "text-orange-600 bg-emerald-100"
+              } rounded-lg`}
           >
             {item.status === true ? "Đang bật" : "Đã tắt"}
           </p>
@@ -70,7 +68,18 @@ function TableSection() {
       title: "Thao tác",
       render: (item) => (
         <div className="flex items-center gap-2">
-          <button onClick={() => console.log(`I miss you Ngọc`)}>
+          <button onClick={() => {
+            navigate(`/add-lesson?sectionId=${item.section_id}&courseId=${item.course_id}`, {
+              state:
+              {
+                courseName: courseName,
+                courseId: item.course_id,
+                sectionName: item.name,
+                sectionId: item.section_id,
+              }
+            })
+
+          }}>
             <Add className="text-gray-500  hover:text-blue-500"></Add>
           </button>
           <button onClick={() => console.log(`I love you ${item?.id}`)}>

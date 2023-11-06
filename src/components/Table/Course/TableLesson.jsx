@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../common/Pagination";
 import Pencil from "../../common/icon/Pencil";
 import Trash from "../../common/icon/Trash";
-
+import { ServerApi } from "../../../utils/http";
 const data = [
   {
     course: "HTML, CSS",
@@ -69,6 +69,7 @@ function TableLesson() {
   const page = Number(searchParams.get("page") || 1);
   const LIMIT = 10;
 
+  
   const columns = useMemo(
     () => [
       {
@@ -87,11 +88,10 @@ function TableLesson() {
         render: (item) => (
           <div className="py-1" key={item.id}>
             <p
-              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
-                item.videoType === "upload"
+              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.videoType === "upload"
                   ? "text-[#13B2E4] bg-[#E8F8FD]"
                   : "text-[#F04438] bg-[#FEEDEC]"
-              } rounded-lg`}
+                } rounded-lg`}
             >
               {item.videoType === "upload" ? "Video tải lên" : "Video youtube"}
             </p>

@@ -12,7 +12,7 @@ import ToastMessage from '../../utils/alert';
 
 export default function AddSection() {
   const location = useLocation();
-  const coursesName = location.state?.coursesName || "Default Course Name";
+  const courseName = location.state?.courseName || "Default Course Name";
   const courseId = location.state?.courseId;
   const navigate = useNavigate();
 
@@ -58,11 +58,11 @@ export default function AddSection() {
 
         // Redirect to the "add-lesson" page with relevant data
         setTimeout(() => {
-          navigate('/add-lesson', {
+          navigate(`/add-lesson?sectionId=${sectionId}&courseId=${sectionData.course_id}`, {
             state: {
-              courseName: coursesName,
-              course_id: sectionData.course_id,
-              name: sectionData.name,
+              courseName: courseName,
+              courseId: sectionData.course_id,
+              sectionName: sectionData.name,
               sectionId,
             },
           });
@@ -119,7 +119,7 @@ export default function AddSection() {
         <input
           label="Tên khóa học"
           type="text"
-          defaultValue={coursesName}
+          defaultValue={courseName}
           disabled
           className="w-full mt-2 px-3 py-2 my-4 border-2 rounded-lg bg-neutral-100 focus-border-indigo-500 focus-outline-none"
         />
@@ -143,10 +143,10 @@ export default function AddSection() {
         />
       </div>
       <div className="p-6">
-      <TableSection 
-  courseName={coursesName}
-  courseId={courseId}
-/>
+        <TableSection
+          courseName={courseName}
+          courseId={courseId}
+        />
       </div>
     </>
   );
