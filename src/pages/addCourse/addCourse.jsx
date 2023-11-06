@@ -11,7 +11,7 @@ import { ServerApi } from '../../utils/http';
 import { convertViToEn, getLocalData } from '../../utils/helper';
 import ToastMessage from '../../utils/alert';
 import { useQuery } from 'react-query';
-
+import Jodit from '../../components/Jodit/Jodit';
 // Define a query function to fetch course data
 const getCategory = async () => {
   try {
@@ -25,6 +25,7 @@ const getCategory = async () => {
 };
 
 export default function AddCourse() {
+  
   const [selectedValue, setSelectedValue] = useState('0'); // Mặc định là "Miễn phí" (0)
   const [price, setPrice] = useState('');
   const [inputValue, setInputValue] = useState('');
@@ -263,7 +264,10 @@ export default function AddCourse() {
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
           />
-          <InputDescription
+          <Jodit label={"Mô tả"}  
+          value={formValue.content}
+           onChange={handleDescriptionChange}/>
+          {/* <InputDescription
             label={"Mô tả"}
             placeholder={"Nhập mô tả"}
             className={
@@ -273,7 +277,7 @@ export default function AddCourse() {
             cols={"30"}
             value={formValue.content}
             onChange={handleDescriptionChange}
-          />
+          /> */}
         </div>
         <div className="lg:my-0 md:my-0 sm:my-0 my-6">
           <InputFile
