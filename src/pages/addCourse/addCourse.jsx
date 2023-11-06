@@ -95,7 +95,7 @@ export default function AddCourse() {
         const coursesName = response.data.name
         ToastMessage("Thêm mới khóa học thành công!").success();
         setTimeout(() => {
-          navigate(`/add-section?courseId=${courseId}&courseName=${coursesName}&page=1`, { state: { courseName: coursesName, courseId } })
+          navigate(`/add-section?courseId=${courseId}&page=1`, { state: { courseName: coursesName, courseId } })
         }, 500
         )
       })

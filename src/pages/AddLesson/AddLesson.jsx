@@ -14,7 +14,7 @@ import { ServerApi } from "../../utils/http";
 import { LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import ToastMessage from "../../utils/alert";
 import { convertViToEn } from "../../utils/helper";
 function LinearProgressWithLabel(props) {
@@ -47,12 +47,12 @@ function LinearProgressWithLabel(props) {
 // classNames
 export default function AddLesson() {
   const location = useLocation();
-
+  const sectionName = location.state?.sectionName;
   const courseName = location.state?.courseName;
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("courseId");
   const sectionId = searchParams.get("sectionId");
-  const sectionName = location.state?.sectionName;
+
 
   const [userSI, setUserSI] = useState("")
   const [isLoading, setLoading] = useState(false);

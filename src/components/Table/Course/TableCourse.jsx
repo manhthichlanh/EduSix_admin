@@ -138,7 +138,7 @@ function TableCourse() {
         <div className="flex items-center gap-2">
           <button
             onClick={() =>
-              navigate(`/add-section?courseId=${item.course_id}&courseName=${item.name}`, {
+              navigate(`/add-section?courseId=${item.course_id}`, {
                 state: { courseName: item.name, courseId: item.course_id }, // Pass coursesName in state
               })
             }
