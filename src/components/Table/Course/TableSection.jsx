@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Table from "rc-table";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../common/Pagination";
 import Pencil from "../../common/icon/Pencil";
 import Trash from "../../common/icon/Trash";
@@ -11,13 +11,7 @@ function TableSection() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const courseId = searchParams.get("courseId");
-  console.log(courseId);
-  // const [queryParams, setQueryParams] = useState({
-  //   courseId: 28,
-  //   courseName: "",
-  // })
-  const coursesName = searchParams.get("coursesName");
-  // console.log(courseId);
+  const courseName = searchParams.get("courseName");
   const page = Number(searchParams.get("page") || 1);
   const LIMIT = 5;
   const [sectionData, setSectionData] = useState([]);
@@ -27,17 +21,12 @@ function TableSection() {
       fetchSectionData(courseId, page);
     }
   }, [courseId, page]);
-  // useEffect(() => {
-  //   const searchParams = new URLSearchParams(window.location.search);
-  //   const courseId = searchParams.get('courseId');
-  //   console.log("123"+courseId);
-  //   // if (!courseId) setQueryParams({ courseId: courseId})
-  // }, [])
+
   const fetchSectionData = async (course_id, currentPage) => {
     try {
       const response = await ServerApi.get(`/section?course_id=${course_id}`);
       setSectionData(response.data);
-      navigate(`?courseId=${course_id}&page=${currentPage}`, { replace: true });
+      navigate(`?courseId=${course_id}&courseName=${courseName}&page=${currentPage}`, { replace: true });
     } catch (error) {
       console.error("Error fetching section data:", error);
       setSectionData([]); // Set data to an empty array in case of an error
@@ -79,7 +68,18 @@ function TableSection() {
       title: "Thao tác",
       render: (item) => (
         <div className="flex items-center gap-2">
-          <button onClick={() => console.log(`I miss you Ngọc`)}>
+          <button onClick={() => {
+            navigate(`/add-lesson?sectionId=${item.section_id}&courseId=${item.course_id}`, {
+              state:
+              {
+                courseName: courseName,
+                courseId: item.course_id,
+                sectionName: item.name,
+                sectionId: item.section_id,
+              }
+            })
+
+          }}>
             <Add className="text-gray-500  hover:text-blue-500"></Add>
           </button>
           <button onClick={() => console.log(`I love you ${item?.id}`)}>

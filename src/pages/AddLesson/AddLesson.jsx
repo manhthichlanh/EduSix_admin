@@ -14,7 +14,7 @@ import { ServerApi } from "../../utils/http";
 import { LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import ToastMessage from "../../utils/alert";
 import { convertViToEn } from "../../utils/helper";
 function LinearProgressWithLabel(props) {
@@ -47,11 +47,12 @@ function LinearProgressWithLabel(props) {
 // classNames
 export default function AddLesson() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const coursesName = location.state?.courseName;
-  const courseId = location.state?.course_id;
-  const sectionName = location.state?.name;
-  const sectionId = location.state?.sectionId;
+
+  const courseName = location.state?.courseName;
+  const [searchParams] = useSearchParams();
+  const courseId = searchParams.get("courseId");
+  const sectionId = searchParams.get("sectionId");
+  const sectionName = location.state?.sectionName;
 
   const [userSI, setUserSI] = useState("")
   const [isLoading, setLoading] = useState(false);
@@ -75,7 +76,7 @@ export default function AddLesson() {
   // const [initialAnswerCount, setInitialAnswerCount] = useState(2);
   const [formValue, setFormValue] = useState(() => ({
     course_id: courseId,
-    courseName: coursesName,
+    courseName: courseName,
     sectionName: sectionName,
     //lesson information
     section_id: sectionId,
@@ -573,7 +574,7 @@ export default function AddLesson() {
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
             }
             label="Tên khóa học"
-            value={coursesName}
+            value={courseName}
             disabled
           ></Input>
           <Input
