@@ -10,6 +10,18 @@ import { useNavigate } from 'react-router-dom';
 import { ServerApi } from '../../utils/http';
 import { convertViToEn } from '../../utils/helper';
 import ToastMessage from '../../utils/alert';
+import { useQuery } from 'react-query';
+
+// Define a query function to fetch course data
+const getCategory = async () => {
+  try {
+    const response = await ServerApi.get("/category");
+    return response.data;
+  } catch (error) {
+    throw new Error("Error fetching course data");
+  }
+};
+
 export default function AddCourse() {
   const [selectedValue, setSelectedValue] = useState('0'); // Mặc định là "Miễn phí" (0)
   const [price, setPrice] = useState('');
@@ -29,6 +41,10 @@ export default function AddCourse() {
     thumbnail: ""
   })
 
+
+
+  // Use React Query to fetch and manage course data
+  const { data: courseData, isLoading, isError } = useQuery("courseData", getCategory);
   const navigate = useNavigate();
   const handleSelectChange = (e) => {
     setFormValue({ ...formValue, category_id: e.target.value })
@@ -154,7 +170,7 @@ export default function AddCourse() {
             onClick={() => {
               const newFormError = {
                 "Tên": formValue.name,
-                "mô tả": formValue.content,
+                "Mô tả": formValue.content,
                 "Hình ảnh": formValue.thumbnail
               }
 
@@ -222,7 +238,7 @@ export default function AddCourse() {
           />
           {formValue.type === "1" && (
             <Input
-              type="text"
+              type="number"
               value={formValue.course_price}
               onChange={handlePriceChange}
               placeholder="Nhập giá"

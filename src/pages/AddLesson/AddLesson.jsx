@@ -49,8 +49,8 @@ export default function AddLesson() {
   const location = useLocation();
   const navigate = useNavigate();
   const coursesName = location.state?.courseName;
-  const courseId = location.state?.courseId;
-  const sectionName = location.state?.sectionName;
+  const courseId = location.state?.course_id;
+  const sectionName = location.state?.name;
   const sectionId = location.state?.sectionId;
 
   const [userSI, setUserSI] = useState("")

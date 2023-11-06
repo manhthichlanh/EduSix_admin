@@ -5,6 +5,7 @@ import { Menu } from "@headlessui/react";
 import Filter from "../../components/common/icon/Filter";
 import TableCourse from "../../components/Table/Course/TableCourse";
 import Search from "../../components/Search/Search";
+import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <div className="max-h-full px-6 py-6">
@@ -21,11 +22,13 @@ export default function Home() {
           </div>
         </div>
         <div className="flex gap-2 mt-4 whitespace-nowrap sm:mb-0 sm:mt-4 sm:justify-end">
+        <Link to="/add-course" >
           <Button
             text={"Thêm khóa học"}
             Class={
               "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
             }
+
             Icon={function Icon() {
               return (
                 <svg
@@ -45,6 +48,7 @@ export default function Home() {
               console.log("hello");
             }}
           />
+          </Link>
         </div>
       </div>
       {/* filter button*/}
