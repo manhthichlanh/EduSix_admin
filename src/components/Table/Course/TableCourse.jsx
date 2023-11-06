@@ -3,7 +3,7 @@ import Table from "rc-table";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../common/Pagination";
 import { useQuery } from "react-query";
-import { ServerApi } from "../../../utils/http";
+import { ServerApi, serverEndpoint } from "../../../utils/http";
 import Pencil from "../../common/icon/Pencil";
 import Trash from "../../common/icon/Trash";
 import Add from "../../common/icon/Add";
@@ -24,7 +24,7 @@ function TableCourse() {
       throw new Error("Error fetching course data");
     }
   };
- 
+
 
   // Use React Query to fetch and manage course data
   const { data: courseData, isLoading, isError } = useQuery("courseData", getCourseData);
@@ -53,7 +53,7 @@ function TableCourse() {
       render: (item) => (
         <div className="flex items-center gap-2">
           <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
-            <img className="w-12 h-12" src={`${ServerApi.baseURL}course/thumbnail/${item.thumbnail}`} />
+            <img className="w-12 h-12" src={`${serverEndpoint}course/thumbnail/${item.thumbnail}`} />
           </div>
           <div>
             <p className="capitalize font-medium text-base leading-[20px]">
@@ -84,19 +84,18 @@ function TableCourse() {
       key: "price",
       render: (item) => (
         <span
-          className={`font-medium tracking-[0.5%] leading-[18px] ${
-            item.type === 0
-              ? "text-emerald-600"
-              : item.type === 2
+          className={`font-medium tracking-[0.5%] leading-[18px] ${item.type === 0
+            ? "text-emerald-600"
+            : item.type === 2
               ? "text-red-500"
               : ""
-          }`}
+            }`}
         >
           {item.type === 0
             ? "Free"
             : item.type === 1
-            ? `${Number(item.price).toLocaleString("vi-VN")}đ`
-            : "N/A"}
+              ? `${Number(item.price).toLocaleString("vi-VN")}đ`
+              : "N/A"}
         </span>
       ),
     },
@@ -106,11 +105,10 @@ function TableCourse() {
       render: (item) => (
         <div className="py-1">
           <p
-            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
-              item.status === "Active"
-                ? "text-emerald-700 bg-red-100"
-                : "text-orange-600 bg-emerald-100"
-            } rounded-lg`}
+            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === "Active"
+              ? "text-emerald-700 bg-red-100"
+              : "text-orange-600 bg-emerald-100"
+              } rounded-lg`}
           >
             {item.status === "Active" ? "Active" : "Inactive"}
           </p>
@@ -138,15 +136,15 @@ function TableCourse() {
       key: "actions",
       render: (item) => (
         <div className="flex items-center gap-2">
-         <button
-        onClick={() =>
-          navigate(`/add-section?courseId=${item.course_id}`, {
-            state: { coursesName: item.name, courseId:item.course_id }, // Pass coursesName in state
-          })
-        }
-      >
-        <Add className="text-gray-500  hover:text-blue-500"></Add>
-      </button>
+          <button
+            onClick={() =>
+              navigate(`/add-section?courseId=${item.course_id}`, {
+                state: { coursesName: item.name, courseId: item.course_id }, // Pass coursesName in state
+              })
+            }
+          >
+            <Add className="text-gray-500  hover:text-blue-500"></Add>
+          </button>
           <button>
             <Pencil className="text-gray-500 hover:text-orange-600"></Pencil>
           </button>
