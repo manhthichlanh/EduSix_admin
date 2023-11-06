@@ -49,8 +49,8 @@ export default function AddLesson() {
   const location = useLocation();
   const navigate = useNavigate();
   const coursesName = location.state?.courseName;
-  const courseId = location.state?.courseId;
-  const sectionName = location.state?.sectionName;
+  const courseId = location.state?.course_id;
+  const sectionName = location.state?.name;
   const sectionId = location.state?.sectionId;
 
   const [userSI, setUserSI] = useState("")
@@ -369,6 +369,7 @@ export default function AddLesson() {
           'Content-Type': `multipart/form-data`,
           'Socket-ID': userSI
         }
+        console.log("cóa selected video", isVideoSelected)
         socket.on("process_info", (process_info) => {
           const { progress_percent, actionId, actionActive } = process_info;
           switch (actionId) {
