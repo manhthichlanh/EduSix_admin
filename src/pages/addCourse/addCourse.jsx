@@ -82,7 +82,6 @@ export default function AddCourse() {
     newForm.append('file', file, newName);
     setFormValue({ ...formValue, thumbnail: newForm.get("file") })
   }
-
   const handleSave = () => {
     console.log(formValue)
 
@@ -111,8 +110,12 @@ export default function AddCourse() {
     const user_id = getLocalData("auth_info").user.user_id;
     setFormValue({ ...formValue, user_id })
   }, [])
-
-
+  useEffect(() => {
+    if (cateData && cateData?.length > 0) {
+      setFormValue({ ...formValue, category_id: cateData[0].value })
+    }
+  }, [cateData]
+  )
 
   return (
     <>
