@@ -16,7 +16,9 @@ import { useQuery } from 'react-query';
 const getCategory = async () => {
   try {
     const response = await ServerApi.get("/category");
-    return response.data;
+    const cateData = response.data;
+    const newData = cateData.map(item => ({ value: item.category_id, text: item.cate_name }))
+    return newData;
   } catch (error) {
     throw new Error("Error fetching course data");
   }
@@ -44,7 +46,7 @@ export default function AddCourse() {
 
 
   // Use React Query to fetch and manage course data
-  const { data: courseData, isLoading, isError } = useQuery("courseData", getCategory);
+  const { data: cateData, isLoading, isError } = useQuery("cateData", getCategory);
   const navigate = useNavigate();
   const handleSelectChange = (e) => {
     setFormValue({ ...formValue, category_id: e.target.value })
@@ -194,10 +196,7 @@ export default function AddCourse() {
           </p>
           <InputSelect
             label={"Danh mục khóa học"}
-            array={[
-              { value: "1", text: "Hello" },
-              { value: "2", text: "Hello2" },
-            ]}
+            array={cateData}
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
