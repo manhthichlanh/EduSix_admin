@@ -8,7 +8,7 @@ import Button from "../../components/Button/Button";
 import InputFile from "../../components/Input/InputFile";
 import { useNavigate } from 'react-router-dom';
 import { ServerApi } from '../../utils/http';
-import { convertViToEn } from '../../utils/helper';
+import { convertViToEn, getLocalData } from '../../utils/helper';
 import ToastMessage from '../../utils/alert';
 import { useQuery } from 'react-query';
 
@@ -107,6 +107,10 @@ export default function AddCourse() {
       });
 
   };
+  useEffect(() => {
+    const user_id = getLocalData("auth_info").user.user_id;
+    setFormValue({ ...formValue, user_id })
+  }, [])
 
 
 
