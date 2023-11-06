@@ -13,3 +13,22 @@ export const convertViToEn = (str, toUpperCase = false) => {
 
     return toUpperCase ? str.toUpperCase() : str;
 }
+export const getLocalData = (key) => {
+    try {
+        // Lấy dữ liệu từ Local Storage và chuyển từ chuỗi JSON thành đối tượng JavaScript
+        const jsonData = localStorage.getItem(key);
+        return JSON.parse(jsonData);
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu từ Local Storage:', error);
+        return null; // Trả về null nếu có lỗi
+    }
+}
+export const setLocalData = (key, data) => {
+    try {
+        // Chuyển đối tượng JavaScript thành chuỗi JSON và lưu vào Local Storage
+        const jsonData = JSON.stringify(data);
+        localStorage.setItem(key, jsonData);
+    } catch (error) {
+        console.error('Lỗi khi lưu dữ liệu vào Local Storage:', error);
+    }
+}
