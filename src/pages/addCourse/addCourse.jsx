@@ -25,7 +25,6 @@ const getCategory = async () => {
 };
 
 export default function AddCourse() {
-  
   const [selectedValue, setSelectedValue] = useState('0'); // Mặc định là "Miễn phí" (0)
   const [price, setPrice] = useState('');
   const [inputValue, setInputValue] = useState('');
@@ -63,10 +62,9 @@ export default function AddCourse() {
     setFormValue({ ...formValue, name: e.target.value })
   };
 
-  const handleDescriptionChange = (e) => {
-    setFormValue({ ...formValue, content: e.target.value })
-
-  };
+ const handleDescriptionChange = (content) => {
+  setFormValue({ ...formValue, content })
+};
 
   const handleStatusChange = (e) => {
     setFormValue({ ...formValue, status: Boolean(e.target.value) })
@@ -264,9 +262,13 @@ export default function AddCourse() {
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
           />
-          <Jodit label={"Mô tả"}  
-          value={formValue.content}
-           onChange={handleDescriptionChange}/>
+         <Jodit
+  label={"Mô tả"}
+  value={formValue.content} // Use an empty string as a fallback
+  setValue={handleDescriptionChange}
+/>
+
+
           {/* <InputDescription
             label={"Mô tả"}
             placeholder={"Nhập mô tả"}
