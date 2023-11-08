@@ -83,7 +83,7 @@ export default function AddLesson() {
     section_id: sectionId,
     lessonName: "",
     description: "",//content
-    lesson_type: 1,
+    lesson_type: 0,
     //lesson information
     video: {},
     quizData: [
@@ -328,9 +328,10 @@ export default function AddLesson() {
         section_id: sectionId || 1,
         name: lessonName, // Use the lessonName from formValue
         content: description, // Use the description from formValue
-        lesson_type: 1,
+        lesson_type: 0,
       };
       if (isQuizSelected) {
+        newLessonWith.lesson_type = 1;
         const newQuizzes = formValue.quizData.map(quiz => {
           return {
             question: quiz.question,
@@ -359,7 +360,7 @@ export default function AddLesson() {
         const videoFile = formValue.video;
 
         delete newLessonWith.quizzes;
-
+        newLessonWith.lesson_type = 0;
         newLessonWith = {
           ...newLessonWith,
           file_videos: videoFile,
