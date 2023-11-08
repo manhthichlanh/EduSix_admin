@@ -44,6 +44,7 @@ function LinearProgressWithLabel(props) {
     </>
   );
 }
+console.log(socket)
 // classNames
 export default function AddLesson() {
   const location = useLocation();
@@ -69,7 +70,7 @@ export default function AddLesson() {
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [singleCorrect, setSingleCorrect] = useState(true);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
-
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
 
   // const [courseId, setCourseId] = useState(1); // Giá trị khởi tạo ban đầu
 
@@ -444,16 +445,24 @@ export default function AddLesson() {
 
 
   useEffect(() => {
-    if (isVideoOpen && !userSI) {
-      console.log(isVideoOpen && !userSI)
-      socket.emit("user_init_socket");
-      socket.on("server_send_sid", (socketId) => {
-        setUserSI(socketId)
-        socket.off("server_send_sid");
-      })
+    if (isVideoOpen && isSocketConnected) {
+      setUserSI(socket.id)
     }
-  }, [isVideoOpen, userSI])
+  }, [isVideoOpen, isSocketConnected])
+  useEffect(() => {
+    function onConnect() {
+      console.log("đã kết nối")
+      setIsSocketConnected(true);
+    }
 
+    function onDisconnect() {
+      setIsSocketConnected(false);
+    }
+
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+  }, [])
   useEffect(() => {
     console.log(formValue);
   }, [formValue]);
