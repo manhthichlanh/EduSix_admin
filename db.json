@@ -1,5 +1,44 @@
 {
   "lessons": [
-    
+    {
+      "section_id": 1,
+      "courseName": "fsd",
+      "courseId": 1,
+      "sectionName": "dfs",
+      "name": "sdf",
+      "content": "dfs",
+      "lesson_type": 1,
+      "quizData": [],
+      "id": 1
+    }
+  ],
+  "courses": [
+    {
+      "category": "0",
+      "coursesName": "fsd",
+      "courseType": "0",
+      "price": 0,
+      "status": "1",
+      "description": "dsf",
+      "id": 1
+    },
+    {
+      "category": "0",
+      "coursesName": "ádfafadsf",
+      "courseType": "0",
+      "price": 0,
+      "status": "1",
+      "description": "sfsfafsafdsf",
+      "id": 2
+    }
+  ],
+  "sections": [
+    {
+      "courseName": "fsd",
+      "courseId": 1,
+      "sectionName": "dfs",
+      "status": 1,
+      "id": 1
+    }
   ]
 }
