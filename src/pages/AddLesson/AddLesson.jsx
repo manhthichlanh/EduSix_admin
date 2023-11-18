@@ -44,6 +44,7 @@ function LinearProgressWithLabel(props) {
     </>
   );
 }
+console.log(socket)
 // classNames
 export default function AddLesson() {
   const location = useLocation();
@@ -69,7 +70,7 @@ export default function AddLesson() {
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [singleCorrect, setSingleCorrect] = useState(true);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
-
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
 
   // const [courseId, setCourseId] = useState(1); // Giá trị khởi tạo ban đầu
 
@@ -82,7 +83,7 @@ export default function AddLesson() {
     section_id: sectionId,
     lessonName: "",
     description: "",//content
-    lesson_type: 1,
+    lesson_type: 0,
     //lesson information
     video: {},
     quizData: [
@@ -327,9 +328,10 @@ export default function AddLesson() {
         section_id: sectionId || 1,
         name: lessonName, // Use the lessonName from formValue
         content: description, // Use the description from formValue
-        lesson_type: 1,
+        lesson_type: 0,
       };
       if (isQuizSelected) {
+        newLessonWith.lesson_type = 1;
         const newQuizzes = formValue.quizData.map(quiz => {
           return {
             question: quiz.question,
@@ -358,7 +360,7 @@ export default function AddLesson() {
         const videoFile = formValue.video;
 
         delete newLessonWith.quizzes;
-
+        newLessonWith.lesson_type = 0;
         newLessonWith = {
           ...newLessonWith,
           file_videos: videoFile,
@@ -444,16 +446,24 @@ export default function AddLesson() {
 
 
   useEffect(() => {
-    if (isVideoOpen && !userSI) {
-      console.log(isVideoOpen && !userSI)
-      socket.emit("user_init_socket");
-      socket.on("server_send_sid", (socketId) => {
-        setUserSI(socketId)
-        socket.off("server_send_sid");
-      })
+    if (isVideoOpen && isSocketConnected) {
+      setUserSI(socket.id)
     }
-  }, [isVideoOpen, userSI])
+  }, [isVideoOpen, isSocketConnected])
+  useEffect(() => {
+    function onConnect() {
+      console.log("đã kết nối")
+      setIsSocketConnected(true);
+    }
 
+    function onDisconnect() {
+      setIsSocketConnected(false);
+    }
+
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+  }, [])
   useEffect(() => {
     console.log(formValue);
   }, [formValue]);
