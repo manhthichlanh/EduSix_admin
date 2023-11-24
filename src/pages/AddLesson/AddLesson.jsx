@@ -331,7 +331,7 @@ export default function AddLesson() {
         lesson_type: 0,
       };
       if (isQuizSelected) {
-        newLessonWith.lesson_type = 1;
+        newLessonWith.lesson_type = 2;
         const newQuizzes = formValue.quizData.map(quiz => {
           return {
             question: quiz.question,
@@ -360,7 +360,7 @@ export default function AddLesson() {
         const videoFile = formValue.video;
 
         delete newLessonWith.quizzes;
-        newLessonWith.lesson_type = 0;
+        newLessonWith.lesson_type = 1;
         newLessonWith = {
           ...newLessonWith,
           file_videos: videoFile,
