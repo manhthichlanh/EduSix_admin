@@ -328,7 +328,7 @@ export default function AddLesson() {
         section_id: sectionId || 1,
         name: lessonName, // Use the lessonName from formValue
         content: description, // Use the description from formValue
-        lesson_type: 0,
+        lesson_type: 1,
       };
       if (isQuizSelected) {
         newLessonWith.lesson_type = 2;

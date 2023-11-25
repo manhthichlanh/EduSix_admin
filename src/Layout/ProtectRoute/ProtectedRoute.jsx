@@ -12,9 +12,9 @@ const ProtectedRoute = ({ children }) => {
                 const headers = {
                     'Authorization': 'Bearer ' + auth_info.token
                 }
-                const response = await ServerApi.post("auth/protected", {}, { headers });
+                const response = await ServerApi.post("auth/verify/admin", {}, { headers });
                 const data = response.data;
-                if (!auth_info.user) setLocalData("auth_info", { ...auth_info, user: data });
+                if (!auth_info.admin) setLocalData("auth_info", { ...auth_info, admin: data });
 
             } catch (error) {
                 console.log(error)
