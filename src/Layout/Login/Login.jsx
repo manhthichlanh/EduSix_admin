@@ -15,14 +15,14 @@ const Login = () => {
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: ""
   })
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-  const handleEmailChange = (event) => {
-    setFormData({ ...formData, email: event.target.value })
+  const handleUsenameChange = (event) => {
+    setFormData({ ...formData, username: event.target.value })
   }
 
   const handlePasswordChange = (event) => {
@@ -33,7 +33,7 @@ const Login = () => {
     event.preventDefault();
     console.log(formData)
     try {
-      const response = await ServerApi.post("auth/login", formData);
+      const response = await ServerApi.post("auth/login/admin", formData);
       const data = response.data;
       console.log(data)
       ToastMessage("Đăng nhập thành công!").success();
@@ -63,8 +63,8 @@ const Login = () => {
               className={
                 "w-full mt-2 px-3 py-2 border-2 rounded-lg bg-white focus:border-indigo-500 focus:outline-none"
               }
-              value={formData.email}
-              onChange={handleEmailChange}
+              value={formData.username}
+              onChange={handleUsenameChange}
             />
             <div className="password-input">
               <Input
