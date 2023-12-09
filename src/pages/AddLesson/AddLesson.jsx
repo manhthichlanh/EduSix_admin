@@ -448,8 +448,14 @@ export default function AddLesson() {
   useEffect(() => {
     if (isVideoOpen && isSocketConnected) {
       setUserSI(socket.id)
+
+      console.log("coa roi")
+    } else if (isVideoOpen && !isSocketConnected) {
+      window.location.reload()
     }
-  }, [isVideoOpen, isSocketConnected])
+    console.log({ isVideoOpen, isSocketConnected })
+  }, [isVideoOpen, isSocketConnected]);
+
   useEffect(() => {
     function onConnect() {
       console.log("đã kết nối")
@@ -467,12 +473,6 @@ export default function AddLesson() {
   useEffect(() => {
     console.log(formValue);
   }, [formValue]);
-  // useEffect(() => {
-  //   if (!coursesName || !courseId || !sectionName || !sectionId) {
-  //     navigate(-1);
-  //   }
-  // }, [])
-
   return (
     <>
       <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">

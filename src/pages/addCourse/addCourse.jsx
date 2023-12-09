@@ -33,7 +33,7 @@ export default function AddCourse() {
   const [selectedStatus, setSelectedStatus] = useState('1'); // Mặc định là "Đang bật" (1)
   const [formValue, setFormValue] = useState({
     category_id: "1",
-    user_id: null,
+    admin_id: null,
     name: "",
     course_price: "",
     slug: null,
@@ -62,9 +62,9 @@ export default function AddCourse() {
     setFormValue({ ...formValue, name: e.target.value })
   };
 
- const handleDescriptionChange = (content) => {
-  setFormValue({ ...formValue, content })
-};
+  const handleDescriptionChange = (content) => {
+    setFormValue({ ...formValue, content })
+  };
 
   const handleStatusChange = (e) => {
     setFormValue({ ...formValue, status: Boolean(e.target.value) })
@@ -106,8 +106,9 @@ export default function AddCourse() {
 
   };
   useEffect(() => {
-    const user_id = getLocalData("auth_info").user.user_id;
-    setFormValue({ ...formValue, user_id })
+    const admin_id = getLocalData("auth_info").admin.admin_id;
+    console.log({ admin_id })
+    setFormValue({ ...formValue, admin_id })
   }, [])
   useEffect(() => {
     if (cateData && cateData?.length > 0) {
@@ -262,11 +263,11 @@ export default function AddCourse() {
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
           />
-         <Jodit
-  label={"Mô tả"}
-  value={formValue.content} // Use an empty string as a fallback
-  setValue={handleDescriptionChange}
-/>
+          <Jodit
+            label={"Mô tả"}
+            value={formValue.content} // Use an empty string as a fallback
+            setValue={handleDescriptionChange}
+          />
 
 
           {/* <InputDescription
