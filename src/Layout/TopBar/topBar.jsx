@@ -31,8 +31,9 @@ const TopBar = () => {
         setIsSeachOpen(false);
     };
     useEffect(() => {
-        const user = getLocalData("auth_info").user;
-        setUserInfo(user.fullname);
+        const admin = getLocalData("auth_info").admin;
+        if (admin)setUserInfo(admin.fullname);
+        // setUserInfo(user.fullname);
     }, []
     )
     return (

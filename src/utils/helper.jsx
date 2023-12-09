@@ -17,6 +17,7 @@ export const getLocalData = (key) => {
     try {
         // Lấy dữ liệu từ Local Storage và chuyển từ chuỗi JSON thành đối tượng JavaScript
         const jsonData = localStorage.getItem(key);
+        // console.log(JSON.parse(jsonData))
         return JSON.parse(jsonData);
     } catch (error) {
         console.error('Lỗi khi lấy dữ liệu từ Local Storage:', error);
