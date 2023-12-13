@@ -1,4 +1,8 @@
 /* eslint-disable react/prop-types */
+
+import { map, reduce } from "lodash";
+import moment from "moment";
+
 import Card from "../../components/Card/Card";
 import TableIndex from "../../components/Table/TableIndex";
 import { Alert } from "@mui/material";
@@ -9,9 +13,7 @@ import BlogIcon from "../../components/common/icon/Cart/BlogIcon";
 import CashIcon from "../../components/common/icon/Cart/CashIcon";
 import PieChart from "../../components/chart/PieChart";
 import CardAnalytics from "../../components/card/CardAnalytics";
-import { map, reduce } from "lodash";
 import BarChart from "../../components/chart/BarChart";
-import moment from "moment";
 
 const analyticsCard = [
   { id: 1, content: 123, title: "Tổng khóa học" },
