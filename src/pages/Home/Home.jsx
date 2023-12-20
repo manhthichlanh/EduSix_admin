@@ -14,7 +14,11 @@ export default function Home() {
   useEffect(() => {
     ToastMessage(`Chúc mừng bạn kẻ chiến thắng!`).warn();
   }, []);
-
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const userIdParam = searchParams.get('userId');
+    console.log(userIdParam)
+  }, []);
   return (
     <div>
       <Alert severity="success" color="info">

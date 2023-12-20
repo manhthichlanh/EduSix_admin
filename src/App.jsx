@@ -24,13 +24,20 @@ import ListSection from "./pages/ListSection/ListSection";
 
 import Login from "./Layout/Login/Login";
 import ListQuiz from "./pages/ListQuiz/ListQuiz";
+import ProtectedRoute from "./Layout/ProtectRoute/ProtectedRoute";
 //||Components
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }>
+          <Route index element={
+            <Home />
+          } />
           <Route path="*" element={<NoPage />} />
           <Route path="/add-cate-course" element={<AddCateCourse />} />
           <Route path="/add-course" element={<AddCourse />} />

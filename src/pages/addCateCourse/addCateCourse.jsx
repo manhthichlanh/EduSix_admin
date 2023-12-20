@@ -1,10 +1,72 @@
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
+import InputSelect from "../../components/Input/InputSelect";
+import InputFile from "../../components/Input/InputFile";
 import InputDescription from "../../components/Input/InputDescription";
 import Button from "../../components/Button/Button";
-import InputFile from "../../components/Input/InputFile";
+import { ServerApi } from "../../utils/http";
+import { convertViToEn } from '../../utils/helper';
+import ToastMessage from '../../utils/alert';
+import { useNavigate } from 'react-router-dom';
 export default function Home() {
+  const [inputValue, setInputValue] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState(true);
+  const navigate = useNavigate();
+  const [formValue, setFormValue] = useState({
+    cate_name: '',
+    status: true,
+    ordinal_number: '',
+    logo_cate: ''
+  });
+
+  const handleNameChange = (e) => {
+    setFormValue({ ...formValue, cate_name: e.target.value })
+  };
+
+
+
+  const handleNumberChange = (e) => {
+    setFormValue({ ...formValue, ordinal_number: e.target.value })
+  };
+
+
+  const handleStatusChange = (e) => {
+    setFormValue({ ...formValue, status: Boolean(e.target.value) })
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    const newForm = new FormData();
+    const newName = convertViToEn(file.name); // Đặt tên mới ở đây
+    newForm.append('file', file, newName);
+    setFormValue({ ...formValue, logo_cate: newForm.get("file") })
+  }
+
+  const handleSave = () => {
+    console.log(formValue)
+
+    const headers = {
+      'Content-Type': `multipart/form-data`,
+    }
+    ServerApi.post('category', formValue, { headers })
+      .then(response => {
+        console.log('Data saved:', response.data);
+        const categoryId = response.data.id;
+        ToastMessage("Thêm Category thành công!").success();
+        setTimeout(() => {
+          navigate('/cate-course', { state: { cateName: inputValue, categoryId } })
+        }, 500
+        )
+      })
+      .catch(error => {
+        console.error('Error saving data:', error);
+        ToastMessage(error.message).error();
+        // Handle the error here
+      });
+
+  };
   return (
     <>
       <form action="">
@@ -29,6 +91,7 @@ export default function Home() {
               text={"Hủy"}
               Class={
                 "flex font-medium items-center text-black hover:bg-slate-200 transition ease-in-out py-2 px-4 border-2 rounded-lg"
+              
               }
               Icon={function Icon() {
                 return (
@@ -46,27 +109,41 @@ export default function Home() {
               onClick={() => console.log("You are my dream")}
             />
             <Button
-              text={"Thêm"}
-              Class={
-                "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
+            text={"Thêm"}
+            Class={
+              "flex font-medium items-center bg-indigo-500 hover-bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
+            }
+            Icon={function Icon() {
+              return (
+                <svg
+                  className="pr-2"
+                  fill="#ffffff"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v18c0-0.553-0.447-1-1-1z" />
+                  <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0-1-0.447-1-1z" />
+                </svg>
+              );
+            }}
+            onClick={() => {
+              const newFormError = {
+                "Tên": formValue.cate_name,
               }
-              Icon={function Icon() {
-                return (
-                  <svg
-                    className="pr-2 "
-                    fill="#ffffff"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v-18c0-0.553-0.447-1-1-1z" />
-                    <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0 1-0.447 1-1z" />
-                  </svg>
-                );
-              }}
-              onClick={() => console.log("You will be mine")}
-            />
+
+              let errCount = 0;
+              for (const [key, value] of Object.entries(newFormError)) {
+                if (!value) {
+                  errCount++;
+                  ToastMessage(`${key} format sai!`).warn()
+                }
+              }
+              if (errCount === 0) handleSave()
+
+            }
+            } />
           </div>
         </div>
         <div className="px-6 py-4 m-6 bg-white border-2 rounded-lg">
@@ -85,9 +162,34 @@ export default function Home() {
             className={
               "w-full text-sm border rounded-lg p-2 mt-2 text-slate-500 file:mr-2 file:px-4 file:py-2 file:rounded-md file:border-none file:bg-blue-500 file:text-white file:hover:bg-blue-700 ease-in-out transition"
             }
-            value={""}
+            
+            value={formValue.cate_name}
+            onChange={handleNameChange}
           ></Input>
-          <InputDescription
+          <Input
+            label={"ordinal number"}
+            placeholder={"Nhập ordinal number"}
+            className={
+              "mt-2 px-4 pb-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+            }
+            
+            value={formValue.ordinal_number}
+            onChange={handleNumberChange}
+          ></Input>
+          <InputSelect
+            label={"Trạng thái"}
+            array={[
+              { value: true, text: "Đang bật" },
+              { value: false, text: "Tắt" },
+            ]}
+            
+            value={selectedStatus}
+            onChange={handleStatusChange}
+            className={
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+            }
+          />
+          {/* <InputDescription
             label={"Mô tả"}
             placeholder={"Nhập mô tả"}
             className={
@@ -96,7 +198,16 @@ export default function Home() {
             cols={"30"}
             rows={"10"}
             value={""}
-          ></InputDescription>
+          ></InputDescription> */}
+          <InputFile
+            title="Logo Category"
+            label={"Logo Category"}
+            className={
+              "grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center"
+            }
+            onChange={handleFileChange}
+            value={""}
+          ></InputFile>
         </div>
       </form>
     </>

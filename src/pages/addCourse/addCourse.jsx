@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
@@ -8,6 +7,23 @@ import InputDescription from "../../components/Input/InputDescription";
 import Button from "../../components/Button/Button";
 import InputFile from "../../components/Input/InputFile";
 import { useNavigate } from 'react-router-dom';
+import { ServerApi } from '../../utils/http';
+import { convertViToEn, getLocalData } from '../../utils/helper';
+import ToastMessage from '../../utils/alert';
+import { useQuery } from 'react-query';
+
+// Define a query function to fetch course data
+const getCategory = async () => {
+  try {
+    const response = await ServerApi.get("/category");
+    const cateData = response.data;
+    const newData = cateData.map(item => ({ value: item.category_id, text: item.cate_name }))
+    return newData;
+  } catch (error) {
+    throw new Error("Error fetching course data");
+  }
+};
+
 export default function AddCourse() {
   const [selectedValue, setSelectedValue] = useState('0'); // Mặc định là "Miễn phí" (0)
   const [price, setPrice] = useState('');
@@ -15,57 +31,94 @@ export default function AddCourse() {
   // const [numberOfLessons, setNumberOfLessons] = useState('');
   const [descriptionValue, setDescriptionValue] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('1'); // Mặc định là "Đang bật" (1)
+  const [formValue, setFormValue] = useState({
+    category_id: "1",
+    user_id: null,
+    name: "",
+    course_price: "",
+    slug: null,
+    content: "",
+    status: true,
+    type: 0,
+    thumbnail: ""
+  })
+
+
+
+  // Use React Query to fetch and manage course data
+  const { data: cateData, isLoading, isError } = useQuery("cateData", getCategory);
   const navigate = useNavigate();
   const handleSelectChange = (e) => {
-    setSelectedValue(e.target.value);
+    setFormValue({ ...formValue, category_id: e.target.value })
   };
 
-  
+
   const handlePriceChange = (e) => {
-    setPrice(e.target.value);
+    setFormValue({ ...formValue, course_price: e.target.value })
+
   };
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    setFormValue({ ...formValue, name: e.target.value })
   };
-  
+
   const handleDescriptionChange = (e) => {
-    setDescriptionValue(e.target.value);
+    setFormValue({ ...formValue, content: e.target.value })
+
   };
 
   const handleStatusChange = (e) => {
-    setSelectedStatus(e.target.value);
+    setFormValue({ ...formValue, status: Boolean(e.target.value) })
   };
-  const handleSave = () => {
-    
-   
-      const dataToSave = {
-        category: selectedValue,
-        coursesName: inputValue,
-        courseType: selectedValue,
-        price: selectedValue === '0' ? 0 : price,
-        status: selectedStatus,
-        description: descriptionValue,
-      };
-  
-      axios.post('http://localhost:3000/courses', dataToSave)
-        .then(response => {
-          console.log('Data saved:', response.data);
-          const courseId = response.data.id;
-          navigate('/add-section', { state: { coursesName: inputValue, courseId } });
-        })
-        .catch(error => {
-          console.error('Error saving data:', error);
-          // Handle the error here
-        });
-    
-  };
-  
-  
+  const handleSelectChangeCourseType = (e) => {
+    setFormValue({ ...formValue, type: e.target.value })
 
+  }
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    const newForm = new FormData();
+    const newName = convertViToEn(file.name); // Đặt tên mới ở đây
+    newForm.append('file', file, newName);
+    setFormValue({ ...formValue, thumbnail: newForm.get("file") })
+  }
+  const handleSave = () => {
+    console.log(formValue)
+
+    const headers = {
+      'Content-Type': `multipart/form-data`,
+    }
+    ServerApi.post('course', formValue, { headers })
+      .then(response => {
+        console.log('Data saved:', response.data);
+        const courseId = response.data.course_id;
+        const coursesName = response.data.name
+        ToastMessage("Thêm mới khóa học thành công!").success();
+        setTimeout(() => {
+          navigate(`/add-section?courseId=${courseId}&page=1`, { state: { courseName: coursesName, courseId } })
+        }, 500
+        )
+      })
+      .catch(error => {
+        console.error('Error saving data:', error);
+        ToastMessage(error.message).error();
+        // Handle the error here
+      });
+
+  };
+  useEffect(() => {
+    const user_id = getLocalData("auth_info").user.user_id;
+    setFormValue({ ...formValue, user_id })
+  }, [])
+  useEffect(() => {
+    if (cateData && cateData?.length > 0) {
+      setFormValue({ ...formValue, category_id: cateData[0].value })
+    }
+  }, [cateData]
+  )
   return (
     <>
-       <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
+      <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
         {/* Breadcrumbs */}
         <div className="mt-6">
           <div className="text-2xl font-medium pb-2">Thêm khóa học</div>
@@ -102,35 +155,44 @@ export default function AddCourse() {
             }}
             onClick={() => console.log("You are my dream")}
           />
-  <Button
-    text={"Thêm"}
-    Class={
-      "flex font-medium items-center bg-indigo-500 hover-bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
-    }
-    Icon={function Icon() {
-      return (
-        <svg
-          className="pr-2"
-          fill="#ffffff"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v18c0-0.553-0.447-1-1-1z" />
-          <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0-1-0.447-1-1z" />
-        </svg>
-      );
-    }}
-    onClick={() => {
-      if (!selectedValue || !inputValue || !descriptionValue || (selectedValue === '1' && !price)) {
-        alert('Hãy nhập đầy đủ thông tin'); // Show an alert if any input is empty
-      } else {
-        if (window.confirm('Bạn có muốn tiếp tục không?')) {
-          handleSave(); // Call handleSave if confirmed
-        }
-      }
-    }}/>
+          <Button
+            text={"Thêm"}
+            Class={
+              "flex font-medium items-center bg-indigo-500 hover-bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
+            }
+            Icon={function Icon() {
+              return (
+                <svg
+                  className="pr-2"
+                  fill="#ffffff"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v18c0-0.553-0.447-1-1-1z" />
+                  <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0-1-0.447-1-1z" />
+                </svg>
+              );
+            }}
+            onClick={() => {
+              const newFormError = {
+                "Tên": formValue.name,
+                "Mô tả": formValue.content,
+                "Hình ảnh": formValue.thumbnail
+              }
+
+              let errCount = 0;
+              for (const [key, value] of Object.entries(newFormError)) {
+                if (!value) {
+                  errCount++;
+                  ToastMessage(`${key} format sai!`).warn()
+                }
+              }
+              if (errCount === 0) handleSave()
+
+            }
+            } />
         </div>
       </div>
       <div className="w-full gap-6 p-6 md:grid sm:grid lg:flex md:grid-cols-1 sm:grid-cols-1">
@@ -140,14 +202,11 @@ export default function AddCourse() {
           </p>
           <InputSelect
             label={"Danh mục khóa học"}
-            array={[
-              { value: "123", text: "Hello" },
-              { value: "213", text: "Hello2" },
-            ]}
+            array={cateData}
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
-            value={selectedValue}
+            value={formValue.category_id}
             onChange={handleSelectChange}
           />
           <Input
@@ -157,7 +216,7 @@ export default function AddCourse() {
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
-            value={inputValue}
+            value={formValue.name}
             onChange={handleInputChange}
           />
           {/* <Input
@@ -176,33 +235,33 @@ export default function AddCourse() {
               { value: "0", text: "Miễn phí" },
               { value: "1", text: "Có phí" },
             ]}
-            value={selectedValue}
-            onChange={handleSelectChange}
+            value={formValue.type}
+            onChange={handleSelectChangeCourseType}
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
           />
-          {selectedValue === "1" && (
+          {formValue.type === "1" && (
             <Input
-              type="text"
-              value={price}
+              type="number"
+              value={formValue.course_price}
               onChange={handlePriceChange}
               placeholder="Nhập giá"
               className="mt-2 px-4 py-2 w-full bg-white rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             />
           )}
-         <InputSelect
-  label={"Trạng thái"}
-  array={[
-    { value: "1", text: "Đang bật" },
-    { value: "0", text: "Tắt" },
-  ]}
-  value={selectedStatus}
-  onChange={handleStatusChange}
-  className={
-    "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
-  }
-/>
+          <InputSelect
+            label={"Trạng thái"}
+            array={[
+              { value: true, text: "Đang bật" },
+              { value: false, text: "Tắt" },
+            ]}
+            value={formValue.status}
+            onChange={handleStatusChange}
+            className={
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+            }
+          />
           <InputDescription
             label={"Mô tả"}
             placeholder={"Nhập mô tả"}
@@ -211,7 +270,7 @@ export default function AddCourse() {
             }
             rows={"10"}
             cols={"30"}
-            value={descriptionValue}
+            value={formValue.content}
             onChange={handleDescriptionChange}
           />
         </div>
@@ -222,6 +281,7 @@ export default function AddCourse() {
             className={
               "grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center"
             }
+            onChange={handleFileChange}
             value={""}
           ></InputFile>
         </div>
