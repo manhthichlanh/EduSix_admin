@@ -13,6 +13,7 @@ export const SocketProvider = ({children}) => {
   const [isSocketConnected, setIsSocketConnected] = useState(false);
   useEffect(() => {
     socket.on('connect', () => {
+      console.log(socket)
       setIsSocketConnected(true)
       console.log('Connected to server');
     });
