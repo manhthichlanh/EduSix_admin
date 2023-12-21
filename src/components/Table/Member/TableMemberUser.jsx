@@ -6,6 +6,8 @@ import Trash from "../../common/icon/Trash";
 // import AddIcon from "../../common/icon/AddIcon";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../common/Pagination";
+import { ServerApi } from "../../../utils/http";
+import { useQuery } from 'react-query';
 
 const data = [
   {
@@ -15,45 +17,18 @@ const data = [
     role: 1,
     status: "Active",
     addTime: "2023-09-19 10:30 AM",
-  },
-  {
-    userName: "Nguyễn Châu Bảo Ngọc",
-    email: "user2@example.com",
-    lessonJoined: "3",
-    role: 1,
-    status: "Inactive",
-    addTime: "2023-09-20 02:15 PM",
-  },
-  {
-    userName: "Phòng Thị Trúc Lan",
-    email: "user3@example.com",
-    lessonJoined: 3,
-    role: 0,
-    status: "Active",
-    addTime: "2023-09-21 09:45 AM",
-  },
-  {
-    userName: "Bùi Lệ Thu",
-    email: "user3@example.com",
-    lessonJoined: 1,
-    role: 0,
-    status: "Inactive",
-    addTime: "2023-09-21 09:45 AM",
-  },
-  {
-    userName: "Võ Ngọc Gia Linh",
-    email: "user3@example.com",
-    lessonJoined: 3,
-    role: 1,
-    status: "Active",
-    addTime: "2023-09-21 09:45 AM",
-  },
+  }
 ];
-
+function fetchUser(page) {
+  return ServerApi.get(`user`);
+}
 function TableMemberUser() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
+  const { data, isLoading, error } = useQuery(['user', page], () => fetchUser(page));
+
+  const users = data?.data || [];
 
   const LIMIT = 10;
   const columns = useMemo(
@@ -63,11 +38,11 @@ function TableMemberUser() {
         render: (item) => (
           <div className="flex items-center gap-2">
             <div className="flex-shrink-0 w-16 h-16 overflow-hidden bg-gray-300 rounded-full">
-              {/* Image here */}
+              <img src={item?.avatar} alt={item?.avatar}/>
             </div>
             <div>
               <p className="capitalize font-medium text-base leading-[20px]">
-                {item?.userName}
+                {item?.fullname}
               </p>
               <p className="capitalize font-sm text-sm text-gray-400 leading-[20px]">
                 {item?.email}
@@ -80,7 +55,7 @@ function TableMemberUser() {
         title: "Khóa học đã đăng kí",
         render: (item) => (
           <div className="py-1 text-[#5C59E8] font-medium">
-            {item?.lessonJoined}
+            {/* {item?.lessonJoined} */} Chưa cập nhật
           </div>
         ),
       },
@@ -90,12 +65,12 @@ function TableMemberUser() {
           <div className="py-1">
             <p
               className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
-                item.status === "Active"
-                  ? "text-emerald-700 bg-red-100"
-                  : "text-orange-600 bg-emerald-100"
+                item.status === "2"
+                ? "text-emerald-700 bg-red-100"
+                : "text-orange-600 bg-emerald-100"
               } rounded-lg`}
             >
-              {item.status === "Active" ? "Đang hoạt động" : "Không hoạt động"}
+              {item.status === "2" ? "Không hoạt động" : "Đang hoạt động"}
             </p>
           </div>
         ),
@@ -104,7 +79,7 @@ function TableMemberUser() {
       {
         title: "Ngày thêm",
         render: (item) => (
-          <div className="py-1 font-medium text-gray-500">{item?.addTime}</div>
+          <div className="py-1 font-medium text-gray-500">{item?.created_at}</div>
         ),
       },
       {
@@ -129,7 +104,7 @@ function TableMemberUser() {
       <div className="border rounded-lg">
         <Table
           columns={columns}
-          data={data}
+          data={users}
           rowKey="id"
           scroll={{
             x: true,
