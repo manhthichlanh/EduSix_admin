@@ -187,8 +187,8 @@ export default function Home() {
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12 gap-2 lg:col-span-6">
             <div className="grid grid-cols-12 gap-4">
-              {map(analyticsCard, (item) => (
-                <div className="col-span-6 lg:col-span-6">
+              {map(analyticsCard, (item, index) => (
+                <div className="col-span-6 lg:col-span-6" key={index}>
                   <CardAnalytics content={item.content} title={item.title} />
                 </div>
               ))}
@@ -223,10 +223,10 @@ export default function Home() {
       <div className="mx-6">
         <p className="mb-2 text-lg font-medium">Người dùng</p>
         <div className="flex flex-col gap-4 px-4 py-3 border rounded-lg shadow-lg">
-          <p className="flex flex-col">
+          <div className="flex flex-col">
             <p className="text-2xl font-medium">{totalUsers}</p>
             <p className="text-xs font-medium text-gray-500">Tổng người dùng</p>
-          </p>
+          </div>
           <div className="flex flex-col">
             <div className="flex justify-between">
               <p className="text-sm font-medium text-gray-500">
