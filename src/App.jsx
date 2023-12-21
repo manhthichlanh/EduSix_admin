@@ -4,7 +4,7 @@ import "./App.css";
 
 //||Components
 import Home from "./pages/Home/Home";
-import AddCateCourse from "./pages/AddCateCourse/AddCateCourse";
+import AddCateCourse from "./pages/AddCateCourse/addCateCourse";
 import AddCourse from "./pages/AddCourse/addCourse";
 import Layout from "./Layout/Layout";
 import NoPage from "./pages/NoPage/NoPage";
@@ -25,6 +25,11 @@ import ListSection from "./pages/ListSection/ListSection";
 import Login from "./Layout/Login/Login";
 import ListQuiz from "./pages/ListQuiz/ListQuiz";
 import ProtectedRoute from "./Layout/ProtectRoute/ProtectedRoute";
+import ProtectedCourseRoute from "./Layout/ProtectRoute/ProtectedCourseRoute";
+import ProtectedOrderRoute from "./Layout/ProtectRoute/ProtectedOrderRoute";
+import ProtectedBlogRoute from "./Layout/ProtectRoute/ProtectedBlogRoutejsx";
+import ProtectedMemberRoute from "./Layout/ProtectRoute/ProtectedMemberRoute";
+import CreateAccountAdmin from "./pages/CreateAccountAdmin/CreateAccountAdmin";
 //||Components
 function App() {
   return (
@@ -39,24 +44,29 @@ function App() {
             <Home />
           } />
           <Route path="*" element={<NoPage />} />
-          <Route path="/add-cate-course" element={<AddCateCourse />} />
-          <Route path="/add-course" element={<AddCourse />} />
-          <Route path="/add-section" element={<AddSection />} />
-          <Route path="/add-lesson" element={<AddLesson />} />
+
+          <Route path="/add-cate-course" element={<ProtectedCourseRoute><AddCateCourse /></ProtectedCourseRoute>} />
+          <Route path="/add-course" element={<ProtectedCourseRoute><AddCourse /></ProtectedCourseRoute>} />
+          <Route path="/add-section" element={<ProtectedCourseRoute><AddSection /></ProtectedCourseRoute>} />
+          <Route path="/add-lesson" element={<ProtectedCourseRoute><AddLesson /></ProtectedCourseRoute>} />
+          <Route path="/list-course" element={<ProtectedCourseRoute><ListCourse /></ProtectedCourseRoute>} />
+          <Route path="/cate-course" element={<ProtectedCourseRoute><CateCourse /></ProtectedCourseRoute>} />
+          <Route path="/list-quiz" element={<ProtectedCourseRoute><ListQuiz /></ProtectedCourseRoute>} />
+
           <Route path="/add-cate-blog" element={<AddCateBlog />} />
-          <Route path="/list-course" element={<ListCourse />} />
-          <Route path="/cate-course" element={<CateCourse />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/cate-blog" element={<CateBlog />} />
-          <Route path="/list-blog" element={<ListBlog />} />
-          <Route path="/add-blog" element={<AddBlog />} />
-          <Route path="/member-admin" element={<MemberAdmin />} />
-          <Route path="/member-user" element={<MemberUser />} />
-          <Route path="/member-user-detail" element={<MemberDetail />} />
-          <Route path="/list-quiz" element={<ListQuiz />} />
-          <Route path="/list-section" element={<ListSection />} />
+          <Route path="/cate-blog" element={<ProtectedBlogRoute><CateBlog /></ProtectedBlogRoute>} />
+          <Route path="/list-blog" element={<ProtectedBlogRoute><ListBlog /></ProtectedBlogRoute>} />
+          <Route path="/add-blog" element={<ProtectedBlogRoute><AddBlog /></ProtectedBlogRoute>} />
+
+          <Route path="/order" element={<ProtectedOrderRoute><Order /></ProtectedOrderRoute>} />
+          <Route path="/create-account" element={<CreateAccountAdmin />} />
+
+          <Route path="/member-admin" element={<ProtectedMemberRoute><MemberAdmin /></ProtectedMemberRoute>} />
+          <Route path="/member-user" element={<ProtectedMemberRoute><MemberUser /></ProtectedMemberRoute>} />
+          <Route path="/member-user-detail" element={<ProtectedMemberRoute><MemberDetail /></ProtectedMemberRoute>} />
         </Route>
         <Route path="/admin/login" element={<Login />} />
+
       </Routes>
     </BrowserRouter>
   );

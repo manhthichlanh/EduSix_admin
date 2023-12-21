@@ -11,9 +11,9 @@ import BlogIcon from "../../components/common/icon/Cart/BlogIcon";
 import CashIcon from "../../components/common/icon/Cart/CashIcon";
 
 export default function Home() {
-  useEffect(() => {
-    ToastMessage(`Chúc mừng bạn kẻ chiến thắng!`).warn();
-  }, []);
+  // useEffect(() => {
+  //   ToastMessage(`Chúc mừng bạn kẻ chiến thắng!`).warn();
+  // }, []);
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const userIdParam = searchParams.get('userId');
