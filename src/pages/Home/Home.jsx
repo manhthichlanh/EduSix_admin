@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
-
 import { map, reduce } from "lodash";
 import moment from "moment";
-
 import Card from "../../components/Card/Card";
 import TableIndex from "../../components/Table/TableIndex";
 import { Alert } from "@mui/material";
@@ -14,15 +12,69 @@ import CashIcon from "../../components/common/icon/Cart/CashIcon";
 import PieChart from "../../components/chart/PieChart";
 import CardAnalytics from "../../components/card/CardAnalytics";
 import BarChart from "../../components/chart/BarChart";
-
-const analyticsCard = [
-  { id: 1, content: 123, title: "Tổng khóa học" },
-  { id: 2, content: 124, title: "Tổng phần học" },
-  { id: 3, content: 567, title: "Tổng bài học" },
-  { id: 4, content: 12, title: "Tổng bài quiz" },
-];
+import { useQuery } from "react-query";
+import { ServerApi } from "../../utils/http";
+// import { map } from 'lodash';
 
 export default function Home() {
+  const getAnalyticsData = async () => {
+    try {
+      const response1 = ServerApi.get("/admin-query/general/countAllCourse");
+      const response2 = ServerApi.get("admin-query/general/analytic1");
+      const getAllRes = await Promise.all([response1, response2]);
+      return getAllRes.map((item) => item.data);
+    } catch (error) {
+      throw new Error("Error fetching course data");
+    }
+  };
+
+  const {
+    data: analyticsData,
+    isLoading,
+    isError,
+  } = useQuery("analyticsData", getAnalyticsData);
+  const analyticsCard = [
+    {
+      id: 1,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalCourse
+          : 0,
+      title: "Tổng khóa học",
+    },
+    {
+      id: 2,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalSections
+          : 0,
+      title: "Tổng phần học",
+    },
+    {
+      id: 3,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalLessons
+          : 0,
+      title: "Tổng bài học",
+    },
+    {
+      id: 4,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalVideoLessons
+          : 0,
+      title: "Tổng video",
+    },
+    {
+      id: 5,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalQuizzLessons
+          : 0,
+      title: "Tổng quiz",
+    },
+  ];
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const userIdParam = searchParams.get("userId");
@@ -76,8 +128,9 @@ export default function Home() {
     });
   };
 
-  const totalUsers = 1382;
-  const onlineUsers = 1111;
+  const totalUsers =
+    analyticsData && analyticsData?.length > 0 ? analyticsData[1].countUser : 0;
+  const onlineUsers = 8;
   const offlineUsers = totalUsers - onlineUsers;
   const percentOnline = (onlineUsers / totalUsers) * 100;
   const percentOffline = (offlineUsers / totalUsers) * 100;

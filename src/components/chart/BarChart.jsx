@@ -18,8 +18,6 @@ const BarChart = () => {
 
     const sortedLabels = sortBy(labels, (date) => moment(date, "DD/MM/YYYY"));
 
-    console.log(sortedLabels);
-
     const myChart = new Chart(ctx, {
       type: "bar",
       data: {

@@ -50,6 +50,7 @@ export default function Home() {
       throw new Error("Error fetching course data");
     }
   };
+
   const {
     data: courseData,
     isLoading,
