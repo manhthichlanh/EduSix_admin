@@ -28,6 +28,7 @@ import ProtectedCourseRoute from "./Layout/ProtectRoute/ProtectedCourseRoute";
 import ProtectedOrderRoute from "./Layout/ProtectRoute/ProtectedOrderRoute";
 import ProtectedBlogRoute from "./Layout/ProtectRoute/ProtectedBlogRoutejsx";
 import ProtectedMemberRoute from "./Layout/ProtectRoute/ProtectedMemberRoute";
+import CreateAccountAdmin from "./pages/CreateAccountAdmin/CreateAccountAdmin";
 //||Components
 function App() {
   return (
@@ -135,7 +136,7 @@ function App() {
               </ProtectedOrderRoute>
             }
           />
-
+          <Route path="/create-account" element={<CreateAccountAdmin />} />
           <Route
             path="/member-admin"
             element={
@@ -168,3 +169,6 @@ function App() {
 }
 
 export default App;
+
+
+
