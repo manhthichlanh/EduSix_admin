@@ -294,13 +294,13 @@ export default function AddCourse() {
           ></InputFile>
         </div>
       </div>
-      <Button
+      {/* <Button
         text={"Tiếp tục"}
         Class={
           "flex m-6 font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
         }
         onClick={() => console.log("Please don't belong to anyone")}
-      />
+      /> */}
     </>
   );
 }
