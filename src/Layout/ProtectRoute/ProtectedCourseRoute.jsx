@@ -6,7 +6,7 @@ const ProtectedCourseRoute = ({ children }) => {
 
     useEffect(() => {
         const { admin } = getLocalData("auth_info")
-        if (admin.role != 1) navigate("/admin/login");
+        if (admin.role != 1 && admin.role != 0) navigate("/admin/login");
     }, [])
 
     return children

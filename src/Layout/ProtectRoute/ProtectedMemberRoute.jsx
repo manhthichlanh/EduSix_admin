@@ -6,7 +6,7 @@ const ProtectedMemberRoute = ({ children }) => {
 
     useEffect(() => {
         const { admin } = getLocalData("auth_info")
-        if (admin.role != 4) navigate("/admin/login");
+        if (admin.role != 4 && admin.role != 0) navigate("/admin/login");
     }, [])
 
     return children

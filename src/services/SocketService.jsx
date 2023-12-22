@@ -38,7 +38,7 @@ export const SocketProvider = ({children}) => {
   const value = useMemo(() => ({
     socket,
     isSocketConnected
-  }),[isSocketConnected,socket]
+  }),[isSocketConnected]
   )
   return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
 }

@@ -3,7 +3,7 @@ import Chart from "chart.js/auto";
 import moment from "moment";
 import { map, range, sortBy } from "lodash";
 
-const BarChart = () => {
+const BarChart = ({chartData}) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -18,21 +18,26 @@ const BarChart = () => {
 
     const sortedLabels = sortBy(labels, (date) => moment(date, "DD/MM/YYYY"));
 
+    const chartDataFormatted = chartData.reduce((acc, dataPoint) => {
+      const orderDate = moment(dataPoint.order_date, "YYYYMMDDHHmmss").format("DD/MM/YYYY");
+      const index = sortedLabels.indexOf(orderDate);
+
+      if (index !== -1) {
+        acc[index] = acc[index] || 0;
+        acc[index] += dataPoint.price;
+      }
+
+      return acc;
+    }, []);
+
     const myChart = new Chart(ctx, {
       type: "bar",
       data: {
         labels: sortedLabels,
         datasets: [
           {
-            label: "Lượt truy cập",
-            data: [12, 19, 85, 5, 2, 3, 16],
-            borderWidth: 1,
-            backgroundColor: "#FDF1E8",
-            borderRadius: 5,
-          },
-          {
             label: "Lượt mua",
-            data: [101, 20, 47, 4, 7, 8, 10],
+            data: chartDataFormatted,
             borderWidth: 1,
             backgroundColor: "#D3620F",
             borderRadius: 5,
@@ -49,6 +54,9 @@ const BarChart = () => {
       },
     });
 
+    // ...
+
+    // Clean up when the component unmounts
     return () => {
       myChart.destroy();
     };
