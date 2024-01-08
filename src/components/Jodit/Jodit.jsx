@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useRef } from "react";
 import JoditEditor from "jodit-react";
-// import HTMLtoReact from "html-to-react";
+import HTMLtoReact from "html-to-react";
 import "./Jodit.scss";
 const Jodit = ({ label, placeholder, onChange, value, setValue }) => {
   const config = {
