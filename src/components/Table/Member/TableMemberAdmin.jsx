@@ -4,6 +4,8 @@ import Pencil from "../../common/icon/Pencil";
 import Trash from "../../common/icon/Trash";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../common/Pagination";
+import { ServerApi } from "../../../utils/http";
+import { useQuery } from 'react-query';
 
 const data = [
   {
@@ -12,42 +14,18 @@ const data = [
     role: 1,
     status: "Active",
     addTime: "2023-09-19 10:30 AM",
-  },
-  {
-    userName: "Nguyễn Châu Bảo Ngọc",
-    email: "user2@example.com",
-    role: 1,
-    status: "Inactive",
-    addTime: "2023-09-20 02:15 PM",
-  },
-  {
-    userName: "Phòng Thị Trúc Lan",
-    email: "user3@example.com",
-    role: 0,
-    status: "Active",
-    addTime: "2023-09-21 09:45 AM",
-  },
-  {
-    userName: "Bùi Lệ Thu",
-    email: "user3@example.com",
-    role: 0,
-    status: "Inactive",
-    addTime: "2023-09-21 09:45 AM",
-  },
-  {
-    userName: "Võ Ngọc Gia Linh",
-    email: "user3@example.com",
-    role: 1,
-    status: "Active",
-    addTime: "2023-09-21 09:45 AM",
-  },
+  }
 ];
-
+function fetchAdmin(page) {
+  return ServerApi.get(`/auth`);
+}
 function TableMemberAdmin() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
+  const { data, isLoading, error } = useQuery(['auth', page], () => fetchAdmin(page));
 
+  const admin = data?.data || [];
   const LIMIT = 10;
   const columns = useMemo(
     () => [
@@ -56,40 +34,34 @@ function TableMemberAdmin() {
         render: (item) => (
           <div className="flex items-center gap-2">
             <div className="flex-shrink-0 w-16 h-16 overflow-hidden bg-gray-300 rounded-full">
-              {/* Image here */}
+              <img src="https://cdn-icons-png.flaticon.com/512/3541/3541871.png" alt="" />
             </div>
             <div>
               <p className="capitalize font-medium text-base leading-[20px]">
-                {item?.userName}
+                {item?.fullname}
               </p>
               <p className="capitalize font-sm text-sm text-gray-400 leading-[20px]">
-                {item?.email}
+                Chưa cập nhật
               </p>
             </div>
           </div>
         ),
       },
       {
-        title: "Trạng thái",
+        title: "Role",
         render: (item) => (
           <div className="py-1">
-            <p
-              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
-                item.status === "Active"
-                  ? "text-emerald-700 bg-red-100"
-                  : "text-orange-600 bg-emerald-100"
-              } rounded-lg`}
-            >
-              {item.status === "Active" ? "Đang hoạt động" : "Không hoạt động"}
-            </p>
+             <p className="capitalize font-sm text-sm text-gray-400 leading-[20px]">
+                {item?.role}
+              </p>
           </div>
         ),
       },
 
       {
-        title: "Ngày thêm",
+        title: "Ngày tạo",
         render: (item) => (
-          <div className="py-1 font-medium text-gray-500">{item?.addTime}</div>
+          <div className="py-1 font-medium text-gray-500">{item?.created_at}</div>
         ),
       },
       {
@@ -114,7 +86,7 @@ function TableMemberAdmin() {
       <div className="border rounded-lg">
         <Table
           columns={columns}
-          data={data}
+          data={admin}
           rowKey="id"
           scroll={{
             x: true,

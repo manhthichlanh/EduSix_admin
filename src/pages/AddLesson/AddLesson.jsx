@@ -9,7 +9,9 @@ import TableLesson from "../../components/Table/Course/TableLesson";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import "./AddLesson.scss";
 import classNames from "classnames";
-import socket from "../../utils/socket";
+// import { SocketContext } from "../../utils/useSocket";
+import { useSocket } from "../../services/SocketService";
+// import { useSocket } from "../../utils/useSocket";
 import { ServerApi } from "../../utils/http";
 import { LinearProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -44,10 +46,11 @@ function LinearProgressWithLabel(props) {
     </>
   );
 }
-console.log(socket)
 // classNames
 export default function AddLesson() {
   const location = useLocation();
+  const { socket, isSocketConnected } = useSocket();
+  // const socket = useContext(SocketContext);
   const sectionName = location.state?.sectionName;
   const courseName = location.state?.courseName;
   const [searchParams] = useSearchParams();
@@ -70,7 +73,7 @@ export default function AddLesson() {
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [singleCorrect, setSingleCorrect] = useState(true);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
-  const [isSocketConnected, setIsSocketConnected] = useState(false);
+  // const [isSocketConnected, setIsSocketConnected] = useState(false);
 
   // const [courseId, setCourseId] = useState(1); // Giá trị khởi tạo ban đầu
 
@@ -385,7 +388,9 @@ export default function AddLesson() {
             default:
               break;
           }
-          progress_percent != "undefined" && setProgress(progress_percent);
+          console.log(progress_percent)
+          const isAvalible = progress_percent != "undefined" && progress_percent != null;
+          isAvalible && setProgress(progress_percent);
         })
         setLoading(true);
       }
@@ -397,6 +402,7 @@ export default function AddLesson() {
         const resData = res.data;
         console.log("Dữ liệu đã được lưu:", resData);
         setLoading(false);
+        setProgress(0);
         socket.off("process_info")
         ToastMessage("Lưu thành công!").success();
       } catch (error) {
@@ -448,28 +454,26 @@ export default function AddLesson() {
   useEffect(() => {
     if (isVideoOpen && isSocketConnected) {
       setUserSI(socket.id)
-
-      console.log("coa roi")
     } else if (isVideoOpen && !isSocketConnected) {
       window.location.reload()
     }
     console.log({ isVideoOpen, isSocketConnected })
   }, [isVideoOpen, isSocketConnected]);
 
-  useEffect(() => {
-    function onConnect() {
-      console.log("đã kết nối")
-      setIsSocketConnected(true);
-    }
+  // useEffect(() => {
+  //   console.log(socket)
+  //   function onConnect() {
+  //     console.log("đã kết nối")
+  //     setIsSocketConnected(true);
+  //   }
 
-    function onDisconnect() {
-      setIsSocketConnected(false);
-    }
+  //   function onDisconnect() {
+  //     setIsSocketConnected(false);
+  //   }
 
-
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-  }, [])
+  //   socket.on('connect', onConnect);
+  //   socket.on('disconnect', onDisconnect);
+  // }, [])
   useEffect(() => {
     console.log(formValue);
   }, [formValue]);
