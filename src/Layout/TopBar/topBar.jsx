@@ -124,12 +124,12 @@ const TopBar = () => {
                                 />
                             </svg>
 
-                            <div className='number_utilities'>
+                            {/* <div className='number_utilities'>
                                 <span>99+</span>
-                            </div>
+                            </div> */}
 
                         </div>
-                        {isThongbaoOpen && (
+                        {/* {isThongbaoOpen && (
                             <div className='thongBao_Admin'>
                                 <h1>THÔNG BÁO</h1>
                                 <div className='thongBao_Admin_sroll'>
@@ -138,7 +138,7 @@ const TopBar = () => {
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        )} */}
                         {/* <div className='icon_TopBar'>
                             <svg
                                 width={24}
