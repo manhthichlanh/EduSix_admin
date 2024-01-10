@@ -1,12 +1,10 @@
 /* eslint-disable react/prop-types */
-
 import { map, reduce } from "lodash";
 import moment from "moment";
-
 import Card from "../../components/Card/Card";
 import TableIndex from "../../components/Table/TableIndex";
 import { Alert } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CourseIcon from "../../components/common/icon/Cart/CourseIcon";
 import UserIcon from "../../components/common/icon/Cart/UserIcon";
 import BlogIcon from "../../components/common/icon/Cart/BlogIcon";
@@ -14,15 +12,86 @@ import CashIcon from "../../components/common/icon/Cart/CashIcon";
 import PieChart from "../../components/chart/PieChart";
 import CardAnalytics from "../../components/card/CardAnalytics";
 import BarChart from "../../components/chart/BarChart";
-
-const analyticsCard = [
-  { id: 1, content: 123, title: "Tổng khóa học" },
-  { id: 2, content: 124, title: "Tổng phần học" },
-  { id: 3, content: 567, title: "Tổng bài học" },
-  { id: 4, content: 12, title: "Tổng bài quiz" },
-];
+import { useQuery } from "react-query";
+import { ServerApi } from "../../utils/http";
+import { useSocket } from "../../services/SocketService";
+// import { map } from 'lodash';
 
 export default function Home() {
+  const { socket, isSocketConnected } = useSocket();
+  const [countUser, setCountUser] = useState(0)
+  useEffect(() => {
+    if (isSocketConnected) {
+      if (!socket.hasListeners("online-users")) {
+        socket.on("online-users", (data) => {
+          setCountUser(data.length)
+
+        })
+      }
+    }
+  }, [socket, isSocketConnected]
+  )
+  const getAnalyticsData = async () => {
+    try {
+      const response1 = ServerApi.get("/admin-query/general/countAllCourse");
+      const response2 = ServerApi.get("admin-query/general/analytic1");
+      const response3 = ServerApi.get("admin-query/general/analyticCategory");
+      const response4 = ServerApi.get("admin-query/general/analyticRevenue");
+
+      const getAllRes = await Promise.all([response1, response2, response3, response4]);
+      return getAllRes.map((item) => item.data);
+    } catch (error) {
+      throw new Error("Error fetching course data");
+    }
+  };
+
+  const {
+    data: analyticsData,
+    isLoading,
+    isError,
+  } = useQuery("analyticsData", getAnalyticsData);
+  const analyticsCard = [
+    {
+      id: 1,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalCourse
+          : 0,
+      title: "Tổng khóa học",
+    },
+    {
+      id: 2,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalSections
+          : 0,
+      title: "Tổng phần học",
+    },
+    {
+      id: 3,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalLessons
+          : 0,
+      title: "Tổng bài học",
+    },
+    {
+      id: 4,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalVideoLessons
+          : 0,
+      title: "Tổng video",
+    },
+    {
+      id: 5,
+      content:
+        analyticsData && analyticsData?.length > 0
+          ? analyticsData[0].totalQuizzLessons
+          : 0,
+      title: "Tổng quiz",
+    },
+  ];
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const userIdParam = searchParams.get("userId");
@@ -36,7 +105,7 @@ export default function Home() {
     moment().format("MM") +
     " Năm " +
     moment().format("YYYY");
-
+  console.log({ test: analyticsData ? analyticsData[3] : null })
   const revenue = Number("10000000").toLocaleString("vi-VN") + "đ";
   const revenueLine = [
     { id: 1, title: "Thiết kế đồ họa", revenue: 1000 },
@@ -52,41 +121,42 @@ export default function Home() {
     (acc, item) => acc + item.revenue,
     0
   );
-
   const renderRevenueBars = () => {
-    return map(revenueLine, (item) => {
-      const revenuePercent = (item.revenue / totalRevenue) * 100 || 0;
-      const barWidth = `${revenuePercent}%`;
-      return (
-        <div key={item.id} className="col-span-6">
-          <div className="flex justify-between pb-1">
-            <p className="text-xs font-medium text-gray-500">{item.title}</p>
-            <p className="text-xs font-medium text-gray-500">{`${revenuePercent.toFixed(
-              2
-            )}%`}</p>
+    if (analyticsData)
+      return map(analyticsData[3], (item) => {
+        const revenuePercent = Number(item.percent);
+        const barWidth = `${revenuePercent}%`;
+        return (
+          <div key={item.id} className="col-span-6">
+            <div className="flex justify-between pb-1">
+              <p className="text-xs font-medium text-gray-500">{item['course.category.cate_name']}</p>
+              <p className="text-xs font-medium text-gray-500">{`${revenuePercent.toFixed(
+                2
+              )}%`}</p>
+            </div>
+            <div className="flex items-center w-full h-4 px-1 bg-orange-200 rounded-lg">
+              <div
+                className={`h-2  bg-[#FF6636] rounded-lg flex items-center justify-end`}
+                style={{ width: barWidth }}
+              ></div>
+            </div>
           </div>
-          <div className="flex items-center w-full h-4 px-1 bg-orange-200 rounded-lg">
-            <div
-              className={`h-2  bg-[#FF6636] rounded-lg flex items-center justify-end`}
-              style={{ width: barWidth }}
-            ></div>
-          </div>
-        </div>
-      );
-    });
+        );
+      });
   };
 
-  const totalUsers = 1382;
-  const onlineUsers = 1111;
+  const totalUsers =
+    analyticsData && analyticsData?.length > 0 ? analyticsData[1].countUser : 0;
+  const onlineUsers = 8;
   const offlineUsers = totalUsers - onlineUsers;
   const percentOnline = (onlineUsers / totalUsers) * 100;
   const percentOffline = (offlineUsers / totalUsers) * 100;
 
   return (
     <div>
-      <Alert severity="success" color="info">
+      {/* <Alert severity="success" color="info">
         This is a success alert — check it out!
-      </Alert>
+      </Alert> */}
       <div className="grid grid-cols-12 gap-4 m-6">
         <div className="col-span-6 md:col-span-6 lg:col-span-3">
           <Card
@@ -94,7 +164,7 @@ export default function Home() {
               return <CashIcon></CashIcon>;
             }}
             title="Doanh thu"
-            content={Number("10000000").toLocaleString("vi-VN") + "đ"}
+            content={Number(analyticsData ? analyticsData[1].totalRevenue : 0).toLocaleString("vi-VN") + "đ"}
             unit="VND"
           ></Card>
         </div>
@@ -104,7 +174,7 @@ export default function Home() {
               return <CourseIcon></CourseIcon>;
             }}
             title="Số khóa học"
-            content="100"
+            content={`${analyticsData ? analyticsData[1].countCourse : 0}`}
           ></Card>
         </div>
         <div className="col-span-6 md:col-span-6 lg:col-span-3">
@@ -113,7 +183,7 @@ export default function Home() {
               return <UserIcon></UserIcon>;
             }}
             title="Người dùng"
-            content="1504"
+            content={`${analyticsData ? analyticsData[1].countUser : 0}`}
           ></Card>
         </div>
         <div className="col-span-6 md:col-span-6 lg:col-span-3">
@@ -126,16 +196,14 @@ export default function Home() {
           ></Card>
         </div>
       </div>
-      <div className="m-6">
-        <TableIndex></TableIndex>
-      </div>
+
       <div className="px-6 py-4">
         <p className="mb-2 text-lg font-medium">Khóa học</p>
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12 gap-2 lg:col-span-6">
             <div className="grid grid-cols-12 gap-4">
-              {map(analyticsCard, (item) => (
-                <div className="col-span-6 lg:col-span-6">
+              {map(analyticsCard, (item, index) => (
+                <div className="col-span-6 lg:col-span-6" key={index}>
                   <CardAnalytics content={item.content} title={item.title} />
                 </div>
               ))}
@@ -143,7 +211,10 @@ export default function Home() {
           </div>
           <div className="col-span-12 gap-2 lg:col-span-6">
             <div className="border rounded-md shadow-lg">
-              <PieChart />
+              {
+                analyticsData &&
+                <PieChart chartData={analyticsData[2]} />
+              }
             </div>
           </div>
         </div>
@@ -170,10 +241,10 @@ export default function Home() {
       <div className="mx-6">
         <p className="mb-2 text-lg font-medium">Người dùng</p>
         <div className="flex flex-col gap-4 px-4 py-3 border rounded-lg shadow-lg">
-          <p className="flex flex-col">
+          <div className="flex flex-col">
             <p className="text-2xl font-medium">{totalUsers}</p>
             <p className="text-xs font-medium text-gray-500">Tổng người dùng</p>
-          </p>
+          </div>
           <div className="flex flex-col">
             <div className="flex justify-between">
               <p className="text-sm font-medium text-gray-500">
@@ -186,7 +257,7 @@ export default function Home() {
             <div className="flex items-center w-full h-6 bg-orange-200 rounded-xl">
               <div
                 className="h-3 mx-2 bg-[#FF6636] rounded-lg"
-                style={{ width: `${(onlineUsers / totalUsers) * 100}%` }}
+                style={{ width: `${(onlineUsers / countUser) * 100}%` }}
               ></div>
             </div>
           </div>
@@ -194,7 +265,7 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 bg-[#FF6636] rounded-md"></div>
               <div className="flex flex-col">
-                <p className="text-lg font-semibold">{onlineUsers}</p>
+                <p className="text-lg font-semibold">{countUser}</p>
                 <span className="text-xs font-medium text-gray-500">
                   Đang hoạt động
                 </span>
@@ -203,7 +274,7 @@ export default function Home() {
             <div className="flex items-center gap-1">
               <div className="w-10 h-10 bg-orange-200 rounded-md"></div>
               <div className="flex flex-col">
-                <p className="text-lg font-semibold">{offlineUsers}</p>
+                <p className="text-lg font-semibold">{totalUsers - countUser}</p>
                 <span className="text-xs font-medium text-gray-500">
                   Không hoạt động
                 </span>
@@ -213,8 +284,11 @@ export default function Home() {
         </div>
       </div>
       <div className="mt-6">
-        <p className="px-6 text-lg font-medium">Lượt truy cập</p>
-        <BarChart />
+        <p className="px-6 text-lg font-medium">Lượt mua</p>
+        {
+          analyticsData &&
+          <BarChart chartData={analyticsData[3]} />
+        }
       </div>
     </div>
   );

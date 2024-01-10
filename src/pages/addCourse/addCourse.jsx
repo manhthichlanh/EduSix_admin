@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import InputSelect from "../../components/Input/InputSelect";
-import InputDescription from "../../components/Input/InputDescription";
 import Button from "../../components/Button/Button";
 import InputFile from "../../components/Input/InputFile";
 import { useNavigate } from 'react-router-dom';
@@ -69,6 +68,7 @@ export default function AddCourse() {
   const handleStatusChange = (e) => {
     setFormValue({ ...formValue, status: Boolean(e.target.value) })
   };
+
   const handleSelectChangeCourseType = (e) => {
     setFormValue({ ...formValue, type: e.target.value })
 
@@ -294,13 +294,13 @@ export default function AddCourse() {
           ></InputFile>
         </div>
       </div>
-      <Button
+      {/* <Button
         text={"Tiếp tục"}
         Class={
           "flex m-6 font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
         }
         onClick={() => console.log("Please don't belong to anyone")}
-      />
+      /> */}
     </>
   );
 }

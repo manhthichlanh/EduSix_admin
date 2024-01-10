@@ -6,7 +6,7 @@ const ProtectedOrderRoute = ({ children }) => {
 
     useEffect(() => {
         const { admin } = getLocalData("auth_info")
-        if (admin.role != 3) navigate("/admin/login");
+        if (admin.role != 3 && admin.role != 0) navigate("/admin/login");
     }, [])
 
     return children

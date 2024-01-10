@@ -5,7 +5,6 @@ import { useQuery } from "react-query";
 import { ServerApi } from "../../utils/http";
 import { Fragment, useState } from "react";
 import { convertViToEn } from "../../utils/helper";
-
 import SearchIcon from "../../components/common/icon/SearchIcon";
 import Input from "../../components/Input/Input";
 import ChevronUp from "./../../components/common/icon/ChevronUp";
@@ -50,6 +49,7 @@ export default function Home() {
       throw new Error("Error fetching course data");
     }
   };
+
   const {
     data: courseData,
     isLoading,
@@ -63,7 +63,6 @@ export default function Home() {
     const nameMatches = convertViToEn(course.name).includes(
       convertViToEn(searchQuery)
     );
-
     return nameMatches;
   }).sort((a, b) => {
     switch (selectedFilter.id) {

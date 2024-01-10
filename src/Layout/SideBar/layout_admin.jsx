@@ -14,6 +14,7 @@ import Course from "./../../components/common/icon/Course";
 import Blog from "./../../components/common/icon/Blog";
 import Cart from "./../../components/common/icon/Cart";
 import Users from "./../../components/common/icon/Users";
+import Banner from "../../components/common/icon/Banner";
 
 const LayoutAdmin = () => {
   const [isKhaoHocSubMenuOpen, setIsKhaoHocSubMenuOpen] = useState(false);
@@ -132,15 +133,22 @@ const LayoutAdmin = () => {
                     )}
                   </div>
                   <div className="single_Menu">
+                    <NavLink to="/list-banner" activeclassname="active">
+                      <h1>
+                        <div className="icon-menu">
+                          <Banner width="22" height="22"></Banner>
+                        </div>
+                        Danh sách banner
+                      </h1>
+                    </NavLink>
+                  </div>
+                  <div className="single_Menu">
                     <NavLink to="/order" activeclassname="active">
                       <h1>
                         <div className="icon-menu">
                           <Cart width="24" height="24"></Cart>
                         </div>
                         Danh sách mua
-                        <div className="number_SideBar">
-                          <span>1</span>
-                        </div>
                       </h1>
                     </NavLink>
                   </div>

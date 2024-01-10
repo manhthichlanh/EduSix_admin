@@ -20,8 +20,8 @@ import AddBlog from "./pages/AddBlog/AddBlog";
 import MemberAdmin from "./pages/MemberAdmin/MemberAdmin";
 import MemberUser from "./pages/MemberUser/MemberUser";
 import MemberDetail from "./pages/MemberDetail/MemberDetail";
-import ListSection from "./pages/ListSection/ListSection";
-
+import AddBanner from "./pages/AddBanner/AddBanner";
+import ListBanner from "./pages/ListBanner/ListBanner"
 import Login from "./Layout/Login/Login";
 import ListQuiz from "./pages/ListQuiz/ListQuiz";
 import ProtectedRoute from "./Layout/ProtectRoute/ProtectedRoute";
@@ -137,7 +137,7 @@ function App() {
               </ProtectedOrderRoute>
             }
           />
-
+          <Route path="/create-account" element={<CreateAccountAdmin />} />
           <Route
             path="/member-admin"
             element={
@@ -161,7 +161,9 @@ function App() {
                 <MemberDetail />
               </ProtectedMemberRoute>
             }
-          />
+          /> 
+          <Route path="/list-banner" element={<ListBanner />} />
+          <Route path="/add-banner" element={<AddBanner />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />
 
@@ -171,3 +173,6 @@ function App() {
 }
 
 export default App;
+
+
+

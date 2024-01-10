@@ -2,26 +2,20 @@ import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 // import ChartDataLabels from "chartjs-plugin-datalabels";
 
-const PieChart = () => {
+const PieChart = ({ chartData }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
-
+  console.log({ chartData })
+  const { cate_name: labels, data } = chartData
   useEffect(() => {
     const myChartRef = chartRef.current.getContext("2d");
     chartInstance.current = new Chart(myChartRef, {
       type: "pie",
       data: {
-        labels: [
-          "Marketing",
-          "Lập trình",
-          "Thiết kế đồ họa",
-          "Ngôn ngữ",
-          "Tài chính",
-          "Photography",
-        ],
+        labels: labels,
         datasets: [
           {
-            data: [10, 20, 20, 30, 15, 25],
+            data,
             backgroundColor: [
               "#5C59E8",
               "#D3620F",

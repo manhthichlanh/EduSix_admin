@@ -20,6 +20,13 @@ function TableCourse(props) {
     }
   };
 
+  const deleteCourse = async (courseId) => {
+    try {
+      await ServerApi.delete(`/course/${courseId}`);
+    } catch (error) {
+      console.error("Error deleting course:", error);
+    }
+  };
   // Use React Query to fetch and manage course data
   const {
     data: courseData,
@@ -79,19 +86,18 @@ function TableCourse(props) {
       key: "price",
       render: (item) => (
         <span
-          className={`font-medium tracking-[0.5%] leading-[18px] ${
-            item.type === 0
-              ? "text-emerald-600"
-              : item.type === 2
+          className={`font-medium tracking-[0.5%] leading-[18px] ${item.type === 0
+            ? "text-emerald-600"
+            : item.type === 2
               ? "text-red-500"
               : ""
-          }`}
+            }`}
         >
           {item.type === 0
             ? "Free"
             : item.type === 1
-            ? `${Number(item.course_price).toLocaleString("vi-VN")}đ`
-            : "N/A"}
+              ? `${Number(item.course_price).toLocaleString("vi-VN")}đ`
+              : "N/A"}
         </span>
       ),
     },
@@ -101,11 +107,10 @@ function TableCourse(props) {
       render: (item) => (
         <div className="py-1">
           <p
-            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
-              item.status === "Active"
-                ? "text-emerald-700 bg-red-100"
-                : "text-orange-600 bg-emerald-100"
-            } rounded-lg`}
+            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === "Active"
+              ? "text-emerald-700 bg-red-100"
+              : "text-orange-600 bg-emerald-100"
+              } rounded-lg`}
           >
             {item.status === "Active" ? "Active" : "Inactive"}
           </p>
@@ -145,7 +150,16 @@ function TableCourse(props) {
           <button>
             <Pencil className="text-gray-500 hover:text-orange-600"></Pencil>
           </button>
-          <button>
+          <button
+            onClick={() => {
+              // Hiển thị cảnh báo (confirm) trước khi xóa
+              const shouldDelete = window.confirm("Bạn có chắc muốn xóa?");
+              if (shouldDelete) {
+                // Gọi hàm xóa
+                deleteCourse(item.course_id);
+              }
+            }}
+          >
             <Trash className="text-gray-500  hover:text-red-500"></Trash>
           </button>
         </div>
