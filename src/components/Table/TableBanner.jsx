@@ -1,75 +1,159 @@
 import Table from "rc-table";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Pencil from "../../components/common/icon/Pencil";
 import Trash from "../../components/common/icon/Trash";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/common/Pagination";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
-const data = [
-  {
-    thumbnail: "images",
-    banner_name: "Banner Khóa Học Online",
-    link: "http://localhost:5173/course-banner",
-    status: "Active"
-  },
-  {
-    thumbnail: "images",
-    banner_name: "Banner Học Phần Frontend",
-    link: "http://localhost:5173/frontend-course",
-    status: "Active"
-  },
-  {
-    thumbnail: "images",
-    banner_name: "Banner Khóa Học Python",
-    link: "http://localhost:5173/python-course",
-    status: "Active"
-  }
-  , {
-    thumbnail: "images",
-    banner_name: "Banner Khóa Học Java",
-    link: "http://localhost:5173/java-course",
-    status: "Active"
-  }
-  , {
-    thumbnail: "images",
-    banner_name: "Banner Khóa Học Digital Marketing",
-    link: "http://localhost:5173/digital-marketing-course",
-    status: "Active"
-  }
-  , {
-    thumbnail: "images",
-    banner_name: "Banner Khóa Học Machine Learning",
-    link: "http://localhost:5173/ml-course",
-    status: "Active"
-  }
-  , {
-    thumbnail: "images",
-    banner_name: "Banner Khóa Học Android Development",
-    link: "http://localhost:5173/android-course",
-    status: "Active"
-  }
-];
+// const data = [
+//   {
+//     id:1,
+//     thumbnail: "images",
+//     banner_name: "Banner Khóa Học Online",
+//     link: "http://localhost:5173/course-banner",
+//     status: "Active"
+//   },
+//   {
+//     id:2,
+//     thumbnail: "images",
+//     banner_name: "Banner Học Phần Frontend",
+//     link: "http://localhost:5173/frontend-course",
+//     status: "Active"
+//   },
+//   {
+//     id:3,
+//     thumbnail: "images",
+//     banner_name: "Banner Khóa Học Python",
+//     link: "http://localhost:5173/python-course",
+//     status: "Active"
+//   }
+//   , {
+//     id:4,
+//     thumbnail: "images",
+//     banner_name: "Banner Khóa Học Java",
+//     link: "http://localhost:5173/java-course",
+//     status: "Active"
+//   }
+//   , {
+//     id:5,
+//     thumbnail: "images",
+//     banner_name: "Banner Khóa Học Digital Marketing",
+//     link: "http://localhost:5173/digital-marketing-course",
+//     status: "Active"
+//   }
+//   , {
+//     id:6,
+//     thumbnail: "images",
+//     banner_name: "Banner Khóa Học Machine Learning",
+//     link: "http://localhost:5173/ml-course",
+//     status: "Active"
+//   }
+//   , {
+//     id:7,
+//     thumbnail: "images",
+//     banner_name: "Banner Khóa Học Android Development",
+//     link: "http://localhost:5173/android-course",
+//     status: "Active"
+//   }
+// ];
+
+const DraggableBodyRow = ({ index, moveRow, ...restProps }) => {
+  const [, drop] = useDrop({
+    accept: "table-row",
+    hover: (item, monitor) => {
+      if (!restProps.draggable) return;
+
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      // Không thay thế các mục với chính chúng
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      const hoverBoundingRect = monitor.getClientOffset();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      moveRow(dragIndex, hoverIndex);
+
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: "table-row",
+    item: () => {
+      return { index };
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0.5 : 1;
+  return (
+    <tr ref={(node) => drag(drop(node))} style={{ opacity }} {...restProps} />
+  );
+};
 
 function TableBanner() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
   const LIMIT = 10;
-  
-  const onDragEnd = (result) => {
-    if (!result.destination) {
-      return; // Kéo ra ngoài danh sách
-    }
 
-    // Thực hiện logic để sắp xếp lại mảng dựa trên kết quả kéo và thả
-    const newData = Array.from(data);
-    const [movedItem] = newData.splice(result.source.index, 1);
-    newData.splice(result.destination.index, 0, movedItem);
 
-    // Cập nhật mảng dữ liệu của bạn với thứ tự mới
+  const moveRow = (dragIndex, hoverIndex) => {
+    const newData = [...data];
+    const draggedRow = newData[dragIndex];
+    newData.splice(dragIndex, 1);
+    newData.splice(hoverIndex, 0, draggedRow);
+
     setData(newData);
   };
+
+  const [data, setData] = useState([
+    {
+      id: 1,
+      thumbnail: "images",
+      banner_name: "Banner Khóa Học Online",
+      link: "http://localhost:5173/course-banner",
+      status: "Active"
+    },
+    {
+      id: 2,
+      thumbnail: "images",
+      banner_name: "Banner Học Phần Frontend",
+      link: "http://localhost:5173/frontend-course",
+      status: "Active"
+    },
+    {
+      id: 3,
+      thumbnail: "images",
+      banner_name: "Banner Khóa Học Python",
+      link: "http://localhost:5173/python-course",
+      status: "Active"
+    }
+    , {
+      id: 4,
+      thumbnail: "images",
+      banner_name: "Banner Khóa Học Java",
+      link: "http://localhost:5173/java-course",
+      status: "Active"
+    }
+  ]);
 
   const columns = useMemo(
     () => [
@@ -86,6 +170,13 @@ function TableBanner() {
               </p>
             </div>
           </div>
+        ),
+      },
+      {
+        title: "ID",
+        key: "id",
+        render: (item) => (
+          <div className="py-1 text-[#5C59E8] font-medium">{item.id}</div>
         ),
       },
       {
@@ -136,24 +227,21 @@ function TableBanner() {
   );
 
   return (
-   <div className="">
+    <DndProvider backend={HTML5Backend}>
       <div className="border rounded-lg">
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="table">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                <Table
-                  columns={columns}
-                  data={data}
-                  rowKey="id"
-                  scroll={{
-                    x: true,
-                  }}
-                ></Table>
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <Table
+          components={{
+            body: {
+              row: (props) => <DraggableBodyRow draggable moveRow={moveRow} {...props} />,
+            },
+          }}
+          columns={columns}
+          data={data.map((item, index) => ({ ...item, index }))}
+          rowKey="id"
+          scroll={{
+            x: true,
+          }}
+        ></Table>
       </div>
       <div className="flex items-center justify-end p-4">
         <Pagination
@@ -167,7 +255,7 @@ function TableBanner() {
           }
         />
       </div>
-    </div>
+    </DndProvider>
   );
 }
 export default TableBanner;
