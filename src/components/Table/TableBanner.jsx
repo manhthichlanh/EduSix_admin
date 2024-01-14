@@ -4,6 +4,7 @@ import Pencil from "../../components/common/icon/Pencil";
 import Trash from "../../components/common/icon/Trash";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/common/Pagination";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const data = [
   {
@@ -54,8 +55,22 @@ function TableBanner() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
-
   const LIMIT = 10;
+  
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return; // Kéo ra ngoài danh sách
+    }
+
+    // Thực hiện logic để sắp xếp lại mảng dựa trên kết quả kéo và thả
+    const newData = Array.from(data);
+    const [movedItem] = newData.splice(result.source.index, 1);
+    newData.splice(result.destination.index, 0, movedItem);
+
+    // Cập nhật mảng dữ liệu của bạn với thứ tự mới
+    setData(newData);
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -121,16 +136,24 @@ function TableBanner() {
   );
 
   return (
-    <div className="">
+   <div className="">
       <div className="border rounded-lg">
-        <Table
-          columns={columns}
-          data={data}
-          rowKey="id"
-          scroll={{
-            x: true,
-          }}
-        ></Table>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="table">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <Table
+                  columns={columns}
+                  data={data}
+                  rowKey="id"
+                  scroll={{
+                    x: true,
+                  }}
+                ></Table>
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
       <div className="flex items-center justify-end p-4">
         <Pagination

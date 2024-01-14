@@ -6,6 +6,8 @@ import Filter from "../../components/common/icon/Filter";
 import Search from "../../components/Search/Search";
 import TableBanner from "../../components/Table/TableBanner";
 import { Link, useSearchParams } from "react-router-dom";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export default function ListBanner() {
 
@@ -29,6 +31,7 @@ export default function ListBanner() {
   // const startIndex = (page - 1) * LIMIT;
   // const endIndex = startIndex + LIMIT;
   // const displayedData = bannerData.slice(startIndex, endIndex);
+
 
   return (
     <div className="px-6 py-6 max-h-full">
@@ -108,9 +111,9 @@ export default function ListBanner() {
           </Menu>
         </div>
         <div className="border rounded-lg mt-6">
-          <TableBanner
-
-          ></TableBanner>
+          <DndProvider backend={HTML5Backend}>
+            <TableBanner />
+          </DndProvider>
         </div>
       </div>
     </div>
