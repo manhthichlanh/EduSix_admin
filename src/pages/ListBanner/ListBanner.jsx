@@ -111,9 +111,9 @@ export default function ListBanner() {
           </Menu>
         </div>
         <div className="border rounded-lg mt-6">
-          <DndProvider backend={HTML5Backend}>
+         
             <TableBanner />
-          </DndProvider>
+        
         </div>
       </div>
     </div>
