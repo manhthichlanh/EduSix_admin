@@ -39,7 +39,8 @@ export default function AddCourse() {
     content: "",
     status: true,
     type: 0,
-    thumbnail: ""
+    thumbnail: "",
+    author:""
   })
 
 
@@ -50,7 +51,9 @@ export default function AddCourse() {
   const handleSelectChange = (e) => {
     setFormValue({ ...formValue, category_id: e.target.value })
   };
-
+  const handleSelectAuthorChange = (e) => {
+    setFormValue({ ...formValue, author: e.target.value })
+  };
 
   const handlePriceChange = (e) => {
     setFormValue({ ...formValue, course_price: e.target.value })
@@ -219,16 +222,6 @@ export default function AddCourse() {
             value={formValue.name}
             onChange={handleInputChange}
           />
-          {/* <Input
-            type={"number"}
-            label={"Số bài học"}
-            placeholder={"Nhập số bài học"}
-            className={
-              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
-            }
-            value={numberOfLessons}
-            onChange={(e) => setNumberOfLessons(e.target.value)}
-          /> */}
           <InputSelect
             label={"Loại khóa học"}
             array={[
@@ -240,6 +233,15 @@ export default function AddCourse() {
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
+          />
+           <InputSelect
+            label={"Tác giả"}
+            array={cateData}
+            className={
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+            }
+            value={formValue.author}
+            onChange={handleSelectAuthorChange}
           />
           {formValue.type === "1" && (
             <Input

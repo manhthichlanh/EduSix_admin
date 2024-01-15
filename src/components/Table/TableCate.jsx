@@ -12,13 +12,6 @@ function TableCate() {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
   const LIMIT = 10;
-  // const fetchCategoryData = async () => {
-  //   const response = await fetch('http://localhost:8080/category');
-  //   if (!response.ok) {
-  //     throw new Error('Network response was not ok');
-  //   }
-  //   return response.json();
-  // };
   const fetchCategoryData = async () => {
     try {
       const response = await ServerApi.get("/category");

@@ -30,6 +30,8 @@ import ProtectedOrderRoute from "./Layout/ProtectRoute/ProtectedOrderRoute";
 import ProtectedBlogRoute from "./Layout/ProtectRoute/ProtectedBlogRoutejsx";
 import ProtectedMemberRoute from "./Layout/ProtectRoute/ProtectedMemberRoute";
 import CreateAccountAdmin from "./pages/CreateAccountAdmin/CreateAccountAdmin";
+import ListAuthor from "./pages/ListAuthor/ListAuthor"
+import AddAuthor from "./pages/AddAuthor/AddAuthor"
 //||Components
 function App() {
   return (
@@ -164,6 +166,8 @@ function App() {
           /> 
           <Route path="/list-banner" element={<ListBanner />} />
           <Route path="/add-banner" element={<AddBanner />} />
+          <Route path="/list-author" element={<ListAuthor />} />
+          <Route path="/add-author" element={<AddAuthor />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />
 
