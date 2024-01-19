@@ -4,7 +4,7 @@ import "./App.css";
 
 //||Components
 import Home from "./pages/Home/Home";
-import AddCateCourse from "./pages/AddCateCourse/AddCateCourse";
+import AddCateCourse from "./pages/AddCateCourse/addCateCourse";
 import AddCourse from "./pages/AddCourse/addCourse";
 import Layout from "./Layout/Layout";
 import NoPage from "./pages/NoPage/NoPage";
@@ -20,7 +20,8 @@ import AddBlog from "./pages/AddBlog/AddBlog";
 import MemberAdmin from "./pages/MemberAdmin/MemberAdmin";
 import MemberUser from "./pages/MemberUser/MemberUser";
 import MemberDetail from "./pages/MemberDetail/MemberDetail";
-
+import AddBanner from "./pages/AddBanner/AddBanner";
+import ListBanner from "./pages/ListBanner/ListBanner"
 import Login from "./Layout/Login/Login";
 import ListQuiz from "./pages/ListQuiz/ListQuiz";
 import ProtectedRoute from "./Layout/ProtectRoute/ProtectedRoute";
@@ -29,6 +30,8 @@ import ProtectedOrderRoute from "./Layout/ProtectRoute/ProtectedOrderRoute";
 import ProtectedBlogRoute from "./Layout/ProtectRoute/ProtectedBlogRoutejsx";
 import ProtectedMemberRoute from "./Layout/ProtectRoute/ProtectedMemberRoute";
 import CreateAccountAdmin from "./pages/CreateAccountAdmin/CreateAccountAdmin";
+import ListAuthor from "./pages/ListAuthor/ListAuthor"
+import AddAuthor from "./pages/AddAuthor/AddAuthor"
 //||Components
 function App() {
   return (
@@ -160,9 +163,14 @@ function App() {
                 <MemberDetail />
               </ProtectedMemberRoute>
             }
-          />
+          /> 
+          <Route path="/list-banner" element={<ListBanner />} />
+          <Route path="/add-banner" element={<AddBanner />} />
+          <Route path="/list-author" element={<ListAuthor />} />
+          <Route path="/add-author" element={<AddAuthor />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />
+
       </Routes>
     </BrowserRouter>
   );

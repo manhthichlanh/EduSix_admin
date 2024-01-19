@@ -151,7 +151,16 @@ export default function Home() {
             label={"Tên danh mục"}
             placeholder={"Nhập tên danh mục"}
             className={
-              "mt-2 px-4 pb-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+            }
+            value={""}
+          ></Input>
+           <Input
+            label={"Ảnh danh mục"}
+            type={"file"}
+            placeholder={"Nhập tên danh mục"}
+            className={
+              "w-full text-sm border rounded-lg p-2 mt-2 text-slate-500 file:mr-2 file:px-4 file:py-2 file:rounded-md file:border-none file:bg-blue-500 file:text-white file:hover:bg-blue-700 ease-in-out transition"
             }
             
             value={formValue.cate_name}
