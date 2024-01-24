@@ -24,7 +24,7 @@ const data = [
   , {
     avata: "images",
     author: "Banner Khóa Học Java",
-    status: "Active"
+    status: "Inactive"
   }
   , {
     avata: "images",
