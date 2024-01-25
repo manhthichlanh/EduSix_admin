@@ -12,7 +12,9 @@ function TableAuthor({ data }) {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
 
-  const LIMIT = 10;
+  const LIMIT = 3;
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
+  const dataArray = Array.isArray(data) ? data : [];
   const columns = useMemo(
     () => [
       {
@@ -68,30 +70,33 @@ function TableAuthor({ data }) {
     ],
     []
   );
+  const endIndex = currentPage * LIMIT;
 
+  const onPageChange = (page) => {
+    navigate({
+      search: `?page=${page}`,
+    });
+  };
   return (
     <div className="">
       <div className="border rounded-lg">
-        <Table
-          columns={columns}
-          data={data}
-          rowKey="id"
-          scroll={{
-            x: true,
-          }}
-        ></Table>
+      <Table
+       
+        columns={columns}
+        data={dataArray.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
+        rowKey="id"
+        scroll={{
+          x: true,
+        }}
+      ></Table>
       </div>
       <div className="flex items-center justify-end p-4">
-        <Pagination
-          limit={LIMIT}
-          total={100}
-          current={page}
-          onChange={(value) =>
-            navigate({
-              search: `?page=${value}`,
-            })
-          }
-        />
+      <Pagination
+        limit={LIMIT}
+        total={dataArray.length}
+        current={currentPage} // Use the current page
+        onChange={onPageChange}
+      />
       </div>
     </div>
   );
