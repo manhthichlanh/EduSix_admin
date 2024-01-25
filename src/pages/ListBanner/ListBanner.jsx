@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button/Button";
@@ -5,32 +6,23 @@ import { Menu } from "@headlessui/react";
 import Filter from "../../components/common/icon/Filter";
 import Search from "../../components/Search/Search";
 import TableBanner from "../../components/Table/TableBanner";
-import { Link, useSearchParams } from "react-router-dom";
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Link } from "react-router-dom";
+import { useQuery } from 'react-query';
+import { ServerApi } from '../../utils/http';
 
 export default function ListBanner() {
 
-  // const getCourseData = async () => {
-  //   try {
-  //     const response = await ServerApi.get("/course");
-  //     return response.data;
-  //   } catch (error) {
-  //     throw new Error("Error fetching course data");
-  //   }
-  // };
-  // const {
-  //   data: bannerData,
-  //   isLoading,
-  //   isError,
-  // } = useQuery("bannerData", getCourseData);
 
-  // const [searchParams] = useSearchParams();
-  // const page = Number(searchParams.get("page") || 1);
-  // const LIMIT = 5;
-  // const startIndex = (page - 1) * LIMIT;
-  // const endIndex = startIndex + LIMIT;
-  // const displayedData = bannerData.slice(startIndex, endIndex);
+  const getBannerData = async () => {
+    try {
+      const response = await ServerApi.get("/banner");
+      return response.data;
+    } catch (error) {
+      throw new Error("Error fetching banner data");
+    }
+  };
+
+  const { data: bannerData, isLoading, isError } = useQuery("bannerData", getBannerData);
 
 
   return (
@@ -111,9 +103,7 @@ export default function ListBanner() {
           </Menu>
         </div>
         <div className="border rounded-lg mt-6">
-         
-            <TableBanner />
-        
+          <TableBanner data={bannerData}  isLoading={isLoading} isError={isError} />
         </div>
       </div>
     </div>

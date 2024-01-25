@@ -7,61 +7,88 @@ import Button from "../../components/Button/Button";
 import InputFile from "../../components/Input/InputFile";
 import { useNavigate } from 'react-router-dom';
 import { ServerApi } from '../../utils/http';
-import { convertViToEn, getLocalData } from '../../utils/helper';
+import { convertViToEn } from '../../utils/helper';
 import ToastMessage from '../../utils/alert';
-import { useQuery } from 'react-query';
-
+import { useMutation } from 'react-query';
 
 export default function AddAuthor() {
-  
+  const navigate = useNavigate();
   const [formValue, setFormValue] = useState({
-    author: "",
+    name_user: "",
     status: true,
-    avata: ""
-  })
-  
+    thumbnail: null, // Use null instead of an empty string for files
+  });
+
   const resetForm = () => {
     setFormValue({
-        author: "",
-        status: true,
-        avata: ""
+      name_user: "",
+      status: true,
+      thumbnail: null,
     });
   };
 
   const handleInputChange = (e) => {
-    setFormValue({ ...formValue, author: e.target.value })
+    setFormValue({ ...formValue, name_user: e.target.value });
   };
 
   const handleStatusChange = (e) => {
-    setFormValue({ ...formValue, status: Boolean(e.target.value) })
+    const newStatus = e.target.value === "true"; // Convert the string to a boolean
+    setFormValue({ ...formValue, status: newStatus });
   };
 
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0]
-    const newForm = new FormData();
-    const newName = convertViToEn(file.name); // Đặt tên mới ở đây
-    newForm.append('file', file, newName);
-    setFormValue({ ...formValue, avata: newForm.get("file") })
-  }
- 
-  
+    const file = e.target.files[0];
+    const newName = convertViToEn(file.name);
+    setFormValue({ ...formValue, thumbnail: file, thumbnailName: newName });
+  };
+
+  const addAuthorMutation = useMutation(
+    (formData) => ServerApi.post('/author/addAuthor', formData),
+    {
+      onSuccess: () => {
+        ToastMessage('Thêm tác giả thành công').success();
+        navigate('/list-author');
+      },
+      onError: (error) => {
+        ToastMessage(`Thêm tác giả thất bại: ${error.message}`).error();
+      },
+    }
+  );
+
+  const handleSave = () => {
+    const { name_user, status, thumbnail } = formValue;
+
+    if (!name_user || !thumbnail) {
+      ToastMessage('Nhập đầy đủ thông tin.').warn();
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('name_user', name_user);
+    formData.append('status', status);
+    formData.append('thumbnail', thumbnail);
+
+    addAuthorMutation.mutate(formData);
+  };
+
+
   return (
     <>
       <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
         {/* Breadcrumbs */}
         <div className="mt-6">
-          <div className="text-2xl font-medium pb-2">Thêm tác giả</div>
+          <div className="text-2xl font-medium pb-2">Thêm author</div>
           <div className="flex items-center gap-2 whitespace-nowrap">
             <a href="/" className="text-indigo-500 text">
               Trang chủ
             </a>
             <FontAwesomeIcon icon={faAngleRight} className="" />
             <a href="/list-author" className="text-indigo-500">
-              Danh sách tác giả
+              Danh sách author
             </a>
             <FontAwesomeIcon icon={faAngleRight} className="" />
-            <p className="">Thêm tác giả</p>
+            <p className="">Thêm author</p>
           </div>
         </div>
         <div className="flex gap-2 whitespace-nowrap xl:mt-0 lg:mt-4 md:mt-4 md:justify-end mt-4 sm:mb-0 sm:mt-4 sm:justify-end">
@@ -87,43 +114,26 @@ export default function AddAuthor() {
               resetForm();
             }}
           />
-          <Button
-            text={"Thêm"}
-            Class={
-              "flex font-medium items-center bg-indigo-500 hover-bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
-            }
-            Icon={function Icon() {
-              return (
-                <svg
-                  className="pr-2"
-                  fill="#ffffff"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v18c0-0.553-0.447-1-1-1z" />
-                  <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0-1-0.447-1-1z" />
-                </svg>
-              );
-            }}
-            onClick={() => {
-              const newFormError = {
-                "Tên tác giả": formValue.author,
-                "Hình ảnh": formValue.avata
-              }
-
-              let errCount = 0;
-              for (const [key, value] of Object.entries(newFormError)) {
-                if (!value) {
-                  errCount++;
-                  ToastMessage(`${key} format sai!`).warn()
-                }
-              }
-              if (errCount === 0) handleSave()
-
-            }
-            } />
+            <Button
+        text={"Thêm"}
+        Class={
+          "flex font-medium items-center bg-indigo-500 hover-bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
+        }
+        Icon={() => (
+          <svg
+            className="pr-2"
+            fill="#ffffff"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v18c0-0.553-0.447-1-1-1z" />
+            <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0-1-0.447-1-1z" />
+          </svg>
+        )}
+        onClick={handleSave}
+      />
         </div>
       </div>
       <div className="w-full gap-6 p-6 md:grid sm:grid lg:flex md:grid-cols-1 sm:grid-cols-1">
@@ -133,30 +143,32 @@ export default function AddAuthor() {
           </p>
           <Input
             type={"text"}
-            label={"Tên tác giả"}
-            placeholder={"Nhập tên tác giả"}
+            label={"Tên author"}
+            placeholder={"Nhập tên author"}
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
-            value={formValue.author}
+            value={formValue.name_user}
             onChange={handleInputChange}
           />
-          <InputSelect
-            label={"Trạng thái"}
-            array={[
-              { value: true, text: "Đang bật" },
-              { value: false, text: "Tắt" },
-            ]}
-            value={formValue.status}
-            onChange={handleStatusChange}
-            className={
-              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
-            }
-          />
+        
+       <InputSelect
+  label={"Trạng thái"}
+  array={[
+    { value: "true", text: "Bật" },
+    { value: "false", text: "Tắt" },
+  ]}
+  value={formValue.status.toString()} // Ensure that the value is a string
+  onChange={handleStatusChange}
+  className={
+    "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+  }
+/>
         </div>
         <div className="lg:my-0 md:my-0 sm:my-0 my-6">
           <InputFile
-            title="Avata"
+            title="thumbnails"
+            label={"Image"}
             className={
               "grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center"
             }

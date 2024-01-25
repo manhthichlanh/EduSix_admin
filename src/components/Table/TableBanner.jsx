@@ -1,63 +1,13 @@
+import React, { useMemo, useState, useEffect } from "react";
 import Table from "rc-table";
-import { useMemo, useState } from "react";
 import Pencil from "../../components/common/icon/Pencil";
 import Trash from "../../components/common/icon/Trash";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/common/Pagination";
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
-// const data = [
-//   {
-//     id:1,
-//     thumbnail: "images",
-//     banner_name: "Banner Khóa Học Online",
-//     link: "http://localhost:5173/course-banner",
-//     status: "Active"
-//   },
-//   {
-//     id:2,
-//     thumbnail: "images",
-//     banner_name: "Banner Học Phần Frontend",
-//     link: "http://localhost:5173/frontend-course",
-//     status: "Active"
-//   },
-//   {
-//     id:3,
-//     thumbnail: "images",
-//     banner_name: "Banner Khóa Học Python",
-//     link: "http://localhost:5173/python-course",
-//     status: "Active"
-//   }
-//   , {
-//     id:4,
-//     thumbnail: "images",
-//     banner_name: "Banner Khóa Học Java",
-//     link: "http://localhost:5173/java-course",
-//     status: "Active"
-//   }
-//   , {
-//     id:5,
-//     thumbnail: "images",
-//     banner_name: "Banner Khóa Học Digital Marketing",
-//     link: "http://localhost:5173/digital-marketing-course",
-//     status: "Active"
-//   }
-//   , {
-//     id:6,
-//     thumbnail: "images",
-//     banner_name: "Banner Khóa Học Machine Learning",
-//     link: "http://localhost:5173/ml-course",
-//     status: "Active"
-//   }
-//   , {
-//     id:7,
-//     thumbnail: "images",
-//     banner_name: "Banner Khóa Học Android Development",
-//     link: "http://localhost:5173/android-course",
-//     status: "Active"
-//   }
-// ];
+import { ServerApi, serverEndpoint } from '../../utils/http';
+import ToastMessage from '../../utils/alert';
 
 const DraggableBodyRow = ({ index, moveRow, ...restProps }) => {
   const [, drop] = useDrop({
@@ -68,7 +18,6 @@ const DraggableBodyRow = ({ index, moveRow, ...restProps }) => {
       const dragIndex = item.index;
       const hoverIndex = index;
 
-      // Không thay thế các mục với chính chúng
       if (dragIndex === hoverIndex) {
         return;
       }
@@ -108,61 +57,93 @@ const DraggableBodyRow = ({ index, moveRow, ...restProps }) => {
   );
 };
 
-function TableBanner() {
+const TableBanner = ({ data, isLoading, isError }) => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const page = Number(searchParams.get("page") || 1);
-  const LIMIT = 10;
 
-
+  const LIMIT = 3;
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
+  const [selectedOrdinalNumber, setSelectedOrdinalNumber] = useState("");
+  
+  
   const moveRow = (dragIndex, hoverIndex) => {
     const newData = [...data];
     const draggedRow = newData[dragIndex];
     newData.splice(dragIndex, 1);
     newData.splice(hoverIndex, 0, draggedRow);
-
-    setData(newData);
   };
 
-  const [data, setData] = useState([
-    {
-      id: 1,
-      thumbnail: "images",
-      banner_name: "Banner Khóa Học Online",
-      link: "http://localhost:5173/course-banner",
-      status: "Active"
-    },
-    {
-      id: 2,
-      thumbnail: "images",
-      banner_name: "Banner Học Phần Frontend",
-      link: "http://localhost:5173/frontend-course",
-      status: "Active"
-    },
-    {
-      id: 3,
-      thumbnail: "images",
-      banner_name: "Banner Khóa Học Python",
-      link: "http://localhost:5173/python-course",
-      status: "Active"
-    }
-    , {
-      id: 4,
-      thumbnail: "images",
-      banner_name: "Banner Khóa Học Java",
-      link: "http://localhost:5173/java-course",
-      status: "Active"
-    }
-  ]);
+  const dataArray = Array.isArray(data) ? data : [];
 
+  useEffect(() => {
+    if (dataArray.length > 0) {
+      setSelectedOrdinalNumber(dataArray[0].ordinal_number);
+    }
+  }, [dataArray]);
+
+
+  const handleOrdinalNumberChange = async (bannerId, ordinalNumber) => {
+    try {
+      const response = await ServerApi.patch(`/banner/${bannerId}`, {
+        ordinal_number: ordinalNumber,
+      });
+      ToastMessage('Thay đổi thứ tự banner thành công').success();
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+      
+      if (!response.ok) {
+        throw new Error('Failed to update ordinal_number');
+      }
+
+      // Clone the data array before modifying it
+      const updatedData = [...data];
+      const updatedIndex = updatedData.findIndex((item) => item.id === bannerId);
+
+      if (updatedIndex !== -1) {
+        updatedData[updatedIndex] = { ...updatedData[updatedIndex], ordinal_number: ordinalNumber };
+
+      }
+
+      // Reload the page programmatically
+     
+
+    } catch (error) {
+      console.error('Error updating ordinal_number: ', error);
+    }
+  };
+
+  const handleStatusChange = async (bannerId, newStatus) => {
+    try {
+      const response = await ServerApi.patch(`/banner/${bannerId}`, {
+        status: newStatus,
+      });
+  
+      ToastMessage('Cập nhật trạng thái banner thành công').success();
+  
+      if (!response.ok) {
+        throw new Error('Failed to update status');
+      }
+  
+      const updatedData = [...data];
+      const updatedIndex = updatedData.findIndex((item) => item.id === bannerId);
+  
+      if (updatedIndex !== -1) {
+        updatedData[updatedIndex] = { ...updatedData[updatedIndex], status: newStatus };
+       
+      }
+    } catch (error) {
+      console.error('Error updating status: ', error);
+    }
+  };
+  
   const columns = useMemo(
     () => [
       {
         title: "Banner",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
-              {/* Image here */}
+            <div className="flex-shrink-0 w-[100px]  overflow-hidden bg-gray-300 rounded-lg">
+              <img src={`${serverEndpoint}banner/thumnail/${item.thumnail}`} alt="" />
             </div>
             <div className="">
               <p className="capitalize font-medium text-base leading-[20px]">
@@ -192,25 +173,48 @@ function TableBanner() {
         key: "status",
         render: (item) => (
           <div className="py-1">
-            <p
-              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === "Active"
-                ? "text-emerald-700 bg-red-100"
-                : "text-orange-600 bg-emerald-100"
-                } rounded-lg`}
-            >
-              {item.status === "Active" ? "Active" : "Inactive"}
-            </p>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={item.status}
+                onChange={() => handleStatusChange(item.id, !item.status)}
+              />
+              <span className="slider"></span>
+            </label>
           </div>
         ),
       },
+      {
+        title: "Ordinal Number",
+        key: "ordinal_number",
+        render: (item) => (
+          <div className="py-1 text-[#5C59E8] font-medium">
+            <select
+              value={item.ordinal_number}
+              onChange={(e) => {
+                setSelectedOrdinalNumber(e.target.value);
+                handleOrdinalNumberChange(item.id, e.target.value);
+              }}
+              className="ml-2 p-1"
+            >
+              {Array.from(new Set(dataArray.map((item) => item.ordinal_number))).map((ordinal) => (
+                <option key={ordinal} value={ordinal}>
+                  {ordinal}
+                </option>
+              ))}
+            </select>
+          </div>
+        ),
+      },
+
       {
         title: "Thao tác",
         render: (item) => (
           <div className="flex items-center gap-2">
             <button
               onClick={() =>
-                navigate(`/add-banner?bannerId=${item.banner_id}`, {
-                  state: { courseName: item.name, courseId: item.course_id }, // Pass coursesName in state
+                navigate(`/add-banner?bannerId=${item.id}`, {
+                  state: { courseName: item.name, courseId: item.course_id },
                 })
               }
             >
@@ -223,39 +227,51 @@ function TableBanner() {
         ),
       },
     ],
-    []
+    [selectedOrdinalNumber]
   );
+
+
+  
+  // Calculate the correct endIndex based on the current page and LIMIT
+  const endIndex = currentPage * LIMIT;
+
+  const onPageChange = (page) => {
+    navigate({
+      search: `?page=${page}`,
+    });
+  };
+
+
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="border rounded-lg">
-        <Table
-          components={{
-            body: {
-              row: (props) => <DraggableBodyRow draggable moveRow={moveRow} {...props} />,
-            },
-          }}
-          columns={columns}
-          data={data.map((item, index) => ({ ...item, index }))}
-          rowKey="id"
-          scroll={{
-            x: true,
-          }}
-        ></Table>
-      </div>
-      <div className="flex items-center justify-end p-4">
-        <Pagination
-          limit={LIMIT}
-          total={100}
-          current={page}
-          onChange={(value) =>
-            navigate({
-              search: `?page=${value}`,
-            })
-          }
-        />
-      </div>
-    </DndProvider>
+    <div className="border rounded-lg">
+      {/* Add a selector for ordinal numbers */}
+     
+      <Table
+        components={{
+          body: {
+            row: (props) => <DraggableBodyRow draggable moveRow={moveRow} {...props} />,
+          },
+        }}
+        columns={columns}
+        data={dataArray.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
+        rowKey="id"
+        scroll={{
+          x: true,
+        }}
+      ></Table>
+    </div>
+    <div className="flex items-center justify-end p-4">
+      <Pagination
+        limit={LIMIT}
+        total={dataArray.length}
+        current={currentPage} // Use the current page
+        onChange={onPageChange}
+      />
+    </div>
+  </DndProvider>
   );
 }
+
 export default TableBanner;

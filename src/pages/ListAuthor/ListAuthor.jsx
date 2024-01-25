@@ -6,32 +6,23 @@ import Filter from "../../components/common/icon/Filter";
 import Search from "../../components/Search/Search";
 import TableBanner from "../../components/Table/TableBanner";
 import { Link, useSearchParams } from "react-router-dom";
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+// import { DndProvider } from 'react-dnd';
+// import { HTML5Backend } from 'react-dnd-html5-backend';
 import TableAuthor from "../../components/Table/TableAuthor";
+import { ServerApi } from '../../utils/http';
+import { useQuery } from 'react-query';
+export default function ListAuthor() {
 
-export default function ListBanner() {
+  const getAuthorData = async () => {
+    try {
+      const response = await ServerApi.get("/author");
+      return response.data;
+    } catch (error) {
+      throw new Error("Error fetching author data");
+    }
+  };
 
-  // const getCourseData = async () => {
-  //   try {
-  //     const response = await ServerApi.get("/course");
-  //     return response.data;
-  //   } catch (error) {
-  //     throw new Error("Error fetching course data");
-  //   }
-  // };
-  // const {
-  //   data: bannerData,
-  //   isLoading,
-  //   isError,
-  // } = useQuery("bannerData", getCourseData);
-
-  // const [searchParams] = useSearchParams();
-  // const page = Number(searchParams.get("page") || 1);
-  // const LIMIT = 5;
-  // const startIndex = (page - 1) * LIMIT;
-  // const endIndex = startIndex + LIMIT;
-  // const displayedData = bannerData.slice(startIndex, endIndex);
+  const { data: authorData, isLoading, isError } = useQuery("authorData", getAuthorData);
 
 
   return (
@@ -112,10 +103,15 @@ export default function ListBanner() {
           </Menu>
         </div>
         <div className="border rounded-lg mt-6">
-         
-            <TableAuthor />
-        
-        </div>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : isError ? (
+          <p>Error loading data</p>
+        ) : (
+          <TableAuthor data={authorData} />
+        )}
+      </div>
+
       </div>
     </div>
   );
