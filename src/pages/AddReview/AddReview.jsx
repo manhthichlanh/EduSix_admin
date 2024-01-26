@@ -178,7 +178,6 @@ export default function AddReview() {
                    value={formValue.content}
                         onChange={handleContentChange}
                    ></Jodit>
-
                 </div>
 
                 <div className="lg:my-0 md:my-0 sm:my-0 my-6">
