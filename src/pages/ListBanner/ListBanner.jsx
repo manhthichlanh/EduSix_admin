@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button/Button";
@@ -5,44 +6,43 @@ import { Menu } from "@headlessui/react";
 import Filter from "../../components/common/icon/Filter";
 import Search from "../../components/Search/Search";
 import TableBanner from "../../components/Table/TableBanner";
-import { Link, useSearchParams } from "react-router-dom";
-// import { DndProvider } from 'react-dnd';
-// import { HTML5Backend } from 'react-dnd-html5-backend';
-import TableBlog from "../../components/Table/Blog/TableBlogList";
-import { ServerApi } from '../../utils/http';
+import { Link } from "react-router-dom";
 import { useQuery } from 'react-query';
-export default function ListAuthor() {
+import { ServerApi } from '../../utils/http';
 
-  const getBlogData = async () => {
+export default function ListBanner() {
+
+
+  const getBannerData = async () => {
     try {
-      const response = await ServerApi.get("/blog");
+      const response = await ServerApi.get("/banner");
       return response.data;
     } catch (error) {
-      throw new Error("Error fetching author data");
+      throw new Error("Error fetching banner data");
     }
   };
 
-  const { data: blogData, isLoading, isError } = useQuery("blogData", getBlogData);
-console.log(blogData);
+  const { data: bannerData, isLoading, isError } = useQuery("bannerData", getBannerData);
+
 
   return (
     <div className="px-6 py-6 max-h-full">
       <div className="items-end justify-between mb-6 xl:flex lg:flex md:flex sm:flex">
         {/* Breadcrumbs */}
         <div className="">
-          <div className="text-2xl font-medium pb-4">Danh sách blog</div>
+          <div className="text-2xl font-medium pb-4">Danh sách banner</div>
           <div className="flex items-center gap-2 whitespace-nowrap">
             <a href="/" className="text-indigo-500 text">
               Trang chủ
             </a>
             <FontAwesomeIcon icon={faAngleRight} className="" />
-            <p className="">Danh sách blog</p>
+            <p className="">Danh sách banner</p>
           </div>
         </div>
         <div className="flex gap-2 whitespace-nowrap mt-4 sm:mb-0 sm:mt-4 sm:justify-end">
-          <Link to="/add-blog">
+          <Link to="/add-banner">
             <Button
-              text={"Thêm blog"}
+              text={"Thêm banner"}
               Class={
                 "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
               }
@@ -103,15 +103,8 @@ console.log(blogData);
           </Menu>
         </div>
         <div className="border rounded-lg mt-6">
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : isError ? (
-          <p>Error loading data</p>
-        ) : (
-          <TableBlog data={blogData} />
-        )}
-      </div>
-
+          <TableBanner data={bannerData}  isLoading={isLoading} isError={isError} />
+        </div>
       </div>
     </div>
   );

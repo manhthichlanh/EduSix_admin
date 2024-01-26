@@ -5,7 +5,6 @@ import { useQuery } from "react-query";
 import { ServerApi } from "../../utils/http";
 import { Fragment, useState } from "react";
 import { convertViToEn } from "../../utils/helper";
-
 import SearchIcon from "../../components/common/icon/SearchIcon";
 import Input from "../../components/Input/Input";
 import ChevronUp from "./../../components/common/icon/ChevronUp";
@@ -64,7 +63,6 @@ export default function Home() {
     const nameMatches = convertViToEn(course.name).includes(
       convertViToEn(searchQuery)
     );
-
     return nameMatches;
   }).sort((a, b) => {
     switch (selectedFilter.id) {
@@ -78,11 +76,11 @@ export default function Home() {
         return b.name.localeCompare(a.name);
       case 6:
         return (
-          new Date(b.create_at).getTime() - new Date(a.create_at).getTime()
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         );
       case 7:
         return (
-          new Date(a.create_at).getTime() - new Date(b.create_at).getTime()
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
         );
       default:
         return 0;
@@ -97,11 +95,7 @@ export default function Home() {
   };
 
   const [searchParams] = useSearchParams();
-  const page = Number(searchParams.get("page") || 1);
-  const LIMIT = 5;
-  const startIndex = (page - 1) * LIMIT;
-  const endIndex = startIndex + LIMIT;
-  const displayedData = filteredCourses.slice(startIndex, endIndex);
+ 
 
   return (
     <div className="max-h-full px-6 py-6">
@@ -235,10 +229,10 @@ export default function Home() {
         </div>
         <div className="mt-6 border rounded-lg">
           <TableCourse
-            data={displayedData}
-            limit={LIMIT}
+            data={filteredCourses}
+            
             total={filteredCourses.length}
-            page={page}
+          
           ></TableCourse>
         </div>
       </div>

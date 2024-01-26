@@ -1,10 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
 
-const InputSelect = (props) => {
-  const { array, className, label, onChange, value } = props;
-  console.log(array);
-
+const InputSelect = ({ array, className, label, onChange, value }) => {
   return (
     <div className="py-2">
       <label htmlFor="" className="text-base font-medium text-gray-500">
@@ -15,14 +11,11 @@ const InputSelect = (props) => {
         value={value}
         onChange={onChange}
       >
-        {
-          array?.length > 0 &&
-          (
-            array.map(item => (
-              <option key={item.value} value={item.value}>{item.text}</option>
-            ))
-          )
-        }
+        {array?.map((item) => (
+          <option key={item.value} value={item.value}>
+            {item.text}
+          </option>
+        ))}
       </select>
     </div>
   );

@@ -8,41 +8,41 @@ import TableBanner from "../../components/Table/TableBanner";
 import { Link, useSearchParams } from "react-router-dom";
 // import { DndProvider } from 'react-dnd';
 // import { HTML5Backend } from 'react-dnd-html5-backend';
-import TableBlog from "../../components/Table/Blog/TableBlogList";
+import TableAuthor from "../../components/Table/TableAuthor";
 import { ServerApi } from '../../utils/http';
 import { useQuery } from 'react-query';
 export default function ListAuthor() {
 
-  const getBlogData = async () => {
+  const getAuthorData = async () => {
     try {
-      const response = await ServerApi.get("/blog");
+      const response = await ServerApi.get("/author");
       return response.data;
     } catch (error) {
       throw new Error("Error fetching author data");
     }
   };
 
-  const { data: blogData, isLoading, isError } = useQuery("blogData", getBlogData);
-console.log(blogData);
+  const { data: authorData, isLoading, isError } = useQuery("authorData", getAuthorData);
+
 
   return (
     <div className="px-6 py-6 max-h-full">
       <div className="items-end justify-between mb-6 xl:flex lg:flex md:flex sm:flex">
         {/* Breadcrumbs */}
         <div className="">
-          <div className="text-2xl font-medium pb-4">Danh sách blog</div>
+          <div className="text-2xl font-medium pb-4">Danh sách tác giả</div>
           <div className="flex items-center gap-2 whitespace-nowrap">
             <a href="/" className="text-indigo-500 text">
               Trang chủ
             </a>
             <FontAwesomeIcon icon={faAngleRight} className="" />
-            <p className="">Danh sách blog</p>
+            <p className="">Danh sách tác giả</p>
           </div>
         </div>
         <div className="flex gap-2 whitespace-nowrap mt-4 sm:mb-0 sm:mt-4 sm:justify-end">
-          <Link to="/add-blog">
+          <Link to="/add-author">
             <Button
-              text={"Thêm blog"}
+              text={"Thêm tác giả"}
               Class={
                 "flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg  "
               }
@@ -108,7 +108,7 @@ console.log(blogData);
         ) : isError ? (
           <p>Error loading data</p>
         ) : (
-          <TableBlog data={blogData} />
+          <TableAuthor data={authorData} />
         )}
       </div>
 

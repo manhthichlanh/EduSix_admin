@@ -14,7 +14,8 @@ import Course from "./../../components/common/icon/Course";
 import Blog from "./../../components/common/icon/Blog";
 import Cart from "./../../components/common/icon/Cart";
 import Users from "./../../components/common/icon/Users";
-
+import Banner from "../../components/common/icon/Banner";
+import Author from "../../components/common/icon/Author";
 const LayoutAdmin = () => {
   const [isKhaoHocSubMenuOpen, setIsKhaoHocSubMenuOpen] = useState(false);
   const [isBaiVietSubMenuOpen, setIsBaiVietSubMenuOpen] = useState(false);
@@ -96,10 +97,13 @@ const LayoutAdmin = () => {
                           <h2>Danh sách khóa học</h2>
                         </NavLink>
                         <NavLink to="/cate-course" activeclassname="active">
-                          <h2>Danh mục</h2>
+                          <h2>Danh mục khóa học</h2>
+                        </NavLink>
+                        <NavLink to="/list-section" activeclassname="active">
+                          <h2>Danh sách phần học</h2>
                         </NavLink>
                         <NavLink to="/list-quiz" activeclassname="active">
-                          <h2>Danh sách quiz</h2>
+                          <h2>Danh sách quiz</h2>   
                         </NavLink>
                       </div>
                     )}
@@ -129,15 +133,32 @@ const LayoutAdmin = () => {
                     )}
                   </div>
                   <div className="single_Menu">
+                    <NavLink to="/list-banner" activeclassname="active">
+                      <h1>
+                        <div className="icon-menu">
+                          <Banner width="22" height="22"></Banner>
+                        </div>
+                        Danh sách banner
+                      </h1>
+                    </NavLink>
+                  </div>
+                  <div className="single_Menu">
+                    <NavLink to="/list-author" activeclassname="active">
+                      <h1>
+                        <div className="icon-menu">
+                        <Author width="22" height="22"></Author>
+                        </div>
+                        Danh sách tác giả
+                      </h1>
+                    </NavLink>
+                  </div>
+                  <div className="single_Menu">
                     <NavLink to="/order" activeclassname="active">
                       <h1>
                         <div className="icon-menu">
                           <Cart width="24" height="24"></Cart>
                         </div>
                         Danh sách mua
-                        <div className="number_SideBar">
-                          <span>1</span>
-                        </div>
                       </h1>
                     </NavLink>
                   </div>

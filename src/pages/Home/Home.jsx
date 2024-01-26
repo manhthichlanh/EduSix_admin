@@ -154,9 +154,9 @@ export default function Home() {
 
   return (
     <div>
-      <Alert severity="success" color="info">
+      {/* <Alert severity="success" color="info">
         This is a success alert — check it out!
-      </Alert>
+      </Alert> */}
       <div className="grid grid-cols-12 gap-4 m-6">
         <div className="col-span-6 md:col-span-6 lg:col-span-3">
           <Card

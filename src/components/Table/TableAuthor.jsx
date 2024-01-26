@@ -1,13 +1,13 @@
 import Table from "rc-table";
 import { useMemo } from "react";
-import Pencil from "../../../components/common/icon/Pencil";
-import Trash from "../../../components/common/icon/Trash";
+import Pencil from "../../components/common/icon/Pencil";
+import Trash from "../../components/common/icon/Trash";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Pagination from "../../../components/common/Pagination";
-import { ServerApi, serverEndpoint } from '../../../utils/http';
+import Pagination from "../../components/common/Pagination";
+import { ServerApi, serverEndpoint } from '../../utils/http';
 
 
-function TableBlog({ data }) {
+function TableAuthor({ data }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
@@ -18,15 +18,15 @@ function TableBlog({ data }) {
   const columns = useMemo(
     () => [
       {
-        title: "Blog",
+        title: "Tác giả",
         render: (item) => (
           <div className="flex items-center gap-2">
             <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
-            <img src={`${serverEndpoint}blog/thumbnail/${item.blog.thumbnail}`} alt="" />
+            <img src={`${serverEndpoint}author/thumbnail/${item.thumbnail}`} alt="" />
             </div>
             <div className="">
-              <p className="capitalize font-medium text-base leading-[20px] w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap">
-                {item?.blog.name}
+              <p className="capitalize font-medium text-base leading-[20px]">
+                {item?.name_user}
               </p>
             </div>
           </div>
@@ -38,12 +38,12 @@ function TableBlog({ data }) {
         render: (item) => (
           <div className="py-1">
             <p
-              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.blog.status === true
+              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === true
                 ? "text-emerald-700 bg-red-100"
                 : "text-orange-600 bg-emerald-100"
                 } rounded-lg`}
             >
-              {item.blog.status === true? "Đang bật" : "Đang tắt"}
+              {item.status === true? "Đang bật" : "Đang tắt"}
             </p>
           </div>
         ),
@@ -101,4 +101,4 @@ function TableBlog({ data }) {
     </div>
   );
 }
-export default TableBlog;
+export default TableAuthor;

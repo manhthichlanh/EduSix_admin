@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import  { useMemo, useState, useEffect } from "react";
 import Table from "rc-table";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../common/Pagination";
@@ -10,6 +11,9 @@ import Add from "../../common/icon/Add";
 
 function TableCourse(props) {
   const { data, limit, total, current } = props;
+  const LIMIT = 3;
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
+
   const navigate = useNavigate();
   const getCourseData = async () => {
     try {
@@ -20,6 +24,13 @@ function TableCourse(props) {
     }
   };
 
+  const deleteCourse = async (courseId) => {
+    try {
+      await ServerApi.delete(`/course/${courseId}`);
+    } catch (error) {
+      console.error("Error deleting course:", error);
+    }
+  };
   // Use React Query to fetch and manage course data
   const {
     data: courseData,
@@ -79,19 +90,18 @@ function TableCourse(props) {
       key: "price",
       render: (item) => (
         <span
-          className={`font-medium tracking-[0.5%] leading-[18px] ${
-            item.type === 0
-              ? "text-emerald-600"
-              : item.type === 2
+          className={`font-medium tracking-[0.5%] leading-[18px] ${item.type === 0
+            ? "text-emerald-600"
+            : item.type === 2
               ? "text-red-500"
               : ""
-          }`}
+            }`}
         >
           {item.type === 0
             ? "Free"
             : item.type === 1
-            ? `${Number(item.course_price).toLocaleString("vi-VN")}đ`
-            : "N/A"}
+              ? `${Number(item.course_price).toLocaleString("vi-VN")}đ`
+              : "N/A"}
         </span>
       ),
     },
@@ -101,13 +111,12 @@ function TableCourse(props) {
       render: (item) => (
         <div className="py-1">
           <p
-            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${
-              item.status === "Active"
-                ? "text-emerald-700 bg-red-100"
-                : "text-orange-600 bg-emerald-100"
-            } rounded-lg`}
+            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === true
+              ? "text-emerald-700 bg-red-100"
+              : "text-orange-600 bg-emerald-100"
+              } rounded-lg`}
           >
-            {item.status === "Active" ? "Active" : "Inactive"}
+            {item.status === true ? "Đang bật" : "Đang tắt"}
           </p>
         </div>
       ),
@@ -145,7 +154,16 @@ function TableCourse(props) {
           <button>
             <Pencil className="text-gray-500 hover:text-orange-600"></Pencil>
           </button>
-          <button>
+          <button
+            onClick={() => {
+              // Hiển thị cảnh báo (confirm) trước khi xóa
+              const shouldDelete = window.confirm("Bạn có chắc muốn xóa?");
+              if (shouldDelete) {
+                // Gọi hàm xóa
+                deleteCourse(item.course_id);
+              }
+            }}
+          >
             <Trash className="text-gray-500  hover:text-red-500"></Trash>
           </button>
         </div>
@@ -153,12 +171,21 @@ function TableCourse(props) {
     },
   ];
 
+
+  const endIndex = currentPage * LIMIT;
+
+  const onPageChange = (page) => {
+    navigate({
+      search: `?page=${page}`,
+    });
+  };
+
   return (
     <div className="">
       <div className="border rounded-lg">
         <Table
           columns={columns}
-          data={data}
+          data={data.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
           rowKey={(record) => record.course_id + record.created_at}
           scroll={{
             x: true,
@@ -167,14 +194,10 @@ function TableCourse(props) {
       </div>
       <div className="flex items-center justify-end p-4">
         <Pagination
-          limit={limit}
-          total={total}
-          current={current}
-          onChange={(value) =>
-            navigate({
-              search: `?page=${value}`,
-            })
-          }
+          limit={LIMIT}
+          total={data.length}
+          current={currentPage}
+          onChange={onPageChange}
         />
       </div>
     </div>
