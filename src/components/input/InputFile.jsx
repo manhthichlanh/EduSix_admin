@@ -46,7 +46,7 @@ function InputFile({ title, label, className, placeholder, value, onChange }) {
           <img
             src={selectedImage}
             alt="Selected"
-            className="mb-4 w-52 h-52 object-cover rounded-lg"
+            className="mb-4 w-52 object-cover rounded-lg"
           />
         ) : (
           <svg
