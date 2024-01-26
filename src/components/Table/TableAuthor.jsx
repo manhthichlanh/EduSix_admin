@@ -4,51 +4,17 @@ import Pencil from "../../components/common/icon/Pencil";
 import Trash from "../../components/common/icon/Trash";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/common/Pagination";
+import { ServerApi, serverEndpoint } from '../../utils/http';
 
-const data = [
-  {
-    avata: "images",
-    author: "Sơn Tùng MTP",
-    status: "Active"
-  },
-  {
-    avata: "images",
-    author: "Banner Học Phần Frontend",
-    status: "Active"
-  },
-  {
-    avata: "images",
-    author: "Banner Khóa Học Python",
-    status: "Active"
-  }
-  , {
-    avata: "images",
-    author: "Banner Khóa Học Java",
-    status: "Inactive"
-  }
-  , {
-    avata: "images",
-    author: "Banner Khóa Học Digital Marketing",
-    status: "Active"
-  }
-  , {
-    avata: "images",
-    author: "Banner Khóa Học Machine Learning",
-    status: "Active"
-  }
-  , {
-    avata: "images",
-    author: "Banner Khóa Học Android Development",
-    status: "Active"
-  }
-];
 
-function TableAuthor() {
+function TableAuthor({ data }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
 
-  const LIMIT = 10;
+  const LIMIT = 3;
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
+  const dataArray = Array.isArray(data) ? data : [];
   const columns = useMemo(
     () => [
       {
@@ -56,11 +22,11 @@ function TableAuthor() {
         render: (item) => (
           <div className="flex items-center gap-2">
             <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
-              {/* Image here */}
+            <img src={`${serverEndpoint}author/thumbnail/${item.thumbnail}`} alt="" />
             </div>
             <div className="">
               <p className="capitalize font-medium text-base leading-[20px]">
-                {item?.author}
+                {item?.name_user}
               </p>
             </div>
           </div>
@@ -72,12 +38,12 @@ function TableAuthor() {
         render: (item) => (
           <div className="py-1">
             <p
-              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === "Active"
+              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === true
                 ? "text-emerald-700 bg-red-100"
                 : "text-orange-600 bg-emerald-100"
                 } rounded-lg`}
             >
-              {item.status === "Active" ? "Active" : "Inactive"}
+              {item.status === true? "Active" : "Inactive"}
             </p>
           </div>
         ),
@@ -104,30 +70,33 @@ function TableAuthor() {
     ],
     []
   );
+  const endIndex = currentPage * LIMIT;
 
+  const onPageChange = (page) => {
+    navigate({
+      search: `?page=${page}`,
+    });
+  };
   return (
     <div className="">
       <div className="border rounded-lg">
-        <Table
-          columns={columns}
-          data={data}
-          rowKey="id"
-          scroll={{
-            x: true,
-          }}
-        ></Table>
+      <Table
+       
+        columns={columns}
+        data={dataArray.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
+        rowKey="id"
+        scroll={{
+          x: true,
+        }}
+      ></Table>
       </div>
       <div className="flex items-center justify-end p-4">
-        <Pagination
-          limit={LIMIT}
-          total={100}
-          current={page}
-          onChange={(value) =>
-            navigate({
-              search: `?page=${value}`,
-            })
-          }
-        />
+      <Pagination
+        limit={LIMIT}
+        total={dataArray.length}
+        current={currentPage} // Use the current page
+        onChange={onPageChange}
+      />
       </div>
     </div>
   );

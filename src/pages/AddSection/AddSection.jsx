@@ -9,6 +9,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ServerApi } from '../../utils/http';
 import ToastMessage from '../../utils/alert';
 import { useQuery } from 'react-query';
+
 const getCourseById = async (courseId) => {
   try {
     const response = await ServerApi.get("course/" + courseId);
