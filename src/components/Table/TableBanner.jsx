@@ -1,127 +1,237 @@
+import React, { useMemo, useState, useEffect } from "react";
 import Table from "rc-table";
-import { useMemo, useState, useEffect, useCallback, useRef } from "react";
 import Pencil from "../../components/common/icon/Pencil";
 import Trash from "../../components/common/icon/Trash";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Pagination from "../../components/common/Pagination";
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import update from 'immutability-helper';
+import { ServerApi, serverEndpoint } from '../../utils/http';
+import ToastMessage from '../../utils/alert';
+import { useMutation, useQueryClient } from 'react-query';
 
-const type = "DraggableBodyRow";
+const DraggableBodyRow = ({ index, moveRow, ...restProps }) => {
+  const [, drop] = useDrop({
+    accept: "table-row",
+    hover: (item, monitor) => {
+      if (!restProps.draggable) return;
 
-const DraggableBodyRow = ({ index, moveRow, className, style, ...restProps }) => {
-  const ref = useRef();
-  const [{ isOver, dropClassname }, drop] = useDrop(
-    () => ({
-      accept: type,
-      collect: (monitor) => {
-        const { index: dragIndex } = monitor.getItem() || {};
-        if (dragIndex === index) {
-          return {};
-        }
+      const dragIndex = item.index;
+      const hoverIndex = index;
 
-        return {
-          isOver: monitor.isOver(),
-          dropClassName: dragIndex < index ? "drop-over-downward" : "drop-over-upward",
-        };
-      },
-      drop: (item) => {
-        moveRow(item.index, index);
-      },
-    }),
-    [index]
-  );
+      if (dragIndex === hoverIndex) {
+        return;
+      }
 
-  const [, drag] = useDrag(() => ({
-    type,
-    item: { index },
+      const hoverBoundingRect = monitor.getClientOffset();
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      moveRow(dragIndex, hoverIndex);
+
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: "table-row",
+    item: () => {
+      return { index };
+    },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-  }), [index]);
-  drop(drag(ref));
+  });
 
+  const opacity = isDragging ? 0.5 : 1;
   return (
-    <tr
-      ref={ref}
-      className={`${className}${isOver ? dropClassname : ""} `}
-      style={{ cursor: "move", ...style }}
-      {...restProps}
-    >
-    </tr>
+    <tr ref={(node) => drag(drop(node))} style={{ opacity }} {...restProps} />
   );
 };
 
-
-const TableBanner = () => {
+const TableBanner = ({ data, isLoading, isError }) => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const page = Number(searchParams.get("page") || 1);
-  const LIMIT = 10;
- 
+  const queryClient = useQueryClient();
+  const LIMIT = 3;
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
+  const [selectedOrdinalNumber, setSelectedOrdinalNumber] = useState("");
+  
+  
+  const moveRow = (dragIndex, hoverIndex) => {
+    const newData = [...data];
+    const draggedRow = newData[dragIndex];
+    newData.splice(dragIndex, 1);
+    newData.splice(hoverIndex, 0, draggedRow);
+  };
+
+  const dataArray = Array.isArray(data) ? data : [];
+
+  useEffect(() => {
+    if (dataArray.length > 0) {
+      setSelectedOrdinalNumber(dataArray[0].ordinal_number);
+    }
+  }, [dataArray]);
+
+  const updateOrdinalNumber = async (bannerId, ordinalNumber) => {
+    const response = await ServerApi.patch(`/banner/${bannerId}`, {
+      ordinal_number: ordinalNumber,
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to update ordinal_number');
+    }
+  
+    return response.data; // Adjust this based on your API response structure
+  };
+
+  const handleOrdinalNumberChange = async (bannerId, ordinalNumber) => {
+    try {
+      const response = await ServerApi.patch(`/banner/${bannerId}`, {
+        ordinal_number: ordinalNumber,
+      });
+      ToastMessage('Thay đổi thứ tự banner thành công').success();
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 3000);
+      
+      if (!response.ok) {
+        throw new Error('Failed to update ordinal_number');
+      }
+
+      // Clone the data array before modifying it
+      const updatedData = [...data];
+      const updatedIndex = updatedData.findIndex((item) => item.id === bannerId);
+
+      if (updatedIndex !== -1) {
+        updatedData[updatedIndex] = { ...updatedData[updatedIndex], ordinal_number: ordinalNumber };
+      }
+
+    } catch (error) {
+      console.error('Error updating ordinal_number: ', error);
+    }
+  };
+
+  const handleStatusChange = async (bannerId, newStatus) => {
+    try {
+      const response = await ServerApi.patch(`/banner/${bannerId}`, {
+        status: newStatus,
+      });
+  
+      ToastMessage('Cập nhật trạng thái banner thành công').success();
+  
+      if (!response.ok) {
+        throw new Error('Failed to update status');
+      }
+  
+      const updatedData = [...data];
+      const updatedIndex = updatedData.findIndex((item) => item.id === bannerId);
+  
+      if (updatedIndex !== -1) {
+        updatedData[updatedIndex] = { ...updatedData[updatedIndex], status: newStatus };
+      }
+    } catch (error) {
+      console.error('Error updating status: ', error);
+    }
+  };
+
+  const { mutate: mutateOrdinalNumberQuery } = useMutation(updateOrdinalNumber, {
+    onSuccess: () => {
+      ToastMessage('Thay đổi thứ tự banner thành công').success();
+      queryClient.invalidateQueries('banners'); // Assuming you have a query key for your banners data
+    },
+    onError: (error) => {
+      console.error('Error updating ordinal_number: ', error);
+    },
+  });
+  
   const columns = useMemo(
     () => [
       {
         title: "Banner",
-        key: "name",
-        dataIndex: "avata",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
-              {/* Image here */}
+            <div className="flex-shrink-0 w-[100px]  overflow-hidden bg-gray-300 rounded-lg">
+              <img src={`${serverEndpoint}banner/thumnail/${item.thumnail}`} alt="" />
             </div>
             <div className="">
               <p className="capitalize font-medium text-base leading-[20px]">
-                {item}
+                {item?.name_banner}
               </p>
             </div>
           </div>
         ),
       },
       {
-        title: "Link",
-        key: "link",
-        dataIndex: "link",
-        render: (item) => {
-          console.log({item});
-          return (
-            <div className="flex items-center gap-2">
-              <div className="">
-                <p className="capitalize font-medium text-base leading-[20px]">
-                  {item}
-                </p>
-              </div>
-            </div>
-          )
-        }
+        title: "ID",
+        key: "id",
+        render: (item) => (
+          <div className="py-1 text-[#5C59E8] font-medium">{item.id}</div>
+        ),
       },
       {
-        title: "Status",
-        key: "status",
-        dataIndex: "status",
+        title: "Link",
         render: (item) => (
-          <div className="py-1">
-            <p
-              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item === "Active"
-                ? "text-emerald-700 bg-red-100"
-                : "text-orange-600 bg-emerald-100"
-                } rounded-lg`}
-            >
-              {item === "Active" ? "Active" : "Inactive"}
-            </p>
+          <div className="py-1 text-[#667085] font-medium">
+            {item?.link}
           </div>
         ),
       },
       {
+        title: "Status",
+        key: "status",
+        render: (item) => (
+          <div className="py-1">
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={item.status}
+                onChange={() => handleStatusChange(item.id, !item.status)}
+              />
+              <span className="slider"></span>
+            </label>
+          </div>
+        ),
+      },
+      {
+        title: "Ordinal Number",
+        key: "ordinal_number",
+        render: (item) => (
+          <div className="py-1 text-[#5C59E8] font-medium">
+            <select
+              value={item.ordinal_number}
+              onChange={(e) => {
+                setSelectedOrdinalNumber(e.target.value);
+                handleOrdinalNumberChange(item.id, e.target.value);
+              }}
+              className="ml-2 p-1"
+            >
+              {Array.from(new Set(dataArray.map((item) => item.ordinal_number))).map((ordinal) => (
+                <option key={ordinal} value={ordinal}>
+                  {ordinal}
+                </option>
+              ))}
+            </select>
+          </div>
+        ),
+      },
+
+      {
         title: "Thao tác",
-        dataIndex: "thaotac",
         render: (item) => (
           <div className="flex items-center gap-2">
             <button
               onClick={() =>
-                navigate(`/add-banner?bannerId=${item.banner_id}`, {
-                  state: { courseName: item.name, courseId: item.course_id }, // Pass coursesName in state
+                navigate(`/add-banner?bannerId=${item.id}`, {
+                  state: { courseName: item.name, courseId: item.course_id },
                 })
               }
             >
@@ -134,101 +244,50 @@ const TableBanner = () => {
         ),
       },
     ],
-    []
+    [selectedOrdinalNumber]
   );
 
 
-  const [data, setData] = useState([
-    {
-      id: "1",
-      avata: "images",
-      link: "aaaaaaa",
-      name: "Sơn Tùng MTP",
-      status: "Inactive"
-    },
-    {
-      id: "2",
-      avata: "images",
-      link: "bbbbbbbbbb",
-      name: "Banner Học Phần Frontend",
-      status: "Active"
-    },
-    {
-      id: "3",
-      avata: "images",
-      link: "cccccccccccc",
-      name: "Banner Khóa Học Python",
-      status: "Active"
-    },
-    // {
-    //   id: "1",
-    //   name: "images",
-    //   address: "Banner Khóa Học Online",
-    //   age: 23,
-    // },
-    // {
-    //   id: "2",
-    //   name: "images",
-    //   address: "Banner Khóa Học Online",
-    //   age: 21,
-    // },
-    // {
-    //   id: "3",
-    //   name: "images",
-    //   address: "Banner Khóa Học Online",
-    //   age: 26,
-    // },
-   
-  ]);
-  const moveRow = useCallback(
-    (dragIndex, hoverIndex) => {
-      const dragRow = data[dragIndex];
-      setData(
-        update(data, {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, dragRow],
-          ],
-        })
-      );
-    },
-    [data]
-  );
+  
+  // Calculate the correct endIndex based on the current page and LIMIT
+  const endIndex = currentPage * LIMIT;
 
-  const component = {
-    body: {
-      row: DraggableBodyRow
-    },
+  const onPageChange = (page) => {
+    navigate({
+      search: `?page=${page}`,
+    });
   };
+
 
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="border rounded-lg">
-        <Table
-          columns={columns}
-          data={data}
-          components={component}
-          rowKey="id"
-          onRow={(record, index) => ({
-            index,
-            moveRow,
-          })}
-        ></Table>
-      </div>
-      <div className="flex items-center justify-end p-4">
-        <Pagination
-          limit={LIMIT}
-          total={100}
-          current={page}
-          onChange={(value) =>
-            navigate({
-              search: `?page=${value}`,
-            })
-          }
-        />
-      </div>
-    </DndProvider>
+    <div className="border rounded-lg">
+      {/* Add a selector for ordinal numbers */}
+     
+      <Table
+        components={{
+          body: {
+            row: (props) => <DraggableBodyRow draggable moveRow={moveRow} {...props} />,
+          },
+        }}
+        columns={columns}
+        data={dataArray.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
+        rowKey="id"
+        scroll={{
+          x: true,
+        }}
+      ></Table>
+    </div>
+    <div className="flex items-center justify-end p-4">
+      <Pagination
+        limit={LIMIT}
+        total={dataArray.length}
+        current={currentPage} // Use the current page
+        onChange={onPageChange}
+      />
+    </div>
+  </DndProvider>
   );
 }
 
