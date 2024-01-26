@@ -43,7 +43,7 @@ function TableAuthor({ data }) {
                 : "text-orange-600 bg-emerald-100"
                 } rounded-lg`}
             >
-              {item.status === true? "Active" : "Inactive"}
+              {item.status === true? "Đang bật" : "Đang tắt"}
             </p>
           </div>
         ),

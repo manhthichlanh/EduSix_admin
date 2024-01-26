@@ -1,119 +1,67 @@
 import Table from "rc-table";
 import { useMemo } from "react";
-import Pencil from "../../common/icon/Pencil";
-import Trash from "../../common/icon/Trash";
+import Pencil from "../../../components/common/icon/Pencil";
+import Trash from "../../../components/common/icon/Trash";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Pagination from "../../common/Pagination";
+import Pagination from "../../../components/common/Pagination";
+import { ServerApi, serverEndpoint } from '../../../utils/http';
 
-const data = [
-  {
-    id: "1",
-    courseName: "When I left, I was just a boy. When I return",
-    category: "Danh mục 1",
-    description: "When I left",
-    addTime: "1 Dec 2023",
-  },
-  {
-    id: "2",
-    courseName: "Khóa học B",
-    category: "Danh mục 2",
-    description: "When I was just a boy",
-    addTime: "1 Dec 2023",
-  },
-  {
-    id: "3",
-    courseName: "Khóa học C",
-    category: "Danh mục 1",
-    description: "When I return",
-    addTime: "1 Dec 2023",
-  },
-  {
-    id: "4",
-    courseName: "Advanced React Masterclass",
-    category: "Danh mục 2",
-    description: "When I'll be a man",
-    addTime: "2 Dec 2023",
-  },
-  {
-    id: "5",
-    courseName: "Machine Learning Basics",
-    category: "Danh mục 3",
-    description: "And the first thing I need to do is find you and I'll say: ",
-    addTime: "2 Dec 2023",
-  },
-  {
-    id: "6",
-    courseName: "Web Development Fundamentals",
-    category: "Danh mục 1",
-    description:
-      "I'm not perfect but I will love you in the most perfect way so ",
-    addTime: "2 Dec 2023",
-  },
-  {
-    id: "7",
-    courseName: "Data Science for Beginners",
-    category: "Danh mục 4",
-    description: "Instead of being friends, can you be my lover?",
-    addTime: "3 Dec 2023",
-  },
-  {
-    id: "8",
-    courseName: "Python Programming Basics",
-    category: "Danh mục 3",
-    description:
-      "Lorem ip Impedit perspiciatis libero quam nihil quidem eius tempore",
-    addTime: "3 Dec 2023",
-  },
-];
 
-function TableBlogList() {
+function TableBlog({ data }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
 
-  const LIMIT = 10;
+  const LIMIT = 3;
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
+  const dataArray = Array.isArray(data) ? data : [];
   const columns = useMemo(
     () => [
       {
-        title: "Khóa học",
+        title: "Blog",
         render: (item) => (
           <div className="flex items-center gap-2">
             <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
-              {/* Image here */}
+            <img src={`${serverEndpoint}blog/thumbnail/${item.blog.thumbnail}`} alt="" />
             </div>
             <div className="">
-              <p className="capitalize font-medium text-base leading-[20px]">
-                {item?.courseName}
-              </p>
-              <p className="text-gray-500 truncate w-80 overflow-ellipsis">
-                {item?.description}
+              <p className="capitalize font-medium text-base leading-[20px] w-[200px] overflow-hidden overflow-ellipsis whitespace-nowrap">
+                {item?.blog.name}
               </p>
             </div>
           </div>
         ),
       },
       {
-        title: "Danh mục",
+        title: "Status",
+        key: "status",
         render: (item) => (
-          <div className="py-1 text-[#667085] font-medium">
-            {item?.category}
+          <div className="py-1">
+            <p
+              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.blog.status === true
+                ? "text-emerald-700 bg-red-100"
+                : "text-orange-600 bg-emerald-100"
+                } rounded-lg`}
+            >
+              {item.blog.status === true? "Đang bật" : "Đang tắt"}
+            </p>
           </div>
-        ),
-      },
-      {
-        title: "Ngày thêm",
-        render: (item) => (
-          <div className="py-1 font-medium text-gray-500">{item?.addTime}</div>
         ),
       },
       {
         title: "Thao tác",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <button onClick={() => console.log(`I love you ${item?.id}`)}>
+            <button
+              onClick={() =>
+                navigate(`/add-banner?bannerId=${item.banner_id}`, {
+                  state: { courseName: item.name, courseId: item.course_id }, // Pass coursesName in state
+                })
+              }
+            >
               <Pencil className="text-gray-500 hover:text-orange-600"></Pencil>
             </button>
-            <button onClick={() => console.log(`I miss you Ngọc`)}>
+            <button>
               <Trash className="text-gray-500  hover:text-red-500"></Trash>
             </button>
           </div>
@@ -122,32 +70,35 @@ function TableBlogList() {
     ],
     []
   );
+  const endIndex = currentPage * LIMIT;
 
+  const onPageChange = (page) => {
+    navigate({
+      search: `?page=${page}`,
+    });
+  };
   return (
     <div className="">
       <div className="border rounded-lg">
-        <Table
-          columns={columns}
-          data={data}
-          rowKey="id"
-          scroll={{
-            x: true,
-          }}
-        ></Table>
+      <Table
+       
+        columns={columns}
+        data={dataArray.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
+        rowKey="id"
+        scroll={{
+          x: true,
+        }}
+      ></Table>
       </div>
       <div className="flex items-center justify-end p-4">
-        <Pagination
-          limit={LIMIT}
-          total={100}
-          current={page}
-          onChange={(value) =>
-            navigate({
-              search: `?page=${value}`,
-            })
-          }
-        />
+      <Pagination
+        limit={LIMIT}
+        total={dataArray.length}
+        current={currentPage} // Use the current page
+        onChange={onPageChange}
+      />
       </div>
     </div>
   );
 }
-export default TableBlogList;
+export default TableBlog;

@@ -8,6 +8,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { ServerApi, serverEndpoint } from '../../utils/http';
 import ToastMessage from '../../utils/alert';
+import { useMutation, useQueryClient } from 'react-query';
 
 const DraggableBodyRow = ({ index, moveRow, ...restProps }) => {
   const [, drop] = useDrop({
@@ -59,7 +60,7 @@ const DraggableBodyRow = ({ index, moveRow, ...restProps }) => {
 
 const TableBanner = ({ data, isLoading, isError }) => {
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   const LIMIT = 3;
   const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
   const [selectedOrdinalNumber, setSelectedOrdinalNumber] = useState("");
@@ -80,6 +81,17 @@ const TableBanner = ({ data, isLoading, isError }) => {
     }
   }, [dataArray]);
 
+  const updateOrdinalNumber = async (bannerId, ordinalNumber) => {
+    const response = await ServerApi.patch(`/banner/${bannerId}`, {
+      ordinal_number: ordinalNumber,
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to update ordinal_number');
+    }
+  
+    return response.data; // Adjust this based on your API response structure
+  };
 
   const handleOrdinalNumberChange = async (bannerId, ordinalNumber) => {
     try {
@@ -87,9 +99,9 @@ const TableBanner = ({ data, isLoading, isError }) => {
         ordinal_number: ordinalNumber,
       });
       ToastMessage('Thay đổi thứ tự banner thành công').success();
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 3000);
       
       if (!response.ok) {
         throw new Error('Failed to update ordinal_number');
@@ -101,11 +113,7 @@ const TableBanner = ({ data, isLoading, isError }) => {
 
       if (updatedIndex !== -1) {
         updatedData[updatedIndex] = { ...updatedData[updatedIndex], ordinal_number: ordinalNumber };
-
       }
-
-      // Reload the page programmatically
-     
 
     } catch (error) {
       console.error('Error updating ordinal_number: ', error);
@@ -129,12 +137,21 @@ const TableBanner = ({ data, isLoading, isError }) => {
   
       if (updatedIndex !== -1) {
         updatedData[updatedIndex] = { ...updatedData[updatedIndex], status: newStatus };
-       
       }
     } catch (error) {
       console.error('Error updating status: ', error);
     }
   };
+
+  const { mutate: mutateOrdinalNumberQuery } = useMutation(updateOrdinalNumber, {
+    onSuccess: () => {
+      ToastMessage('Thay đổi thứ tự banner thành công').success();
+      queryClient.invalidateQueries('banners'); // Assuming you have a query key for your banners data
+    },
+    onError: (error) => {
+      console.error('Error updating ordinal_number: ', error);
+    },
+  });
   
   const columns = useMemo(
     () => [
@@ -147,7 +164,7 @@ const TableBanner = ({ data, isLoading, isError }) => {
             </div>
             <div className="">
               <p className="capitalize font-medium text-base leading-[20px]">
-                {item?.banner_name}
+                {item?.name_banner}
               </p>
             </div>
           </div>

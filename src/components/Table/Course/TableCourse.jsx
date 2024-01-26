@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import  { useMemo, useState, useEffect } from "react";
 import Table from "rc-table";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../../common/Pagination";
@@ -10,6 +11,9 @@ import Add from "../../common/icon/Add";
 
 function TableCourse(props) {
   const { data, limit, total, current } = props;
+  const LIMIT = 3;
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
+
   const navigate = useNavigate();
   const getCourseData = async () => {
     try {
@@ -107,12 +111,12 @@ function TableCourse(props) {
       render: (item) => (
         <div className="py-1">
           <p
-            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === "Active"
+            className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === true
               ? "text-emerald-700 bg-red-100"
               : "text-orange-600 bg-emerald-100"
               } rounded-lg`}
           >
-            {item.status === "Active" ? "Active" : "Inactive"}
+            {item.status === true ? "Đang bật" : "Đang tắt"}
           </p>
         </div>
       ),
@@ -167,12 +171,21 @@ function TableCourse(props) {
     },
   ];
 
+
+  const endIndex = currentPage * LIMIT;
+
+  const onPageChange = (page) => {
+    navigate({
+      search: `?page=${page}`,
+    });
+  };
+
   return (
     <div className="">
       <div className="border rounded-lg">
         <Table
           columns={columns}
-          data={data}
+          data={data.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
           rowKey={(record) => record.course_id + record.created_at}
           scroll={{
             x: true,
@@ -181,14 +194,10 @@ function TableCourse(props) {
       </div>
       <div className="flex items-center justify-end p-4">
         <Pagination
-          limit={limit}
-          total={total}
-          current={current}
-          onChange={(value) =>
-            navigate({
-              search: `?page=${value}`,
-            })
-          }
+          limit={LIMIT}
+          total={data.length}
+          current={currentPage}
+          onChange={onPageChange}
         />
       </div>
     </div>
