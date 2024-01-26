@@ -32,6 +32,8 @@ import ProtectedMemberRoute from "./Layout/ProtectRoute/ProtectedMemberRoute";
 import CreateAccountAdmin from "./pages/CreateAccountAdmin/CreateAccountAdmin";
 import ListAuthor from "./pages/ListAuthor/ListAuthor"
 import AddAuthor from "./pages/AddAuthor/AddAuthor"
+import ListReview from "./pages/ListReview/ListReview"
+import AddReview from "./pages/AddReview/AddReview"
 //||Components
 function App() {
   return (
@@ -168,6 +170,8 @@ function App() {
           <Route path="/add-banner" element={<AddBanner />} />
           <Route path="/list-author" element={<ListAuthor />} />
           <Route path="/add-author" element={<AddAuthor />} />
+          <Route path="/list-review" element={<ListReview />} />
+          <Route path="/add-review" element={<AddReview />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />
 

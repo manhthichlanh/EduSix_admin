@@ -16,6 +16,7 @@ import Cart from "./../../components/common/icon/Cart";
 import Users from "./../../components/common/icon/Users";
 import Banner from "../../components/common/icon/Banner";
 import Author from "../../components/common/icon/Author";
+import Review from "../../components/common/icon/Review";
 const LayoutAdmin = () => {
   const [isKhaoHocSubMenuOpen, setIsKhaoHocSubMenuOpen] = useState(false);
   const [isBaiVietSubMenuOpen, setIsBaiVietSubMenuOpen] = useState(false);
@@ -149,6 +150,16 @@ const LayoutAdmin = () => {
                         <Author width="22" height="22"></Author>
                         </div>
                         Danh sách tác giả
+                      </h1>
+                    </NavLink>
+                  </div>
+                  <div className="single_Menu">
+                    <NavLink to="/list-review" activeclassname="active">
+                      <h1>
+                        <div className="icon-menu">
+                        <Review width="22" height="22"></Review>
+                        </div>
+                        Danh sách review
                       </h1>
                     </NavLink>
                   </div>
