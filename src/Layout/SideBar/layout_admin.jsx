@@ -153,6 +153,16 @@ const LayoutAdmin = () => {
                     </NavLink>
                   </div>
                   <div className="single_Menu">
+                    <NavLink to="/list-author" activeclassname="active">
+                      <h1>
+                        <div className="icon-menu">
+                        <Author width="22" height="22"></Author>
+                        </div>
+                        Danh sách review
+                      </h1>
+                    </NavLink>
+                  </div>
+                  <div className="single_Menu">
                     <NavLink to="/order" activeclassname="active">
                       <h1>
                         <div className="icon-menu">

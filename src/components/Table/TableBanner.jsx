@@ -60,32 +60,6 @@ const TableBanner = () => {
   const page = Number(searchParams.get("page") || 1);
   const LIMIT = 10;
  
-  // const columns = [
-  //   {
-  //     title: "Avatar",
-  //     dataIndex: "avata",
-  //     // key: "name"
-  //   },
-  //   {
-  //     title: "Link",
-  //     dataIndex: "link",
-  //     // key: "age"
-  //   },
-  //   {
-  //     title: "Name",
-  //     dataIndex: "name",
-  //     // key: "address"
-  //   },{
-  //     title: "Status",
-  //     dataIndex: "status"
-  //   }
-  // ];
-
-  // id: "1",
-  // avata: "images",
-  // link: "aaaaaaa",
-  // name: "Sơn Tùng MTP",
-  // status: "Inactive"
   const columns = useMemo(
     () => [
       {
