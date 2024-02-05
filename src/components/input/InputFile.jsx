@@ -1,55 +1,16 @@
-import React, { useState } from "react";
 import Input from "./Input";
-
 function InputFile({ title, label, className, placeholder, value, onChange }) {
-  const [selectedImage, setSelectedImage] = useState(null);
-
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-
     onChange(e);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
+  }
+  
+  console.log(className)
   return (
-    <div
-      className="p-6 border-2 rounded-lg"
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-    >
+    <div className="p-6 border-2 rounded-lg">
       <div className="text-lg font-medium">{title}</div>
       <div className="font-medium text-gray-500">{label}</div>
       <div className={className}>
-        {selectedImage ? (
-          <img
-            src={selectedImage}
-            alt="Selected"
-            className="mb-4 w-52 object-cover rounded-lg"
-          />
-        ) : (
-          <svg
+        <svg
           className="mb-4"
           width="52"
           height="52"
@@ -78,11 +39,8 @@ function InputFile({ title, label, className, placeholder, value, onChange }) {
             strokeWidth="4"
           />
         </svg>
-        )}
         <p className="mb-4 text-center text-gray-500 ">
-          {selectedImage
-            ? "Xem trước hình ảnh đã chọn"
-            : "Kéo thả ảnh vào đây hoặc bấm chọn tệp"}
+          Kéo thả ảnh vào đây hoặc bấm chọn tệp
         </p>
         <Input
           type={"file"}

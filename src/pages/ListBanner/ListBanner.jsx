@@ -22,7 +22,7 @@ export default function ListBanner() {
     }
   };
 
-  const { data: bannerData, isLoading, isError } = useQuery("bannerData", getBannerData);
+  const { data: bannerData, isLoading, isError, refetch: triggerFetching } = useQuery("bannerData", getBannerData);
 
 
   return (
@@ -103,7 +103,7 @@ export default function ListBanner() {
           </Menu>
         </div>
         <div className="border rounded-lg mt-6">
-          <TableBanner data={bannerData}  isLoading={isLoading} isError={isError} />
+          <TableBanner data={bannerData} triggerFetching={triggerFetching} isLoading={isLoading} isError={isError} />
         </div>
       </div>
     </div>

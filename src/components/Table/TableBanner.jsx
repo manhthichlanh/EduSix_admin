@@ -58,7 +58,7 @@ const DraggableBodyRow = ({ index, moveRow, ...restProps }) => {
   );
 };
 
-const TableBanner = ({ data, isLoading, isError }) => {
+const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const LIMIT = 3;
@@ -98,14 +98,12 @@ const TableBanner = ({ data, isLoading, isError }) => {
       const response = await ServerApi.patch(`/banner/${bannerId}`, {
         ordinal_number: ordinalNumber,
       });
+      await triggerFetching();
       ToastMessage('Thay đổi thứ tự banner thành công').success();
       // setTimeout(() => {
       //   window.location.reload();
       // }, 3000);
-      
-      if (!response.ok) {
-        throw new Error('Failed to update ordinal_number');
-      }
+
 
       // Clone the data array before modifying it
       const updatedData = [...data];
@@ -125,13 +123,8 @@ const TableBanner = ({ data, isLoading, isError }) => {
       const response = await ServerApi.patch(`/banner/${bannerId}`, {
         status: newStatus,
       });
-  
+      await triggerFetching();z
       ToastMessage('Cập nhật trạng thái banner thành công').success();
-  
-      if (!response.ok) {
-        throw new Error('Failed to update status');
-      }
-  
       const updatedData = [...data];
       const updatedIndex = updatedData.findIndex((item) => item.id === bannerId);
   
@@ -143,15 +136,6 @@ const TableBanner = ({ data, isLoading, isError }) => {
     }
   };
 
-  const { mutate: mutateOrdinalNumberQuery } = useMutation(updateOrdinalNumber, {
-    onSuccess: () => {
-      ToastMessage('Thay đổi thứ tự banner thành công').success();
-      queryClient.invalidateQueries('banners'); // Assuming you have a query key for your banners data
-    },
-    onError: (error) => {
-      console.error('Error updating ordinal_number: ', error);
-    },
-  });
   
   const columns = useMemo(
     () => [
