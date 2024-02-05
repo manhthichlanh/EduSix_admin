@@ -1,16 +1,66 @@
+import React, { useState, useRef } from "react";
 import Input from "./Input";
+import Button from "../Button/Button";
+
 function InputFile({ title, label, className, placeholder, value, onChange }) {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedFileName, setSelectedFileName] = useState(null);
+  const fileInputRef = useRef(null);
+
   const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+        setSelectedFileName(file.name); // Set the selected file name
+      };
+      reader.readAsDataURL(file);
+    }
+
     onChange(e);
-  }
-  
-  console.log(className)
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+        setSelectedFileName(file.name); // Set the selected file name
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddImageClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
-    <div className="p-6 border-2 rounded-lg">
+    <div
+      className="p-6 border-2 rounded-lg"
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
       <div className="text-lg font-medium">{title}</div>
       <div className="font-medium text-gray-500">{label}</div>
       <div className={className}>
-        <svg
+        {selectedImage ? (
+          <img
+            src={selectedImage}
+            alt="Selected"
+            className="mb-4 w-52 object-cover rounded-lg"
+          />
+        ) : (
+          <svg
           className="mb-4"
           width="52"
           height="52"
@@ -39,16 +89,27 @@ function InputFile({ title, label, className, placeholder, value, onChange }) {
             strokeWidth="4"
           />
         </svg>
+        )}
         <p className="mb-4 text-center text-gray-500 ">
-          Kéo thả ảnh vào đây hoặc bấm chọn tệp
+          {selectedImage ? (
+            `File đã chọn: ${selectedFileName}`
+          ) : (
+            "Kéo thả ảnh vào đây hoặc bấm chọn tệp"
+          )}
         </p>
-        <Input
-          type={"file"}
-          onChange={handleFileChange}
-          className={
-            "w-full text-sm text-slate-500 file:mr-2 file:px-4 file:py-2 file:rounded-md file:border-none file:bg-blue-500 file:text-white file:hover:bg-blue-700 ease-in-out transition"
-          }
-        ></Input>
+        <label className="mb-4 cursor-pointer">
+          <input
+            type="file"
+            onChange={handleFileChange}
+            ref={fileInputRef}
+            className="hidden"
+          />
+          <Button
+            text="Thêm ảnh"
+            onClick={handleAddImageClick}
+            Class="flex font-medium items-center bg-[#DEDEFA] hover-bg-indigo-700 transition ease-in-out text-[#5C59E8] py-2 px-4 rounded-lg"
+          />
+        </label>
       </div>
     </div>
   );

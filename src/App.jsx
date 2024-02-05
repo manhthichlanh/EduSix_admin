@@ -32,15 +32,12 @@ import ProtectedMemberRoute from "./Layout/ProtectRoute/ProtectedMemberRoute";
 import CreateAccountAdmin from "./pages/CreateAccountAdmin/CreateAccountAdmin";
 import ListAuthor from "./pages/ListAuthor/ListAuthor"
 import AddAuthor from "./pages/AddAuthor/AddAuthor"
-<<<<<<< HEAD
 import ListReview from "./pages/ListReview/ListReview"
 import AddReview from "./pages/AddReview/AddReview"
-=======
 import CourseStructure from "./pages/CourseStructure/CourseStructure";
 import GeneralInfo from "./pages/CourseStructure/General-Info/GeneralInfo";
 import Content from "./pages/CourseStructure/Content/Content";
 import Publish from "./pages/CourseStructure/Publish/Publish";
->>>>>>> 47d3419fdddae3d9502359934cdc21c72b123762
 //||Components
 function App() {
   return (
