@@ -1,6 +1,6 @@
 import React from 'react'
 import InputFile from '../../../components/Input/InputFile'
-import Input from '../../../components/Input/Input';
+import Input from '../../../components/Input/input';
 import InputSelect from '../../../components/Input/InputSelect';
 import Jodit from '../../../components/Jodit/Jodit';
 import Button from '../../../components/Button/Button';
@@ -111,35 +111,35 @@ export default function GeneralInfo() {
   )
   return (
     <div className="mx-6">
-      <div className="lg:my-0 md:my-0 sm:my-0 my-6">
+      <div className="lg:my-0 md:my-0 sm:my-0 my-6 bg-white ">
         <InputFile
           title="Hình ảnh khóa học"
           className={
-            "grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center"
+            "grid p-6 mt-4  border-2 border-dashed justify-items-center rounded-md"
           }
           onChange={handleFileChange}
           value={""}
         ></InputFile>
       </div>
-      <div className="w-full p-6 my-6 border-2 rounded-lg">
+      <div className="w-full bg-white p-6 my-6 border-2 rounded-lg">
 
         <Input
           type={"text"}
           label={"Tên khóa học"}
           placeholder={"Nhập tên khóa học"}
           className={
-            "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+            "mt-2 px-2 py-2 w-full rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
           }
           value={formValue.name}
           onChange={handleInputChange}
         />
         <div className="w-full flex">
-          <div className="flex-1">
+          <div className="flex-1 ">
             <InputSelect
               label={"Danh mục"}
               array={cateData}
               className={
-                "px-4 py-2 w-full bg-neutral-100 rounded-lg border focus:border-indigo-500 focus:outline-none"
+                "px-2 py-2 mt-2 w-full rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
               }
               value={formValue.category_id}
               onChange={handleSelectChange}
@@ -150,7 +150,7 @@ export default function GeneralInfo() {
               label={"Giảng viên"}
               array={cateData}
               className={
-                "px-4 py-2 w-full bg-neutral-100 rounded-lg border focus:border-indigo-500 focus:outline-none"
+                "px-2  py-2 w-full mt-2 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
               }
               value={formValue.author}
               onChange={handleSelectAuthorChange}
@@ -168,7 +168,7 @@ export default function GeneralInfo() {
           value={formValue.type}
           onChange={handleSelectChangeCourseType}
           className={
-            "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+            "mt-2 px-2 py-2 w-full rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
           }
         />
 
@@ -179,7 +179,7 @@ export default function GeneralInfo() {
             onChange={handlePriceChange}
             placeholder="Nhập giá"
             min={0}
-            className="mt-2 px-4 py-2 w-full bg-white rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+            className="mt-2 px-2 py-2 w-full bg-white rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
           />
         )}
         <InputSelect
@@ -191,13 +191,14 @@ export default function GeneralInfo() {
           value={formValue.status}
           onChange={handleStatusChange}
           className={
-            "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+            "mt-2 px-2 py-2 w-full rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
           }
         />
           <Jodit
             label={"Mô tả"}
             value={formValue.content} // Use an empty string as a fallback
             setValue={handleDescriptionChange}
+          
           />
       </div>
       <div className="flex justify-end">

@@ -23,42 +23,43 @@ export default function Content() {
   };
   return (
     <div className="mx-6 p-6 bg-white">
-      <div className="flex py-6 bg-white w-full justify-between">
-        <div className="flex gap-2">
-          <Menu
-            width="24"
-            height="24"
+      <div className="flex py-6 bg-white w-full justify-between items-center">
+        <div className="flex gap-2 w-full mr-4 items-center">
+          <Menu width="24" height="24" />
+          <div className="text-[#1D2026] font-medium whitespace-nowrap ">Phần 01:</div>
+          <Input
+            type={"text"}
+            placeholder={"Tên phần học"}
+            className={
+              "w-full  py-2  focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+            }
           />
-          <div className="text-[#1D2026] font-medium">Phần 01: </div>
-          <div className="">Tên phần học</div>
         </div>
         <div className="flex gap-2">
-          <Plus
-            width="24"
-            height="24"
-          />
-          <PencilLine
-            width="24"
-            height="24"
-          />
-          <Delete
-            width="24"
-            height="24"
-          />
+          <Plus width="24" height="24" />
+          <PencilLine width="24" height="24" />
+          <Delete width="24" height="24" />
         </div>
       </div>
+
       {/* Thêm bài học */}
       <div className="flex mb-6 px-4 py-3 bg-white w-full justify-between items-center border-2 border-gray-200">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 w-full items-center mr-4">
           <Menu
             width="20"
             height="20"
           />
-          <div className="">Tên bài học</div>
+          <Input
+            type={"text"}
+            placeholder={"Tên bài học"}
+            className={
+              "w-full py-1 focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+            }
+          />
         </div>
         <div className="flex gap-2 items-center">
           <div className="flex items-center border-2 border-gray-200 transition ease-in-out text-gray-500 py-2 px-4 ">
-            <div className="font-medium text-[#17163A]">Nội dung</div>
+            <div className="font-medium text-[#17163A] whitespace-nowrap">Nội dung</div>
             <svg
               className="pl-2 "
               fill="#17163A"
@@ -84,16 +85,22 @@ export default function Content() {
       {/* Chọn nội dung */}
       <div className="mb-6">
         <div className="flex px-4 pt-3 bg-white w-full justify-between items-center border-t-2 border-l-2 border-r-2 border-gray-200">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 w-full items-center mr-4">
             <Menu
               width="20"
               height="20"
             />
-            <div className="">Tên bài học</div>
+            <Input
+              type={"text"}
+              placeholder={"Tên bài học"}
+              className={
+                "w-full py-1 focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+              }
+            />
           </div>
           <div className="flex gap-2 items-center relative">
             <div className="flex items-center border-t-2 border-l-2 border-r-2 border-gray-200 transition ease-in-out text-gray-500 py-2 px-4 ">
-              <div className="font-medium pr-2 text-[#17163A]">Nội dung</div>
+              <div className="font-medium pr-2 text-[#17163A] whitespace-nowrap">Nội dung</div>
               <Close
                 width="20"
                 height="20"
@@ -137,16 +144,22 @@ export default function Content() {
       {/* Chọn file */}
       <div className="mb-6">
         <div className="flex px-4 pt-3 bg-white w-full justify-between items-center border-t-2 border-l-2 border-r-2 border-gray-200">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 w-full items-center mr-4">
             <Menu
               width="20"
               height="20"
             />
-            <div className="">Tên bài học</div>
+            <Input
+              type={"text"}
+              placeholder={"Tên bài học"}
+              className={
+                "w-full py-1 focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+              }
+            />
           </div>
           <div className="flex gap-2 items-center">
             <div className="flex items-center border-t-2 border-l-2 border-r-2 border-gray-200 transition ease-in-out text-gray-500 py-2 px-4 ">
-              <div className="font-medium pr-2 text-[#17163A]">Thêm video</div>
+              <div className="font-medium pr-2 text-[#17163A] whitespace-nowrap">Thêm video</div>
               <Close
                 width="20"
                 height="20"
@@ -186,16 +199,22 @@ export default function Content() {
       {/* Chọn link youtube */}
       <div className="mb-6">
         <div className="flex px-4 pt-3 bg-white w-full justify-between items-center border-t-2 border-l-2 border-r-2 border-gray-200">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 w-full items-center mr-4">
             <Menu
               width="20"
               height="20"
             />
-            <div className="">Tên bài học</div>
+            <Input
+              type={"text"}
+              placeholder={"Tên bài học"}
+              className={
+                "w-full py-1 focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+              }
+            />
           </div>
           <div className="flex gap-2 items-center">
             <div className="flex items-center border-t-2 border-l-2 border-r-2 border-gray-200 transition ease-in-out text-gray-500 py-2 px-4 ">
-              <div className="font-medium pr-2 text-[#17163A]">Thêm video Youtube</div>
+              <div className="font-medium pr-2 text-[#17163A] whitespace-nowrap">Thêm video Youtube</div>
               <Close
                 width="20"
                 height="20"
@@ -212,13 +231,13 @@ export default function Content() {
           </div>
         </div>
         <div className="p-5 border-2 border-gray-200">
-        <Input
+          <Input
             type={"text"}
             placeholder={"Nhập link video Youtube vào đây"}
             className={
               "w-full border-2 border-gray-200 py-3 px-4 focus:border-gray-400 focus:outline-none"
             }
-            
+
           />
           <div className="py-4"> <span className='font-medium'>Lưu ý:</span>Tất cả các tệp phải có kích thước tối thiểu là 720p và nhỏ hơn 4,0 GB.</div>
         </div>

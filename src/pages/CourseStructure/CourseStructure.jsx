@@ -1,6 +1,6 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlayCircle, faClipboard, faDesktop } from "@fortawesome/free-solid-svg-icons";
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const useMathPath = (location) => {
@@ -16,12 +16,12 @@ const useMathPath = (location) => {
 const routes = [
   {
     path: "/general-info",
-    icon: faPlayCircle,
+    icon: faClipboard,
     title: "Thông tin khóa học",
   },
   {
     path: "/content",
-    icon: faPlayCircle,
+    icon: faDesktop,
     title: "Chương trình giảng dạy",
   },
   {
