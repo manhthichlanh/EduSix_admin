@@ -34,6 +34,10 @@ import ListAuthor from "./pages/ListAuthor/ListAuthor"
 import AddAuthor from "./pages/AddAuthor/AddAuthor"
 import ListReview from "./pages/ListReview/ListReview"
 import AddReview from "./pages/AddReview/AddReview"
+import CourseStructure from "./pages/CourseStructure/CourseStructure";
+import GeneralInfo from "./pages/CourseStructure/General-Info/GeneralInfo";
+import Content from "./pages/CourseStructure/Content/Content";
+import Publish from "./pages/CourseStructure/Publish/Publish";
 //||Components
 function App() {
   return (
@@ -66,6 +70,27 @@ function App() {
               </ProtectedCourseRoute>
             }
           />
+          {/* <Route
+            path="/course-structure"
+            element={
+              <ProtectedCourseRoute>
+                <CourseStructure />
+              </ProtectedCourseRoute>
+            }
+          /> */}
+          <Route
+            path="/course-structure"
+            element={
+              <ProtectedCourseRoute>
+                <CourseStructure />
+              </ProtectedCourseRoute>
+            }
+          >
+            <Route path="general-info" element={<GeneralInfo/>} />
+            <Route path="content" element={<Content/>} />
+            <Route path="publish" element={<Publish/>} />
+
+          </Route>
           <Route
             path="/add-section"
             element={
@@ -165,7 +190,7 @@ function App() {
                 <MemberDetail />
               </ProtectedMemberRoute>
             }
-          /> 
+          />
           <Route path="/list-banner" element={<ListBanner />} />
           <Route path="/add-banner" element={<AddBanner />} />
           <Route path="/list-author" element={<ListAuthor />} />

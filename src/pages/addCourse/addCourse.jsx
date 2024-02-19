@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import Input from "../../components/Input/Input";
+import Input from "../../components/Input/input";
 import InputSelect from "../../components/Input/InputSelect";
 import Button from "../../components/Button/Button";
 import InputFile from "../../components/Input/InputFile";

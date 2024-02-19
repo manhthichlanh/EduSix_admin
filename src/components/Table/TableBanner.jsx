@@ -123,7 +123,7 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
       const response = await ServerApi.patch(`/banner/${bannerId}`, {
         status: newStatus,
       });
-      await triggerFetching();
+      await triggerFetching();z
       ToastMessage('Cập nhật trạng thái banner thành công').success();
       const updatedData = [...data];
       const updatedIndex = updatedData.findIndex((item) => item.id === bannerId);
