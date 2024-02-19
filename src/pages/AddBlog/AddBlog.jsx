@@ -11,50 +11,101 @@ import { convertViToEn } from '../../utils/helper';
 import ToastMessage from '../../utils/alert';
 import { useMutation } from 'react-query';
 import Jodit from "../../components/Jodit/Jodit";
-
+import { getLocalData } from '../../utils/helper';
 export default function AddBlog() {
   const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [author, setAuthor] = useState([]);
+  const [userInfo, setUserInfo] = useState("");
+ 
+  useEffect(() => {
+    const admin = getLocalData("auth_info").admin;
+    if (admin)setUserInfo(admin?.admin_id);
+    // setUserInfo(user.fullname);
+}, []
+)
   const [formValue, setFormValue] = useState({
-    title: "",
+    name: "",
     status: true,
     thumbnail: null,
     content: "", // Use null instead of an empty string for files
+    blog_category_id: "",
+    author_id: "",
+    admin_id: userInfo,
+   
+
   });
 
   const resetForm = () => {
     setFormValue({
-      title: "",
+      name: "",
       status: true,
       thumbnail: null,
       content: "",
+      blog_category_id: "",
+      author_id: "",
+      admin_id: userInfo,
+    
     });
   };
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await ServerApi.get('/blogCategory/');
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
 
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchAuthor = async () => {
+      try {
+        const response = await ServerApi.get('/author/');
+        setAuthor(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchAuthor();
+  }, []);
   const handleInputChange = (e) => {
-    setFormValue({ ...formValue, title: e.target.value });
+    setFormValue({ ...formValue, name: e.target.value });
   };
 
-  const handleContentChange = (e) => {
-    setFormValue({ ...formValue, content: e.target.value });
-  };
+  const handleContentChange = (content) => {
+    setFormValue({ ...formValue, content })
+};
 
   const handleStatusChange = (e) => {
     const newStatus = e.target.value === "true"; // Convert the string to a boolean
     setFormValue({ ...formValue, status: newStatus });
   };
 
+  const handleCategoryChange = (e) => {
+    setFormValue({ ...formValue, blog_category_id: e.target.value });
+  };
+
+  const handleAuthorChange = (e) => {
+    setFormValue({ ...formValue, author_id: e.target.value });
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     const newName = convertViToEn(file.name);
-    setFormValue({ ...formValue, avata: file, thumbnailName: newName });
+    setFormValue({ ...formValue, thumbnail: file, thumbnailName: newName });
   };
 
-  const addAuthorMutation = useMutation(
-    (formData) => ServerApi.post('/author/addAuthor', formData),
+  
+  const addBlogMutation = useMutation(
+    (formData) => ServerApi.post('/blog/addBlog', formData),
     {
       onSuccess: () => {
-        ToastMessage('Thêm review thành công').success();
+        ToastMessage('Thêm blog thành công').success();
         navigate('/list-blog');
       },
       onError: (error) => {
@@ -64,20 +115,42 @@ export default function AddBlog() {
   );
 
   const handleSave = () => {
-    const { title, thumbnail, content } = formValue;
+    const { name, thumbnail, content, blog_category_id, admin_id } = formValue;
 
-    if (!title || !content || !thumbnail) {
-      ToastMessage('Nhập đầy đủ thông tin.').warn();
-      return;
+    // if (!name || !content || !thumbnail || !blog_category_id) {
+    //   ToastMessage('Nhập đầy đủ thông tin.').warn();
+    //   return;
+    // }
+
+    if (!name){
+                  ToastMessage('Nhập tên.').warn();
+                  return;
+              }
+      if (!content){
+          ToastMessage('Nhập nội dung.').warn();
+          return;
+      }
+      if (!thumbnail){
+          ToastMessage('Nhập hình.').warn();
+          return;
+      }
+      if (!blog_category_id){
+        ToastMessage('Nhập danh mục blog.').warn();
+        return;
     }
+    if (!admin_id){
+      ToastMessage('Nhập id admin.').warn();
+      return;
+  }
+   
+     
 
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('category', category);
+    formData.append('name', name);
     formData.append('thumbnail', thumbnail);
     formData.append('content', content);
 
-    addAuthorMutation.mutate(formData);
+    addBlogMutation.mutate(formData);
   };
 
 
@@ -149,18 +222,33 @@ export default function AddBlog() {
           <p htmlFor="" className="pb-2 text-xl font-medium text-left">
             Thông tin
           </p>
-          <InputSelect
-            label={"Danh mục bài viết"}
-            array={[
-              { value: "true", text: "Lập trình" },
-              { value: "false", text: "Âm nhạc" },
-            ]}
-            value={formValue.status.toString()} // Ensure that the value is a string
-            onChange={handleStatusChange}
-            className={
-              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
-            }
-          />
+           <InputSelect
+        label={"Danh mục bài viết"}
+        array={categories.map((category) => ({
+          value: category.blog_category_id.toString(),
+          text: category.name_blog_category,
+        }))}
+        value={formValue.blog_category_id}
+        onChange={handleCategoryChange}
+        className={
+          "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+        }
+      />
+      <InputSelect
+        label={"Lựa chọn tác giả"}
+        array={[
+          { value: null, text: "Không chọn" }, // Lựa chọn không chọn
+          ...author.map((author) => ({
+            value: author.author_id.toString(),
+            text: author.name_user,
+          })),
+        ]}
+        value={formValue.author_id}
+        onChange={handleAuthorChange}
+        className={
+          "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+        }
+      />
           <Input
             type={"text"}
             label={"Tiêu đề bài viết"}
@@ -168,16 +256,27 @@ export default function AddBlog() {
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
-            value={formValue.title}
+            value={formValue.name}
             onChange={handleInputChange}
           />
-          
+          <InputSelect
+            label={"Trạng thái"}
+            array={[
+              { value: "true", text: "Bật" },
+              { value: "false", text: "Tắt" },
+            ]}
+            value={formValue.status.toString()} // Ensure that the value is a string
+            onChange={handleStatusChange}
+            className={
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+            }
+          />
           <Jodit
-            label={"Mô tả"}
+            label={"Nội dung bài viết"}
             placeholder={"Nội dung bài viết"}
 
             value={formValue.content}
-            onChange={handleContentChange}
+            setValue={handleContentChange}
           ></Jodit>
         </div>
 

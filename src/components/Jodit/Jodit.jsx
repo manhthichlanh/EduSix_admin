@@ -7,7 +7,7 @@ import "./Jodit.scss";
 const Jodit = ({ label, placeholder, onChange, value, setValue }) => {
   const config = {
     readonly: false,
-    placeholder: "Nhập mô tả...",
+    placeholder: placeholder,
     // all options from https://xdsoft.net/jodit/doc/
     language: "en", // ensure you have the language file loaded
     i18n: {
@@ -38,6 +38,8 @@ const Jodit = ({ label, placeholder, onChange, value, setValue }) => {
           value={value}
           config={config}
           tabIndex={1}
+          placeholder={placeholder}
+          onChange={onChange}
           onBlur={(newValue) => {
             const reactContent = convertHTMLToReact(newValue);
             // Now, reactContent contains the HTML content converted to React JSX

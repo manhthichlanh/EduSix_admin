@@ -4,76 +4,64 @@ import Pencil from "../../components/common/icon/Pencil";
 import Trash from "../../components/common/icon/Trash";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Pagination from "../../components/common/Pagination";
-
-const data = [
-  
-  {
-    id:5,
-    avata: "images",
-    name: "Digital Marketing",
-    created_at: "12/12/1222",
-    status: "Active"
-  }
-  , {
-    id:6,
-    avata: "images",
-    name: " Machine Learning",
-    created_at: "12/12/1222",
-    status: "Active"
-  }
-  , {
-    id:7,
-    avata: "images",
-    name: "Android Development",
-    created_at: "12/12/1222",
-    status: "Active"
-  }
-];
+import { ServerApi, serverEndpoint } from '../../utils/http';
 
 
-function TableReview() {
+function TableAuthor({ data }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page") || 1);
-  const LIMIT = 10;
 
+  const LIMIT = 3;
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
+  const dataArray = Array.isArray(data) ? data : [];
   const columns = useMemo(
     () => [
       {
-        title: "Người đại diện",
+        title: "Người đánh giá",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
-              {/* Image here */}
+            <div className="flex-shrink-0 w-[50px] overflow-hidden bg-gray-300 rounded-lg">
+            <img src={`${serverEndpoint}review/avatar/${item.avatar}`} alt="" />
             </div>
             <div className="">
               <p className="capitalize font-medium text-base leading-[20px]">
-                {item?.name}
+                {item?.reviewer_name}
               </p>
             </div>
           </div>
         ),
       },
       {
-        title: "Ngày đăng",
-        key: "created_at",
+        title: "Công việc",
         render: (item) => (
-          <div className="py-1 font-medium text-gray-500">{item.created_at}</div>
+          <div className="py-1 text-[#667085] font-medium">
+            {item?.work}
+          </div>
         ),
       },
+      
       {
-        title: "Status",
+        title: "Trạng thái",
         key: "status",
         render: (item) => (
           <div className="py-1">
             <p
-              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === "Active"
+              className={`py-1 px-3 inline-block font-medium whitespace-nowrap ${item.status === true
                 ? "text-emerald-700 bg-red-100"
                 : "text-orange-600 bg-emerald-100"
                 } rounded-lg`}
             >
-              {item.status === "Active" ? "Active" : "Inactive"}
+              {item.status === true? "Đang bật" : "Đang tắt"}
             </p>
+          </div>
+        ),
+      },
+      {
+        title: "Thời gian",
+        render: (item) => (
+          <div className="py-1 text-[#667085] font-medium">
+            {item?.created_at}
           </div>
         ),
       },
@@ -99,32 +87,35 @@ function TableReview() {
     ],
     []
   );
+  const endIndex = currentPage * LIMIT;
 
+  const onPageChange = (page) => {
+    navigate({
+      search: `?page=${page}`,
+    });
+  };
   return (
-    <div>
+    <div className="">
       <div className="border rounded-lg">
-        <Table    
-          columns={columns}
-          data={data}
-          rowKey="id"
-          scroll={{
-            x: true,
-          }}
-        ></Table>
+      <Table
+       
+        columns={columns}
+        data={dataArray.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
+        rowKey="id"
+        scroll={{
+          x: true,
+        }}
+      ></Table>
       </div>
       <div className="flex items-center justify-end p-4">
-        <Pagination
-          limit={LIMIT}
-          total={100}
-          current={page}
-          onChange={(value) =>
-            navigate({
-              search: `?page=${value}`,
-            })
-          }
-        />
+      <Pagination
+        limit={LIMIT}
+        total={dataArray.length}
+        current={currentPage} // Use the current page
+        onChange={onPageChange}
+      />
       </div>
     </div>
   );
 }
-export default TableReview;
+export default TableAuthor;
