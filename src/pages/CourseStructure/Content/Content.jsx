@@ -26,7 +26,7 @@ export default function Content() {
   }
 
   const { data: sections, isFetching, isLoading, error, isError, refetch: triggerRefetchSections } = useQuery('getCourseContentById-' + course_id, getSectionDocs)
-  console.log(sections)
+  //Đây là phần học đã được tạo
   const SectionComponent = ({ currentSectionData, index }) => {
     const { name } = currentSectionData;
     return (
@@ -53,8 +53,11 @@ export default function Content() {
       </div>
     )
   }
+  //Đây là phần học đã được tạo
+
+  //Component Box để thêm 1 phần học
   const NewSectionComponent = () => {
-    const [sectionData,setSectionData] = useState({
+    const [sectionData, setSectionData] = useState({
       course_id: course_id,
       name: '',
       status: '1',
@@ -79,14 +82,14 @@ export default function Content() {
               type={"text"}
               placeholder={"Tên phần học"}
               value={sectionData.name}
-              onChange={(event)=>setSectionData({...sectionData,name: event.target.value})}
+              onChange={(event) => setSectionData({ ...sectionData, name: event.target.value })}
               className={
                 "w-full  py-2  focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
               }
             />
           </div>
           <div className="flex gap-2">
-            <Plus width="24" height="24" className="cursor-pointer" onClick={(e)=>handleAddSection(e)}/>
+            <Plus width="24" height="24" className="cursor-pointer" onClick={(e) => handleAddSection(e)} />
             <Close width="24" height="24" className="cursor-pointer" onClick={
               () => {
                 setIsShowAddNewSection(false);
@@ -99,7 +102,9 @@ export default function Content() {
       </div>
     )
   }
+  //Component Box để thêm 1 phần học
 
+  //Đây là nút thêm mới phần học
   const AddNewSectionComponent = () => {
     return (
       <Button
@@ -112,6 +117,8 @@ export default function Content() {
       />
     )
   }
+  //Đây là nút thêm mới phần học
+
   //Sections
 
   return (
@@ -130,7 +137,7 @@ export default function Content() {
           AddNewSectionComponent()
         }
         {
-          isShowAddNewSection && <NewSectionComponent/>
+          isShowAddNewSection && <NewSectionComponent />
         }
         {/* <div className="px-6 bg-white">
           <div className="flex py-6 bg-white w-full justify-between items-center">
