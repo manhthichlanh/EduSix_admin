@@ -11,16 +11,89 @@ import Delete from '../../../components/common/icon/Delete'
 import Close from '../../../components/common/icon/Close'
 import Input from '../../../components/Input/input'
 import Button from '../../../components/Button/Button'
+import styled from "styled-components";
+import ReactPlayer from "react-player";
+
 export default function Content() {
   const [selectedFile, setSelectedFile] = useState(null);
-
+  const [youtubeLink, setYoutubeLink] = useState('');
+  const [invalidLink, setInvalidLink] = useState(false);
+  
+  const videoRef = useRef(null);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
     if (file) {
       setSelectedFile(file);
+      // Load the video file into the video element for preview
+      const fileURL = URL.createObjectURL(file);
+      videoRef.current.src = fileURL;
     }
   };
+
+  const youtubeApiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
+  const checkYouTubeVideoExistence = async (videoId) => {
+    try {
+      const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${youtubeApiKey}&part=snippet`, {
+        method: 'GET',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to check video existence');
+      }
+  
+      const data = await response.json();
+  
+      // Kiểm tra nếu có kết quả và có items trong danh sách
+      return data.items && data.items.length > 0;
+    } catch (error) {
+      console.error('Error checking YouTube video existence:', error);
+      return false;
+    }
+  };
+
+  const handleYoutubeLinkChange = async (event) => {
+    const link = event.target.value;
+    setYoutubeLink(link);
+  
+    // Kiểm tra nếu liên kết từ YouTube
+    if (link.includes('youtube.com') || link.includes('youtu.be')) {
+      setInvalidLink(false);
+      // Trích xuất ID video từ liên kết
+      const videoId = extractVideoId(link);
+      // Kiểm tra tính hợp lệ của video
+      const isVideoValid = await checkYouTubeVideoExistence(videoId);
+      if (!isVideoValid) {
+        setInvalidLink(true);
+      }
+    } else {
+      setInvalidLink(true);
+    }
+  };
+  
+  // Hàm trích xuất ID video từ liên kết YouTube
+  const extractVideoId = (link) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = link.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+ 
+  const VideoWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+
+  max-height: 1080px; // Chiều cao tối đa là 1080px
+
+  > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+`;
   return (
     <div className="mx-6 p-6 bg-white">
       <div className="flex py-6 bg-white w-full justify-between items-center">
@@ -191,10 +264,28 @@ export default function Content() {
               onChange={handleFileChange}
             />
           </div>
+          {/* Conditionally render the video element */}
+          {selectedFile && (
+            <div className="bg-[#000] max-w-[600px] m-auto mt-[20px]">
+
+              <VideoWrapper>
+                <div>
+                  <ReactPlayer
+                    url={URL.createObjectURL(selectedFile)}
+                    width="100%"
+                    height="100%"
+                    controls={true}
+
+                  />
+                </div>
+              </VideoWrapper>
+            </div>
+          )}
           <div className="py-4">
             <span className="font-medium">Lưu ý:</span> Tất cả các tệp phải có kích thước tối thiểu là 720p và nhỏ hơn 4,0 GB.
           </div>
         </div>
+
       </div>
       {/* Chọn link youtube */}
       <div className="mb-6">
@@ -234,11 +325,25 @@ export default function Content() {
           <Input
             type={"text"}
             placeholder={"Nhập link video Youtube vào đây"}
-            className={
-              "w-full border-2 border-gray-200 py-3 px-4 focus:border-gray-400 focus:outline-none"
-            }
-
+            className={"w-full border-2 border-gray-200 py-3 px-4 focus:border-gray-400 focus:outline-none"}
+            onChange={handleYoutubeLinkChange}
           />
+          {invalidLink ? (
+            <div className="py-4 text-red-500">Liên kết không hợp lệ</div>
+          ) : youtubeLink && (
+            <div className="bg-[#000] max-w-[600px] m-auto mt-[20px] overflow-auto">
+              <VideoWrapper>
+                <div>
+                  <ReactPlayer
+                    width="100%"
+                    height="100%"
+                    url={youtubeLink}
+                    controls={true}
+                  />
+                </div>
+              </VideoWrapper>
+            </div>
+          )}
           <div className="py-4"> <span className='font-medium'>Lưu ý:</span>Tất cả các tệp phải có kích thước tối thiểu là 720p và nhỏ hơn 4,0 GB.</div>
         </div>
       </div>
