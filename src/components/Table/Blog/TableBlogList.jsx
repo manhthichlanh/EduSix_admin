@@ -21,7 +21,7 @@ function TableBlog({ data }) {
         title: "Blog",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <div className="flex-shrink-0 w-12 h-12 overflow-hidden bg-gray-300 rounded-lg">
+            <div className="flex-shrink-0 w-[50px] overflow-hidden bg-gray-300 rounded-lg">
             <img src={`${serverEndpoint}blog/thumbnail/${item.blog.thumbnail}`} alt="" />
             </div>
             <div className="">

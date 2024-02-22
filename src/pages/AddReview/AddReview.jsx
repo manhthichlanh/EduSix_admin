@@ -16,26 +16,30 @@ export default function AddReview() {
     const navigate = useNavigate();
     const [formValue, setFormValue] = useState({
         name_user: "",
+        work: "",
         status: true,
-        avata: null,
+        avatar: null,
         content: "", // Use null instead of an empty string for files
     });
 
     const resetForm = () => {
         setFormValue({
             name_user: "",
+            work: "",
             status: true,
-            avata: null,
+            avatar: null,
             content: "",
         });
     };
 
     const handleInputChange = (e) => {
-        setFormValue({ ...formValue, name_user: e.target.value });
+        setFormValue({ ...formValue, reviewer_name: e.target.value });
     };
-
-    const handleContentChange = (e) => {
-        setFormValue({ ...formValue, content: e.target.value });
+    const handleWorkChange = (e) => {
+        setFormValue({ ...formValue, work: e.target.value });
+    };
+    const handleContentChange = (content) => {
+        setFormValue({ ...formValue, content })
     };
 
     const handleStatusChange = (e) => {
@@ -47,11 +51,11 @@ export default function AddReview() {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         const newName = convertViToEn(file.name);
-        setFormValue({ ...formValue, avata: file, thumbnailName: newName });
+        setFormValue({ ...formValue, avatar: file, thumbnailName: newName });
     };
 
     const addAuthorMutation = useMutation(
-        (formData) => ServerApi.post('/author/addAuthor', formData),
+        (formData) => ServerApi.post('/review/addReview', formData),
         {
             onSuccess: () => {
                 ToastMessage('Thêm review thành công').success();
@@ -64,19 +68,40 @@ export default function AddReview() {
     );
 
     const handleSave = () => {
-        const { name_user, status, avata, content } = formValue;
+        const { reviewer_name, work, status, avatar, content } = formValue;
 
-        if (!name_user || !content|| !thumbnail) {
+        if (!reviewer_name || !work || !content|| !avatar ) {
             ToastMessage('Nhập đầy đủ thông tin.').warn();
             return;
         }
+//         if (!content){
+//             ToastMessage('Nhập đầy đủ thông tin5.').warn();
+//             return;
+//         }
+// if (!reviewer_name){
+//     ToastMessage('Nhập đầy đủ thông tin1.').warn();
+//     return;
+// }
+// if (!work){
+//     ToastMessage('Nhập đầy đủ thông tin2.').warn();
+//     return;
+// }
+// if (!status){
+//     ToastMessage('Nhập đầy đủ thông tin3.').warn();
+//     return;
+// }
+// if (!avatar){
+//     ToastMessage('Nhập đầy đủ thông tin4.').warn();
+//     return;
+// }
+
 
         const formData = new FormData();
-        formData.append('name_user', name_user);
+        formData.append('reviewer_name', reviewer_name);
+        formData.append('work', work);
         formData.append('status', status);
-        formData.append('avata', avata);
+        formData.append('avatar', avatar);
         formData.append('content', content);
-
         addAuthorMutation.mutate(formData);
     };
 
@@ -156,8 +181,18 @@ export default function AddReview() {
                         className={
                             "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
                         }
-                        value={formValue.name_user}
+                        value={formValue.reviewer_name}
                         onChange={handleInputChange}
+                    />
+                      <Input
+                        type={"text"}
+                        label={"Tên chức vụ"}
+                        placeholder={"Nhập tên chức vụ"}
+                        className={
+                            "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+                        }
+                        value={formValue.work}
+                        onChange={handleWorkChange}
                     />
                     <InputSelect
                         label={"Trạng thái"}
@@ -172,17 +207,16 @@ export default function AddReview() {
                         }
                     />
                    <Jodit 
-                   label={"Mô tả"} 
-                   placeholder={"Nội dung bài viết"}
-                   
+                   label={"Nội dung"}
+                   placeholder={"Nhập nội dung"}
                    value={formValue.content}
-                        onChange={handleContentChange}
+                   setValue={handleContentChange}
                    ></Jodit>
                 </div>
 
                 <div className="lg:my-0 md:my-0 sm:my-0 my-6">
                     <InputFile
-                        title="Avata"
+                        title="Avatar"
                         className={
                             "grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center"
                         }

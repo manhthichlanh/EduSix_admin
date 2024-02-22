@@ -1,29 +1,28 @@
-import {useEffect, useState} from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../components/Button/Button";
 import { Menu } from "@headlessui/react";
 import Filter from "../../components/common/icon/Filter";
 import Search from "../../components/Search/Search";
-import TableBanner from "../../components/Table/TableBanner";
-import { Link } from "react-router-dom";
-import { useQuery } from 'react-query';
+import TableReview from "../../components/Table/TableReview";
+import { Link, useSearchParams } from "react-router-dom";
+// import { DndProvider } from 'react-dnd';
+// import { HTML5Backend } from 'react-dnd-html5-backend';
+import TableAuthor from "../../components/Table/TableAuthor";
 import { ServerApi } from '../../utils/http';
-import TableReview from '../../components/Table/TableReview';
+import { useQuery } from 'react-query';
+export default function ListReview() {
 
-export default function ListBanner() {
-
-
-  const getBannerData = async () => {
+  const getReviewData = async () => {
     try {
-      const response = await ServerApi.get("/banner");
+      const response = await ServerApi.get("/review");
       return response.data;
     } catch (error) {
-      throw new Error("Error fetching banner data");
+      throw new Error("Error fetching review data");
     }
   };
 
-  const { data: bannerData, isLoading, isError } = useQuery("bannerData", getBannerData);
+  const { data: reviewData, isLoading, isError } = useQuery("authorData", getReviewData);
 
 
   return (
@@ -104,8 +103,15 @@ export default function ListBanner() {
           </Menu>
         </div>
         <div className="border rounded-lg mt-6">
-        <TableReview></TableReview>
-        </div>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : isError ? (
+          <p>Error loading data</p>
+        ) : (
+          <TableReview data={reviewData} />
+        )}
+      </div>
+
       </div>
     </div>
   );

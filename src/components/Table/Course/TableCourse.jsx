@@ -37,7 +37,7 @@ function TableCourse(props) {
     isLoading,
     isError,
   } = useQuery("courseData", getCourseData);
-
+console.log(courseData);
   if (isLoading) {
     return <div>Loading...</div>;
   }
