@@ -1,6 +1,6 @@
 import React from 'react'
 import InputFile from '../../../components/Input/InputFile'
-import Input from '../../../components/Input/input';
+import Input from '../../../components/Input/Input';
 import InputSelect from '../../../components/Input/InputSelect';
 import Jodit from '../../../components/Jodit/Jodit';
 import Button from '../../../components/Button/Button';
@@ -81,14 +81,25 @@ export default function GeneralInfo() {
     setFormValue({ ...formValue, type: e.target.value })
 
   }
-
+  
   const handleFileChange = (e) => {
-    const file = e.target.files[0]
-    const newForm = new FormData();
-    const newName = convertViToEn(file.name); // Đặt tên mới ở đây
-    newForm.append('file', file, newName);
-    setFormValue({ ...formValue, thumbnail: newForm.get("file") })
+    const file = e.target.files[0];
+  
+    // Check if a file is selected
+    if (file) {
+      // Check if the file type is an image
+      if (file.type.startsWith('image/')) {
+        const newForm = new FormData();
+        const newName = convertViToEn(file.name);
+        newForm.append('file', file, newName);
+        setFormValue({ ...formValue, thumbnail: newForm.get("file") });
+      } else {
+        // Display an error message or handle the case where the selected file is not an image
+        ToastMessage("Chỉ cho phép chọn tệp hình ảnh!").warn();
+      }
+    }
   }
+
   const handleSave = () => {
     console.log(formValue)
 

@@ -9,7 +9,7 @@ import File from '../../../components/common/icon/File'
 import PencilLine from '../../../components/common/icon/PencilLine'
 import Delete from '../../../components/common/icon/Delete'
 import Close from '../../../components/common/icon/Close'
-import Input from '../../../components/Input/input'
+import Input from '../../../components/Input/Input'
 import Button from '../../../components/Button/Button'
 import styled from "styled-components";
 import ReactPlayer from "react-player";
