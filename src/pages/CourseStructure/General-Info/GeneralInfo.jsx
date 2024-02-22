@@ -1,6 +1,6 @@
 import React from 'react'
 import InputFile from '../../../components/Input/InputFile'
-import Input from '../../../components/Input/input';
+import Input from '../../../components/Input/Input';
 import InputSelect from '../../../components/Input/InputSelect';
 import Jodit from '../../../components/Jodit/Jodit';
 import Button from '../../../components/Button/Button';
