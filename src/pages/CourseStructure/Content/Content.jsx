@@ -149,6 +149,7 @@ export default function Content() {
       event.preventDefault();
       try {
         const response = await ServerApi.post('section', sectionData);
+        triggerRefetchSections()
         return setIsShowAddNewSection(false)
       } catch (error) {
         console.log(error)
