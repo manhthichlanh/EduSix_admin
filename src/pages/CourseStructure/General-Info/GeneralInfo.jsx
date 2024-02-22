@@ -22,10 +22,23 @@ const getCategory = async () => {
   }
 };
 
+const getAuthor = async () => {
+  try {
+    const response = await ServerApi.get("/author");
+    const authorData = response.data;
+    const newData = authorData.map(item => ({ value: item.author_id, text: item.name_user }))
+    return newData;
+  } catch (error) {
+    throw new Error("Error fetching author data");
+  }
+};
 export default function GeneralInfo() {
+
+  const admin_id = getLocalData("auth_info").admin?.admin_id;
+
   const [formValue, setFormValue] = useState({
     category_id: "1",
-    admin_id: null,
+    admin_id: admin_id || null,
     name: "",
     course_price: "",
     slug: null,
@@ -33,16 +46,17 @@ export default function GeneralInfo() {
     status: true,
     type: 0,
     thumbnail: "",
-    author: ""
+    author_id: "1"
   })
 
   const { data: cateData, isLoading, isError } = useQuery("cateData", getCategory);
+  const { data: authorData } = useQuery("authorData", getAuthor);
   const navigate = useNavigate();
   const handleSelectChange = (e) => {
     setFormValue({ ...formValue, category_id: e.target.value })
   };
   const handleSelectAuthorChange = (e) => {
-    setFormValue({ ...formValue, author: e.target.value })
+    setFormValue({ ...formValue, author_id: e.target.value })
   };
 
   const handlePriceChange = (e) => {
@@ -59,7 +73,8 @@ export default function GeneralInfo() {
   };
 
   const handleStatusChange = (e) => {
-    setFormValue({ ...formValue, status: Boolean(e.target.value) })
+    const newStatus = e.target.value === "true";
+    setFormValue({ ...formValue, status: newStatus });
   };
 
   const handleSelectChangeCourseType = (e) => {
@@ -98,16 +113,21 @@ export default function GeneralInfo() {
       });
 
   };
-  useEffect(() => {
-    const admin_id = getLocalData("auth_info").admin.admin_id;
-    console.log({ admin_id })
-    setFormValue({ ...formValue, admin_id })
-  }, [])
+ 
+ 
   useEffect(() => {
     if (cateData && cateData?.length > 0) {
       setFormValue({ ...formValue, category_id: cateData[0].value })
     }
   }, [cateData]
+  
+  )
+  useEffect(() => {
+    if (authorData && authorData?.length > 0) {
+      setFormValue({ ...formValue, author_id: authorData[0].value })
+    }
+  }, [authorData]
+  
   )
   return (
     <div className="mx-6">
@@ -133,28 +153,30 @@ export default function GeneralInfo() {
           value={formValue.name}
           onChange={handleInputChange}
         />
-        <div className="w-full flex">
+         <div className="w-full flex">
           <div className="flex-1 ">
             <InputSelect
-              label={"Danh mục"}
-              array={cateData}
-              className={
-                "px-2 py-2 mt-2 w-full rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-              }
+              label="Danh mục"
+              array={cateData || []}
+              className="px-2 py-2 mt-2 w-full rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
               value={formValue.category_id}
               onChange={handleSelectChange}
             />
+            <button className="mt-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+              Thêm danh mục
+            </button>
           </div>
           <div className="flex-1 ml-4">
             <InputSelect
-              label={"Giảng viên"}
-              array={cateData}
-              className={
-                "px-2  py-2 w-full mt-2 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-              }
-              value={formValue.author}
+              label="Giảng viên"
+              array={authorData || []}
+              className="px-2  py-2 w-full mt-2 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+              value={formValue.author_id}
               onChange={handleSelectAuthorChange}
             />
+            <button className="mt-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+              Thêm giảng viên
+            </button>
           </div>
         </div>
 
@@ -188,7 +210,7 @@ export default function GeneralInfo() {
             { value: true, text: "Mở bán" },
             { value: false, text: "Ngưng bán" },
           ]}
-          value={formValue.status}
+          value={formValue.status.toString()}
           onChange={handleStatusChange}
           className={
             "mt-2 px-2 py-2 w-full rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
@@ -196,10 +218,11 @@ export default function GeneralInfo() {
         />
           <Jodit
             label={"Mô tả"}
+            placeholder={"Nội dung, thông tin khóa học"}
             value={formValue.content} // Use an empty string as a fallback
             setValue={handleDescriptionChange}
           
-          />
+          ></Jodit>
       </div>
       <div className="flex justify-end">
       <Button

@@ -267,6 +267,7 @@ export default function AddCourse() {
           />
           <Jodit
             label={"Mô tả"}
+            placeholder={"Nhập mô tả khóa học"}
             value={formValue.content} // Use an empty string as a fallback
             setValue={handleDescriptionChange}
           />

@@ -264,6 +264,7 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
       ></Table>
     </div>
     <div className="flex items-center justify-end p-4">
+   
       <Pagination
         limit={LIMIT}
         total={dataArray.length}

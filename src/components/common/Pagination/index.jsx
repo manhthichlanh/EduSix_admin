@@ -1,7 +1,9 @@
 import RcPagination from "rc-pagination";
+import localeInfo from 'rc-pagination/es/locale/vi_VN';
 
 export default function Pagination({ current, total, limit, onChange }) {
   return (
+    <>
     <RcPagination
       total={total}
       pageSize={limit}
@@ -10,6 +12,7 @@ export default function Pagination({ current, total, limit, onChange }) {
       hideOnSinglePage
       jumpNextIcon="..."
       jumpPrevIcon="..."
+      locale={localeInfo}
       prevIcon={
         <svg
           width="16"
@@ -17,6 +20,7 @@ export default function Pagination({ current, total, limit, onChange }) {
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+         
         >
           <path
             fillRule="evenodd"
@@ -43,5 +47,6 @@ export default function Pagination({ current, total, limit, onChange }) {
         </svg>
       }
     />
+    </>
   );
 }

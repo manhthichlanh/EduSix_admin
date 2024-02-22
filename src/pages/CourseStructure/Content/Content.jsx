@@ -139,7 +139,7 @@ export default function Content() {
         {
           isShowAddNewSection && <NewSectionComponent />
         }
-        {/* <div className="px-6 bg-white">
+        <div className="px-6 bg-white">
           <div className="flex py-6 bg-white w-full justify-between items-center">
             <div className="flex gap-2 w-full mr-4 items-center">
               <Menu width="24" height="24" />
@@ -157,10 +157,10 @@ export default function Content() {
               <PencilLine width="24" height="24" />
               <Delete width="24" height="24" />
             </div>
-          </div> */}
+          </div>
 
         {/* Thêm bài học */}
-        {/* <div className="flex mb-6 px-4 py-3 bg-white w-full justify-between items-center border-2 border-gray-200">
+        <div className="flex mb-6 px-4 py-3 bg-white w-full justify-between items-center border-2 border-gray-200">
             <div className="flex gap-2 w-full items-center mr-4">
               <Menu
                 width="20"
@@ -198,9 +198,9 @@ export default function Content() {
                 height="20"
               />
             </div>
-          </div> */}
+          </div>
         {/* Chọn nội dung */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
             <div className="flex px-4 pt-3 bg-white w-full justify-between items-center border-t-2 border-l-2 border-r-2 border-gray-200">
               <div className="flex gap-2 w-full items-center mr-4">
                 <Menu
@@ -257,9 +257,9 @@ export default function Content() {
               </div>
 
             </div>
-          </div> */}
+          </div>
         {/* Chọn file */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
             <div className="flex px-4 pt-3 bg-white w-full justify-between items-center border-t-2 border-l-2 border-r-2 border-gray-200">
               <div className="flex gap-2 w-full items-center mr-4">
                 <Menu
@@ -312,9 +312,9 @@ export default function Content() {
                 <span className="font-medium">Lưu ý:</span> Tất cả các tệp phải có kích thước tối thiểu là 720p và nhỏ hơn 4,0 GB.
               </div>
             </div>
-          </div> */}
+          </div>
         {/* Chọn link youtube */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
             <div className="flex px-4 pt-3 bg-white w-full justify-between items-center border-t-2 border-l-2 border-r-2 border-gray-200">
               <div className="flex gap-2 w-full items-center mr-4">
                 <Menu
@@ -358,13 +358,10 @@ export default function Content() {
               />
               <div className="py-4"> <span className='font-medium'>Lưu ý:</span>Tất cả các tệp phải có kích thước tối thiểu là 720p và nhỏ hơn 4,0 GB.</div>
             </div>
-          </div> */}
+          </div> 
 
-        {/* </div> */}
+        </div>
       </div>
-
     </>
-
-
   )
 }
