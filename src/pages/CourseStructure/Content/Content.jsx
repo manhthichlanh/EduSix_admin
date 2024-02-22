@@ -13,7 +13,8 @@ import Input from '../../../components/Input/input'
 import Button from '../../../components/Button/Button'
 import styled from "styled-components";
 import ReactPlayer from "react-player";
-
+import { ServerApi } from "../../../utils/http";
+import { useQuery } from "react-query";
 export default function Content() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [youtubeLink, setYoutubeLink] = useState('');
@@ -94,8 +95,134 @@ export default function Content() {
     width: 100%;
   }
 `;
+
+
+
+  //Course_id test
+  const course_id = 1;
+  //Course_id test
+
+  //Sections
+  const [isShowAddNewSection, setIsShowAddNewSection] = useState(false);
+  const getSectionDocs = async () => {
+    return (await ServerApi.get("admin-query/getAllLessonQuizzVideo/" + course_id))?.data?.SectionDoc || [];
+  }
+
+  const { data: sections, isFetching, isLoading, error, isError, refetch: triggerRefetchSections } = useQuery('getCourseContentById-' + course_id, getSectionDocs)
+  //Đây là phần học đã được tạo
+  const SectionComponent = ({ currentSectionData, index }) => {
+    const { name } = currentSectionData;
+    return (
+      <div className="px-6 bg-white">
+        <div className="flex py-6 bg-white w-full justify-between items-center">
+          <div className="flex gap-2 w-full mr-4 items-center">
+            <Menu width="24" height="24" />
+            <div className="text-[#1D2026] font-medium whitespace-nowrap ">Phần {index + 1}:</div>
+            <Input
+              type={"text"}
+              disabled={true}
+              placeholder={name}
+              className={
+                "w-full  py-2  focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+              }
+            />
+          </div>
+          <div className="flex gap-2">
+            <Plus width="24" height="24" />
+            <PencilLine width="24" height="24" />
+            <Delete width="24" height="24" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+  //Đây là phần học đã được tạo
+
+  //Component Box để thêm 1 phần học
+  const NewSectionComponent = () => {
+    const [sectionData, setSectionData] = useState({
+      course_id: course_id,
+      name: '',
+      status: '1',
+    });
+    const handleAddSection = async (event) => {
+      event.preventDefault();
+      try {
+        const response = await ServerApi.post('section', sectionData);
+        return setIsShowAddNewSection(false)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    return (
+      <div className="px-6 bg-white">
+        <div className="flex py-6 bg-white w-full justify-between items-center">
+          <div className="flex gap-2 w-full mr-4 items-center">
+            {/* <Menu width="24" height="24" /> */}
+            <div className="text-[#1D2026] whitespace-nowrap text-base font-medium	">Phần học mới:</div>
+            <Input
+              type={"text"}
+              placeholder={"Tên phần học"}
+              value={sectionData.name}
+              onChange={(event) => setSectionData({ ...sectionData, name: event.target.value })}
+              className={
+                "w-full  py-2  focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+              }
+            />
+          </div>
+          <div className="flex gap-2">
+            <Plus width="24" height="24" className="cursor-pointer" onClick={(e) => handleAddSection(e)} />
+            <Close width="24" height="24" className="cursor-pointer" onClick={
+              () => {
+                setIsShowAddNewSection(false);
+              }
+            }></Close>
+            {/* <PencilLine width="24" height="24" />
+            <Delete width="24" height="24" /> */}
+          </div>
+        </div>
+      </div>
+    )
+  }
+  //Component Box để thêm 1 phần học
+
+  //Đây là nút thêm mới phần học
+  const AddNewSectionComponent = () => {
+    return (
+      <Button
+        Class="my-6 flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
+        text="Thêm phần"
+        onClick={() => {
+          setIsShowAddNewSection(true);
+        }
+        }
+      />
+    )
+  }
+  //Đây là nút thêm mới phần học
+
+  //Sections
+
   return (
-    <div className="mx-6 p-6 bg-white">
+    <>
+      <div className="mx-6">
+        {
+          sections && sections?.length > 0 && sections.map((item, index) => (
+            <SectionComponent
+              currentSectionData={item}
+              index={index}
+              key={index}
+            />
+          ))
+        }
+        {
+          AddNewSectionComponent()
+        }
+        {
+          isShowAddNewSection && <NewSectionComponent />
+        }
+         <div className="mx-6 p-6 bg-white">
       <div className="flex py-6 bg-white w-full justify-between items-center">
         <div className="flex gap-2 w-full mr-4 items-center">
           <Menu width="24" height="24" />
@@ -348,6 +475,10 @@ export default function Content() {
         </div>
       </div>
     </div>
+</div>
+
+    </>
+
 
   )
 }
