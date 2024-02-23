@@ -158,7 +158,7 @@ export default function Content() {
 
     return (
       <div className="px-6 bg-white">
-        <div className="flex py-6 bg-white w-full justify-between items-center">
+        <div className="flex py-7 bg-white w-full justify-between items-center">
           <div className="flex gap-2 w-full mr-4 items-center">
             {/* <Menu width="24" height="24" /> */}
             <div className="text-[#1D2026] whitespace-nowrap text-base font-medium	">Phần học mới:</div>
@@ -168,7 +168,7 @@ export default function Content() {
               value={sectionData.name}
               onChange={(event) => setSectionData({ ...sectionData, name: event.target.value })}
               className={
-                "w-full  py-2  focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+                "w-full p-2 focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
               }
             />
           </div>
