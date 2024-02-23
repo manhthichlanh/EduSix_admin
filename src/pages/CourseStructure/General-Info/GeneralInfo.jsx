@@ -2,6 +2,7 @@ import React from 'react'
 import InputFile from '../../../components/Input/InputFile'
 import Input from '../../../components/Input/Input';
 import InputSelect from '../../../components/Input/InputSelect';
+import Plus from '../../../components/common/icon/Plus'
 import Jodit from '../../../components/Jodit/Jodit';
 import Button from '../../../components/Button/Button';
 import { useEffect, useState } from 'react';
@@ -81,10 +82,10 @@ export default function GeneralInfo() {
     setFormValue({ ...formValue, type: e.target.value })
 
   }
-  
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-  
+
     // Check if a file is selected
     if (file) {
       // Check if the file type is an image
@@ -124,21 +125,21 @@ export default function GeneralInfo() {
       });
 
   };
- 
- 
+
+
   useEffect(() => {
     if (cateData && cateData?.length > 0) {
       setFormValue({ ...formValue, category_id: cateData[0].value })
     }
   }, [cateData]
-  
+
   )
   useEffect(() => {
     if (authorData && authorData?.length > 0) {
       setFormValue({ ...formValue, author_id: authorData[0].value })
     }
   }, [authorData]
-  
+
   )
   return (
     <div className="mx-6">
@@ -164,30 +165,46 @@ export default function GeneralInfo() {
           value={formValue.name}
           onChange={handleInputChange}
         />
-         <div className="w-full flex">
-          <div className="flex-1 ">
+        <div className="w-full flex">
+          <div className="flex-1 mt-2">
+            <div className="flex ">
+              <div className="font-medium text-gray-500">Danh mục</div>
+              <div className="flex items-center ml-auto">
+                <Plus
+                stroke="#007bff"
+                width='12'
+                height='12'
+                />
+                <div className="text-[14px] text-[#007bff]">Thêm danh mục</div>
+              </div>
+            </div>
             <InputSelect
-              label="Danh mục"
+              // label="Danh mục"
               array={cateData || []}
-              className="px-2 py-2 mt-2 w-full rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+              className="px-2 py-2  w-full rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
               value={formValue.category_id}
               onChange={handleSelectChange}
             />
-            <button className="mt-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-              Thêm danh mục
-            </button>
           </div>
-          <div className="flex-1 ml-4">
+          <div className="flex-1 mt-2 ml-4">
+            <div className="flex ">
+              <div className="font-medium text-gray-500">Tác giả</div>
+              <div className="flex items-center ml-auto">
+                <Plus
+                stroke="#007bff"
+                width='12'
+                height='12'
+                />
+                <div className="text-[14px] text-[#007bff]">Thêm tác giả</div>
+              </div>
+            </div>
             <InputSelect
-              label="Giảng viên"
+              // label="Danh mục"
               array={authorData || []}
-              className="px-2  py-2 w-full mt-2 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+              className="px-2 py-2  w-full rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
               value={formValue.author_id}
               onChange={handleSelectAuthorChange}
             />
-            <button className="mt-2 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-              Thêm giảng viên
-            </button>
           </div>
         </div>
 
@@ -227,38 +244,37 @@ export default function GeneralInfo() {
             "mt-2 px-2 py-2 w-full rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
           }
         />
-          <Jodit
-            label={"Mô tả"}
-            placeholder={"Nội dung, thông tin khóa học"}
-            value={formValue.content} // Use an empty string as a fallback
-            setValue={handleDescriptionChange}
-          
-          ></Jodit>
+        <Jodit
+          label={"Mô tả"}
+          placeholder={"Nội dung, thông tin khóa học"}
+          value={formValue.content} // Use an empty string as a fallback
+          setValue={handleDescriptionChange}
+        ></Jodit>
       </div>
       <div className="flex justify-end">
-      <Button
-            text={"Tiếp tục"}
-            Class={
-              "flex font-medium items-center bg-indigo-500 hover-bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
+        <Button
+          text={"Tiếp tục"}
+          Class={
+            "flex font-medium items-center bg-indigo-500 hover-bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
+          }
+          onClick={() => {
+            const newFormError = {
+              "Tên": formValue.name,
+              "Mô tả": formValue.content,
+              "Hình ảnh": formValue.thumbnail,
             }
-            onClick={() => {
-              const newFormError = {
-                "Tên": formValue.name,
-                "Mô tả": formValue.content,
-                "Hình ảnh": formValue.thumbnail,
-              }
 
-              let errCount = 0;
-              for (const [key, value] of Object.entries(newFormError)) {
-                if (!value) {
-                  errCount++;
-                  ToastMessage(`${key} format sai!`).warn()
-                }
+            let errCount = 0;
+            for (const [key, value] of Object.entries(newFormError)) {
+              if (!value) {
+                errCount++;
+                ToastMessage(`${key} format sai!`).warn()
               }
-              if (errCount === 0) handleSave()
-
             }
-            } />
+            if (errCount === 0) handleSave()
+
+          }
+          } />
 
       </div>
 
