@@ -99,7 +99,7 @@ export default function Content() {
 
 
   //Course_id test
-  const course_id = 1;
+  const course_id = 2;
   //Course_id test
 
   //Sections
