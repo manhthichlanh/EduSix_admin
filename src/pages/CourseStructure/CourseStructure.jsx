@@ -34,10 +34,10 @@ const routes = [
 const activeClass = 'relative after:absolute after:w-full after:border-b-4 after:border-blue-500 after:bottom-0 after:left-0 after:animate-proccessing';
 const generateTest = (mathPath) => {
   let activeState = activeClass;
-  return routes.map((item) => {
+  return routes.map((item, index) => {
     const isMathPath = mathPath(item.path);
     const exportHTML = (
-        <Link to={"/course-structure"+item.path}>
+        <Link to={"/course-structure"+item.path} key={index}>
           <div className={`p-6 flex items-center gap-2 
            ${activeState}`}>
             <FontAwesomeIcon icon={item.icon} className="w-6 h-6" />

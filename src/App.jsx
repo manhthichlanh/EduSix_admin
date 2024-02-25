@@ -87,7 +87,7 @@ function App() {
             }
           >
             <Route path="general-info" element={<GeneralInfo/>} />
-            <Route path="content/:id" element={<Content/>} />
+            <Route path="content/:course_id" element={<Content/>} />
             <Route path="publish" element={<Publish/>} />
 
           </Route>

@@ -1,21 +1,24 @@
 import React, { useState, useRef } from "react";
-import Menu from '../../../components/common/icon/Menu'
-import Plus from '../../../components/common/icon/Plus'
-import Trash from '../../../components/common/icon/Trash'
-import Pencil from '../../../components/common/icon/Pencil'
-import Youtube from '../../../components/common/icon/Youtube'
-import Quizz from '../../../components/common/icon/Quizz'
-import File from '../../../components/common/icon/File'
-import PencilLine from '../../../components/common/icon/PencilLine'
-import Delete from '../../../components/common/icon/Delete'
-import Close from '../../../components/common/icon/Close'
-import Input from '../../../components/Input/Input'
-import Button from '../../../components/Button/Button'
+import Menu from '@components/common/icon/Menu'
+import Plus from '@components/common/icon/Plus'
+import Trash from '@components/common/icon/Trash'
+import Pencil from '@components/common/icon/Pencil'
+import Youtube from '@components/common/icon/Youtube'
+import Quizz from '@components/common/icon/Quizz'
+import File from '@components/common/icon/File'
+import PencilLine from '@components/common/icon/PencilLine'
+import Delete from '@components/common/icon/Delete'
+import Close from '@components/common/icon/Close'
+import Input from '@components/Input/Input'
+import Button from '@components/Button/Button'
 import styled from "styled-components";
 import ReactPlayer from "react-player";
-import { ServerApi } from "../../../utils/http";
+import { ServerApi } from "@utils/http";
 import { useQuery } from "react-query";
+import { SectionComponent } from "./Sections/SectionComponent";
+import { useParams } from "react-router-dom";
 export default function Content() {
+  const {course_id} = useParams();
   const [selectedFile, setSelectedFile] = useState(null);
   const [youtubeLink, setYoutubeLink] = useState('');
   const [invalidLink, setInvalidLink] = useState(false);
@@ -96,12 +99,6 @@ export default function Content() {
   }
 `;
 
-
-
-  //Course_id test
-  const course_id = 1;
-  //Course_id test
-
   //Sections
   const [isShowAddNewSection, setIsShowAddNewSection] = useState(false);
   const getSectionDocs = async () => {
@@ -110,32 +107,7 @@ export default function Content() {
 
   const { data: sections, isFetching, isLoading, error, isError, refetch: triggerRefetchSections } = useQuery('getCourseContentById-' + course_id, getSectionDocs)
   //Đây là phần học đã được tạo
-  const SectionComponent = ({ currentSectionData, index }) => {
-    const { name } = currentSectionData;
-    return (
-      <div className="px-6 bg-white">
-        <div className="flex py-6 bg-white w-full justify-between items-center">
-          <div className="flex gap-2 w-full mr-4 items-center">
-            <Menu width="24" height="24" />
-            <div className="text-[#1D2026] font-medium whitespace-nowrap ">Phần {index + 1}:</div>
-            <Input
-              type={"text"}
-              disabled={true}
-              placeholder={name}
-              className={
-                "w-full  py-2  focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
-              }
-            />
-          </div>
-          <div className="flex gap-2">
-            <Plus width="24" height="24" />
-            <PencilLine width="24" height="24" />
-            <Delete width="24" height="24" />
-          </div>
-        </div>
-      </div>
-    )
-  }
+
   //Đây là phần học đã được tạo
 
   //Component Box để thêm 1 phần học
@@ -157,8 +129,8 @@ export default function Content() {
     }
 
     return (
-      <div className="px-6 bg-white">
-        <div className="flex py-6 bg-white w-full justify-between items-center">
+      <div className="px-6 bg-white border-2 border-gray-200">
+        <div className="flex py-4 bg-white w-full justify-between items-center">
           <div className="flex gap-2 w-full mr-4 items-center">
             {/* <Menu width="24" height="24" /> */}
             <div className="text-[#1D2026] whitespace-nowrap text-base font-medium	">Phần học mới:</div>
@@ -168,12 +140,12 @@ export default function Content() {
               value={sectionData.name}
               onChange={(event) => setSectionData({ ...sectionData, name: event.target.value })}
               className={
-                "w-full  py-2  focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+                "w-full p-2 focus:border-b-indigo-500 focus:bg-gray-100 focus:border-b-2 focus:outline-none"
               }
             />
           </div>
           <div className="flex gap-2">
-            <Plus width="24" height="24" className="cursor-pointer" onClick={(e) => handleAddSection(e)} />
+            <Plus width="24" height="24" stroke="#1D2026" className="cursor-pointer hover:stroke-[#007bff]" onClick={(e) => handleAddSection(e)} />
             <Close width="24" height="24" className="cursor-pointer" onClick={
               () => {
                 setIsShowAddNewSection(false);
@@ -189,10 +161,10 @@ export default function Content() {
   //Component Box để thêm 1 phần học
 
   //Đây là nút thêm mới phần học
-  const AddNewSectionComponent = () => {
+  const ButtonAddNewSectionComponent = () => {
     return (
       <Button
-        Class="my-6 flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
+        Class="my-6 flex font-medium items-center bg-indigo-500 hover:bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-md"
         text="Thêm phần"
         onClick={() => {
           setIsShowAddNewSection(true);
@@ -205,6 +177,11 @@ export default function Content() {
 
   //Sections
 
+
+  //Lessons
+
+
+  //Lessons 
   return (
     <>
       <div className="mx-6">
@@ -218,7 +195,7 @@ export default function Content() {
           ))
         }
         {
-          AddNewSectionComponent()
+          ButtonAddNewSectionComponent()
         }
         {
           isShowAddNewSection && <NewSectionComponent />
@@ -232,14 +209,14 @@ export default function Content() {
                 type={"text"}
                 placeholder={"Tên phần học"}
                 className={
-                  "w-full  py-2  focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+                  "w-full p-2 focus:border-b-indigo-500 focus:bg-gray-100 focus:border-b-2 focus:outline-none"
                 }
               />
             </div>
             <div className="flex gap-2">
-              <Plus width="24" height="24" />
-              <PencilLine width="24" height="24" />
-              <Delete width="24" height="24" />
+              <Plus width="24" height="24" stroke="#1D2026" className="cursor-pointer hover:stroke-[#007bff]" />
+              <PencilLine width="24" height="24" stroke="#1D2026" className="cursor-pointer hover:stroke-[#1a9550]" />
+              <Delete width="24" height="24" className="cursor-pointer" />
             </div>
           </div>
 
@@ -254,7 +231,7 @@ export default function Content() {
                 type={"text"}
                 placeholder={"Tên bài học"}
                 className={
-                  "w-full py-1 focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+                  "w-full p-1 focus:border-b-indigo-500 focus:bg-gray-100 focus:border-b-2 focus:outline-none"
                 }
               />
             </div>
@@ -276,10 +253,12 @@ export default function Content() {
               <PencilLine
                 width="20"
                 height="20"
+                className="cursor-pointer"
               />
               <Delete
                 width="20"
                 height="20"
+                className="cursor-pointer"
               />
             </div>
           </div>
@@ -290,12 +269,13 @@ export default function Content() {
                 <Menu
                   width="20"
                   height="20"
+                  className="cursor-pointer"
                 />
                 <Input
                   type={"text"}
                   placeholder={"Tên bài học"}
                   className={
-                    "w-full py-1 focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+                    "w-full py-1 focus:border-b-indigo-500 focus:bg-gray-100 focus:border-b-2 focus:outline-none"
                   }
                 />
               </div>
@@ -303,6 +283,7 @@ export default function Content() {
                 <div className="flex items-center border-t-2 border-l-2 border-r-2 border-gray-200 transition ease-in-out text-gray-500 py-2 px-4 ">
                   <div className="font-medium pr-2 text-[#17163A] whitespace-nowrap">Nội dung</div>
                   <Close
+                    className="cursor-pointer"
                     width="20"
                     height="20"
                   />
@@ -310,29 +291,31 @@ export default function Content() {
                 <PencilLine
                   width="20"
                   height="20"
+                  className="cursor-pointer"
                 />
                 <Delete
                   width="20"
                   height="20"
+                  className="cursor-pointer"
                 />
               </div>
             </div>
             <div className="py-[20px] flex flex-col items-center border-2 border-gray-200">
               <div className="pb-6">Chọn loại nội dung</div>
               <div className="flex gap-10">
-                <div className="flex flex-col items-center w-[100px] border-2 border-gray-200 py-[10px] px-3">
+                <div className="flex cursor-pointer flex-col items-center w-[100px] border-2 border-gray-200 py-[10px] px-3">
                   <File
                     width="36" height="36"
                   />
                   <div className="pt-2 text-[14px]">Upload File</div>
                 </div>
-                <div className="flex flex-col items-center w-[100px] border-2 border-gray-200 py-[10px] px-3">
+                <div className="flex cursor-pointer flex-col items-center w-[100px] border-2 border-gray-200 py-[10px] px-3">
                   <Youtube
                     width="36" height="36"
                   />
                   <div className="pt-2 text-[14px]">Youtube</div>
                 </div>
-                <div className="flex flex-col items-center w-[100px] border-2 border-gray-200 py-[10px] px-3">
+                <div className="flex cursor-pointer flex-col items-center w-[100px] border-2 border-gray-200 py-[10px] px-3">
                   <Quizz
                     width="36" height="36"
                   />
@@ -354,7 +337,7 @@ export default function Content() {
                   type={"text"}
                   placeholder={"Tên bài học"}
                   className={
-                    "w-full py-1 focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+                    "w-full py-1 focus:border-b-indigo-500 focus:bg-gray-100 focus:border-b-2 focus:outline-none"
                   }
                 />
               </div>
@@ -364,15 +347,18 @@ export default function Content() {
                   <Close
                     width="20"
                     height="20"
+                    className="cursor-pointer"
                   />
                 </div>
                 <PencilLine
                   width="20"
                   height="20"
+                  className="cursor-pointer"
                 />
                 <Delete
                   width="20"
                   height="20"
+                  className="cursor-pointer"
                 />
               </div>
             </div>
@@ -427,7 +413,7 @@ export default function Content() {
                   type={"text"}
                   placeholder={"Tên bài học"}
                   className={
-                    "w-full py-1 focus:border-b-gray-400 focus:border-b-2 focus:outline-none"
+                    "w-full py-1 focus:border-b-indigo-500 focus:bg-gray-100 focus:border-b-2 focus:outline-none"
                   }
                 />
               </div>
@@ -437,15 +423,19 @@ export default function Content() {
                   <Close
                     width="20"
                     height="20"
+                    className="cursor-pointer"
                   />
                 </div>
                 <PencilLine
                   width="20"
                   height="20"
+                  className="cursor-pointer"
                 />
                 <Delete
                   width="20"
                   height="20"
+                  className="cursor-pointer"
+
                 />
               </div>
             </div>
@@ -453,7 +443,7 @@ export default function Content() {
               <Input
                 type={"text"}
                 placeholder={"Nhập link video Youtube vào đây"}
-                className={"w-full border-2 border-gray-200 py-3 px-4 focus:border-gray-400 focus:outline-none"}
+                className={"w-full border-2 border-gray-200 py-3 px-4 focus:border-indigo-500 focus:bg-gray-100 focus:outline-none"}
                 onChange={handleYoutubeLinkChange}
               />
               {invalidLink ? (
