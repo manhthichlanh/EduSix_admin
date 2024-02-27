@@ -113,7 +113,7 @@ export default function GeneralInfo() {
         const courseId = response.data.course_id;
         ToastMessage("Thêm mới thông tin khóa học thành công!").success();
         setTimeout(() => {
-          navigate(`/course-structure/content/${courseId}`)
+          navigate(`/course-structure/course/${courseId}/content/`)
         }, 300
         )
       })

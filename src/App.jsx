@@ -79,17 +79,17 @@ function App() {
             }
           /> */}
           <Route
-            path="/course-structure"
+            path="/course-structure/course"
             element={
               <ProtectedCourseRoute>
                 <CourseStructure />
               </ProtectedCourseRoute>
             }
           >
-            <Route path="general-info" element={<GeneralInfo/>} />
-            <Route path="content/:course_id" element={<Content/>} />
-            <Route path="publish" element={<Publish/>} />
-
+            <Route path="create/general-info" element={<GeneralInfo/>} />
+            <Route path=":course_id/general-info" element={<GeneralInfo/>} />
+            <Route path=":course_id/content" element={<Content/>} />
+            <Route path=":course_id/publish" element={<Publish/>} />
           </Route>
           <Route
             path="/add-section"

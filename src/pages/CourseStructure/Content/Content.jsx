@@ -1,8 +1,6 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Menu from '@components/common/icon/Menu'
 import Plus from '@components/common/icon/Plus'
-import Trash from '@components/common/icon/Trash'
-import Pencil from '@components/common/icon/Pencil'
 import Youtube from '@components/common/icon/Youtube'
 import Quizz from '@components/common/icon/Quizz'
 import File from '@components/common/icon/File'
@@ -18,7 +16,7 @@ import { useQuery } from "react-query";
 import { SectionComponent } from "./Sections/SectionComponent";
 import { useParams } from "react-router-dom";
 export default function Content() {
-  const {course_id} = useParams();
+  const { course_id } = useParams();
   const [selectedFile, setSelectedFile] = useState(null);
   const [youtubeLink, setYoutubeLink] = useState('');
   const [invalidLink, setInvalidLink] = useState(false);
