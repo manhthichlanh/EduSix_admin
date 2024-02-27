@@ -25,7 +25,6 @@ export default function SelectContentComponent() {
                     <div className="pt-2 text-[14px]">Quizz</div>
                 </div>
             </div>
-
         </div>
     )
 }
