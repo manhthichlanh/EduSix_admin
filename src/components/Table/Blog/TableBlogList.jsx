@@ -1,9 +1,9 @@
 import Table from "rc-table";
 import { useMemo } from "react";
-import Pencil from "../../../components/common/icon/Pencil";
-import Trash from "../../../components/common/icon/Trash";
+import Pencil from "@components/common/icon/Pencil";
+import Trash from "@components/common/icon/Trash";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Pagination from "../../../components/common/Pagination";
+import Pagination from "@components/common/Pagination";
 import { ServerApi, serverEndpoint } from '../../../utils/http';
 
 

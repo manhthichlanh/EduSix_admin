@@ -54,6 +54,7 @@ export default function Home() {
     data: courseData,
     isLoading,
     isError,
+    refetch: triggerReloadCourseData
   } = useQuery("courseData", getCourseData);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -230,7 +231,7 @@ export default function Home() {
         <div className="mt-6 border rounded-lg">
           <TableCourse
             data={filteredCourses}
-            
+            triggerReloadCourseData={triggerReloadCourseData}
             total={filteredCourses.length}
           
           ></TableCourse>

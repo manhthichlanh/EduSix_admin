@@ -10,7 +10,7 @@ import Trash from "../../common/icon/Trash";
 import Add from "../../common/icon/Add";
 
 function TableCourse(props) {
-  const { data, limit, total, current } = props;
+  const { data, limit, total, current, triggerReloadCourseData } = props;
   const LIMIT = 3;
   const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
 
@@ -27,6 +27,7 @@ function TableCourse(props) {
   const deleteCourse = async (courseId) => {
     try {
       await ServerApi.delete(`/course/${courseId}`);
+      triggerReloadCourseData();
     } catch (error) {
       console.error("Error deleting course:", error);
     }

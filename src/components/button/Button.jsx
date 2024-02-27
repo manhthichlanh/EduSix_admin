@@ -1,5 +1,6 @@
 const Button = (props) => {
   const { text, style, Class, Icon, id, onClick } = props;
+  console.log(Icon)
   return (
     <div>
       <button
@@ -8,7 +9,7 @@ const Button = (props) => {
         className={" " + Class}
         onClick={onClick}
       >
-        {Icon && <Icon></Icon>}
+        {Icon && Icon}
         {text}
       </button>
     </div>

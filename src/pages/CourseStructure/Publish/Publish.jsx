@@ -1,6 +1,10 @@
 
 export default function Publish() {
   return (
-    <h1>Trang review lại course (Bước cuối)</h1>
+    <>
+      <iframe src="/course-structure/general-info" width="100%" height="300">
+      </iframe>
+      <h1>Trang review lại course (Bước cuối)</h1>
+    </>
   )
 }

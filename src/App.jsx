@@ -87,7 +87,7 @@ function App() {
             }
           >
             <Route path="general-info" element={<GeneralInfo/>} />
-            <Route path="content/:id" element={<Content/>} />
+            <Route path="content/:course_id" element={<Content/>} />
             <Route path="publish" element={<Publish/>} />
 
           </Route>
@@ -199,7 +199,15 @@ function App() {
           <Route path="/add-review" element={<AddReview />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />
-
+        <Route
+            path="/add-category-course"
+            element={
+              <ProtectedCourseRoute>
+                <AddCateCourse />
+              </ProtectedCourseRoute>
+            }
+          />
+           <Route path="/add-author-iframe" element={<AddAuthor />} />
       </Routes>
     </BrowserRouter>
   );
