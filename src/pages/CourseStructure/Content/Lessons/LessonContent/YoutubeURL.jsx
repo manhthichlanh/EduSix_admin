@@ -2,7 +2,7 @@ import { useState } from "react";
 import ReactPlayer from "react-player";
 import styled from "styled-components";
 import Input from "@components/Input/Input"
-
+console.log("hello")
 const VideoWrapper = styled.div`
 position: relative;
 width: 100%;
@@ -21,6 +21,8 @@ max-height: 1080px; // Chiều cao tối đa là 1080px
 export default function YoutubeURL({callback, youtubeURL}) {
     const [youtubeLink, setYoutubeLink] = useState(youtubeURL ?? "");
     const [invalidLink, setInvalidLink] = useState(false);
+    const [thumbnail, setThubmnail] = useState(null);
+    console.log({thumbnail})
     const extractVideoId = (link) => {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
         const match = link.match(regExp);
@@ -38,6 +40,7 @@ export default function YoutubeURL({callback, youtubeURL}) {
             }
 
             const data = await response.json();
+            if (data) setThubmnail(data?.items[0]?.snippet?.thumbnails?.default?.url)
             youtubeURL.videoURL = youtubeLink;
             callback(youtubeURL)
             // Kiểm tra nếu có kết quả và có items trong danh sách
@@ -75,16 +78,11 @@ export default function YoutubeURL({callback, youtubeURL}) {
             />
             {invalidLink ? (
                 <div className="py-4 text-red-500">Liên kết không hợp lệ</div>
-            ) : youtubeLink && (
+            ) : thumbnail && (
                 <div className="bg-[#000] max-w-[600px] m-auto mt-[20px] overflow-auto">
                     <VideoWrapper>
                         <div>
-                            <ReactPlayer
-                                width="100%"
-                                height="100%"
-                                url={youtubeLink}
-                                controls={true}
-                            />
+                            <img src={`${thumbnail}`} alt="" />
                         </div>
                     </VideoWrapper>
                 </div>
