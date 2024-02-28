@@ -3,7 +3,7 @@ export default function Publish() {
   return (
     <>
       <div className="px-6">
-        <iframe src="http://localhost:5173/course-structure/general-info" width="100%" height="300">
+        <iframe src=" /course-structure/general-info" width="100%" height="300">
         </iframe>
 
         <div class="flex">

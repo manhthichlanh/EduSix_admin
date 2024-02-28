@@ -13,6 +13,7 @@ import { convertViToEn, getLocalData } from '../../../utils/helper';
 import ToastMessage from '../../../utils/alert'
 
 const getCategory = async () => {
+  
   try {
     const response = await ServerApi.get("/category");
     const cateData = response.data;
@@ -34,9 +35,26 @@ const getAuthor = async () => {
   }
 };
 export default function GeneralInfo() {
-
+  const [showAddCategoryPopup, setShowAddCategoryPopup] = useState(false);
+  const [showAddAuthorPopup, setShowAddAuthorPopup] = useState(false);
   const admin_id = getLocalData("auth_info").admin?.admin_id;
 
+  const handleAddCategory = () => {
+    setShowAddCategoryPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowAddCategoryPopup(false);
+  };
+
+
+  const handleAddAuthor = () => {
+    setShowAddAuthorPopup(true);
+  };
+
+  const handleCloseAuthor = () => {
+    setShowAddAuthorPopup(false);
+  };
   const [formValue, setFormValue] = useState({
     category_id: "1",
     admin_id: admin_id || null,
@@ -135,6 +153,8 @@ export default function GeneralInfo() {
         onClick={() => {
           const newFormError = {
             "Tên": formValue.name,
+            "Danh mục": formValue.category_id,
+            "Tác giả": formValue.author_id,
             "Mô tả": formValue.content,
             "Hình ảnh": formValue.thumbnail,
           }
@@ -192,7 +212,7 @@ export default function GeneralInfo() {
           value={formValue.name}
           onChange={handleInputChange}
         />
-        <div className="w-full flex">
+        <div className="w-full md:flex md:gap-[20px]">
           <div className="flex-1 mt-2">
             <div className="flex ">
               <div className="font-medium text-gray-500">Danh mục</div>
@@ -202,9 +222,41 @@ export default function GeneralInfo() {
                   width='12'
                   height='12'
                 />
-                <div className="text-[14px] text-[#007bff]">Thêm danh mục</div>
+                <div className="text-[14px] text-[#007bff] cursor-pointer"  onClick={handleAddCategory}>Thêm danh mục</div>
               </div>
             </div>
+
+            {showAddCategoryPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"  onClick={handleClosePopup}>
+          <div className="relative w-3/4 h-3/4 bg-white rounded-lg p-[10px]">
+            <button
+              className="absolute top-2 right-2 rounded-[10px] text-blue-500 p-[10px] bg-gray-100 mr-[20px]"
+              onClick={handleClosePopup}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <iframe
+              src="/add-category-course"
+              className="w-full h-full"
+              title="Add Category Course"
+            />
+          </div>
+        </div>
+      )}
+
             <InputSelect
               // label="Danh mục"
               array={cateData || []}
@@ -213,7 +265,7 @@ export default function GeneralInfo() {
               onChange={handleSelectChange}
             />
           </div>
-          <div className="flex-1 mt-2 ml-4">
+          <div className="flex-1 mt-2">
             <div className="flex ">
               <div className="font-medium text-gray-500">Tác giả</div>
               <div className="flex items-center ml-auto">
@@ -222,9 +274,40 @@ export default function GeneralInfo() {
                   width='12'
                   height='12'
                 />
-                <div className="text-[14px] text-[#007bff]">Thêm tác giả</div>
+                <div className="text-[14px] text-[#007bff] cursor-pointer" onClick={handleAddAuthor}>Thêm tác giả</div>
               </div>
             </div>
+
+            {showAddAuthorPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"  onClick={handleCloseAuthor}>
+          <div className="relative w-3/4 h-3/4 bg-white rounded-lg p-[10px]">
+            <button
+              className="absolute top-2 right-2 rounded-[10px] text-blue-500 p-[10px] bg-gray-100 mr-[20px]"
+              onClick={handleCloseAuthor}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <iframe
+              src="/add-author-iframe"
+              className="w-full h-full"
+              title="Add Category Course"
+            />
+          </div>
+        </div>
+      )}
             <InputSelect
               // label="Danh mục"
               array={authorData || []}

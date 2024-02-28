@@ -199,7 +199,15 @@ function App() {
           <Route path="/add-review" element={<AddReview />} />
         </Route>
         <Route path="/admin/login" element={<Login />} />
-
+        <Route
+            path="/add-category-course"
+            element={
+              <ProtectedCourseRoute>
+                <AddCateCourse />
+              </ProtectedCourseRoute>
+            }
+          />
+           <Route path="/add-author-iframe" element={<AddAuthor />} />
       </Routes>
     </BrowserRouter>
   );
