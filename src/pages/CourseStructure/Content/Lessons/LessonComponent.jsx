@@ -5,7 +5,31 @@ import Menu from "@components/common/icon/Menu"
 import PencilLine from "@components/common/icon/PencilLine"
 import { ServerApi } from "@utils/http"
 import SelectContentComponent from "./SelectContentComponent"
-
+const defaultContent = {
+    type: 0,
+    headerText: "Nội dung"
+}
+const uploadVideoFile = {
+    type: 1,
+    headerText: "Video file",
+}
+const uploadVideoYoutube = {
+    type: 2,
+    headerText: "Video youtube",
+}
+const uploadQuizzes = {
+    type: 3,
+    headerText: "Thêm quizz",
+}
+const chooseContent = (calllback) => {
+    return {
+        callback: calllback,
+        prevContentData: null,
+        videofile: uploadVideoFile,
+        youtubeURL: uploadVideoYoutube,
+        quizzes: uploadQuizzes
+    }
+}
 
 export const LessonComponent = ({ lessonItem }) => {
     const { name, lesson_id } = lessonItem;
@@ -13,6 +37,12 @@ export const LessonComponent = ({ lessonItem }) => {
     const [inputValue, setInputValue] = useState(name);
     const [isActiveEdit, setIsActiveEdit] = useState(false);
     const [isOpenContent, setIsOpentContent] = useState(false);
+    const [contentData, setContentData] = useState(defaultContent);
+    const selectContentAction = () => {
+        const options = chooseContent(setContentData);
+        options.prevContentData = contentData;
+        return options;
+    };
     const handleEditLessonTitle = async () => {
         setIsActiveEdit(!isActiveEdit);
         if (inputValue?.trim() !== name) {
@@ -24,6 +54,24 @@ export const LessonComponent = ({ lessonItem }) => {
             }
         }
     }
+    const handleContentToggle = () => {
+        setIsOpentContent(!isOpenContent)
+        switch (contentData.type) {
+            case 1:
+                if (!contentData.videoFile) setContentData(defaultContent)
+                break;
+            case 2:
+                if (!contentData.videoURL) setContentData(defaultContent)
+                break;
+            case 3:
+                if (!contentData.quizzes.length === 0) setContentData(defaultContent)
+                break;
+            default:
+                break;
+        }
+        return;
+    }
+
     return (
         <div className="border-2 border-gray-200 mb-6">
             <div className={`flex px-4 ${isOpenContent ? "pt-3" : "py-3"} bg-white w-full justify-between items-center`}>
@@ -45,10 +93,10 @@ export const LessonComponent = ({ lessonItem }) => {
                     />
                 </div>
                 <div className="flex gap-2 items-center">
-                    <div className="flex items-center justify-center border-2 border-gray-200 transition ease-in-out text-gray-500 py-2 px-4 cursor-pointer relative after:absolute after:bg-white after:w-full after:h-1/2 after:mt-10"
-                        onClick={() => setIsOpentContent(!isOpenContent)}
+                    <div className={`flex items-center justify-center border-2 border-gray-200 transition ease-in-out text-gray-500 py-2 px-4 cursor-pointer relative after:absolute ${isOpenContent ? "after:bg-white" : ""} after:w-full after:h-1/2 after:mt-10`}
+                        onClick={handleContentToggle}
                     >
-                        <div className="font-medium text-[#17163A] whitespace-nowrap pr-2">Nội dung</div>
+                        <div className="font-medium text-[#17163A] whitespace-nowrap pr-2">{contentData.headerText}</div>
                         <svg
                             className={`${isOpenContent ? "rotate-45" : ""} transition-transform duration-500 transform origin-center`}
                             fill="#17163A"
@@ -78,7 +126,9 @@ export const LessonComponent = ({ lessonItem }) => {
                 </div>
 
             </div>
-            {isOpenContent && <SelectContentComponent/>}    
+            {isOpenContent && <div className="border-b-2 border-gray-200"></div>
+            }
+            {isOpenContent && <SelectContentComponent selectContentAction={selectContentAction} />}
         </div>
     )
 }

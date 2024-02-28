@@ -1,8 +1,6 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Menu from '@components/common/icon/Menu'
 import Plus from '@components/common/icon/Plus'
-import Trash from '@components/common/icon/Trash'
-import Pencil from '@components/common/icon/Pencil'
 import Youtube from '@components/common/icon/Youtube'
 import Quizz from '@components/common/icon/Quizz'
 import File from '@components/common/icon/File'

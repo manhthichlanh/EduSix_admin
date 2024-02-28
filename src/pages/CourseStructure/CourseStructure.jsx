@@ -15,7 +15,7 @@ const useMathPath = (location) => {
 //Nơi custom lại các child route như icon, path, title;
 const routes = [
   {
-    path: "/general-info",
+    path: "create/general-info",
     icon: faClipboard,
     title: "Thông tin khóa học",
   },
@@ -37,7 +37,7 @@ const generateTest = (mathPath) => {
   return routes.map((item, index) => {
     const isMathPath = mathPath(item.path);
     const exportHTML = (
-        <Link to={"/course-structure"+item.path} key={index}>
+        <Link to={"/course-structure/course"+item.path} key={index}>
           <div className={`p-6 flex items-center gap-2 
            ${activeState}`}>
             <FontAwesomeIcon icon={item.icon} className="w-6 h-6" />
