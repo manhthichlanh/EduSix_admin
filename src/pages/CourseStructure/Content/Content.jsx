@@ -21,8 +21,11 @@ export default function Content() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [youtubeLink, setYoutubeLink] = useState('');
   const [invalidLink, setInvalidLink] = useState(false);
+  const [thumbnail, setThubmnail] = useState(null);
   const fileInputRef = useRef(null);
   const [isJoditVisible, setIsJoditVisible] = useState(false);
+  const [showInputLink, setShowInputLink] = useState(true);
+
 
   const handleCancel = () => {
     setIsJoditVisible(false);
@@ -32,7 +35,6 @@ export default function Content() {
   const handleToggleJodit = () => {
     setIsJoditVisible(!isJoditVisible);
   };
-
 
 
   const videoRef = useRef(null);
@@ -68,7 +70,13 @@ export default function Content() {
     }
   };
 
+  const handleEditContent = () => {
+    // Show the input field again when editing content
+    setShowInputLink(true);
+  };
+
   const handleYoutubeLinkChange = async (event) => {
+    setShowInputLink(invalidLink || !youtubeLink);
     const link = event.target.value;
     setYoutubeLink(link);
 
@@ -140,25 +148,6 @@ export default function Content() {
       }
     }
 
-    const [videoDuration, setVideoDuration] = useState(null);
-    const fileInputRef = useRef(null);
-
-    const handleFileChange = (event) => {
-      const selectedFile = event.target.files[0];
-      if (selectedFile) {
-        setVideoDuration(null); // Reset video duration when a new file is selected
-        // Your existing logic for handling the file change
-      }
-    };
-
-    const handleEditContentClick = () => {
-      fileInputRef.current.click();
-    };
-
-    const getVideoDuration = (duration) => {
-      // duration is in seconds
-      setVideoDuration(duration);
-    };
 
     return (
       <div className="px-6 bg-white border-2 border-gray-200">
@@ -463,7 +452,6 @@ export default function Content() {
                       </button>
                     </div>
                   )}
-
                   {/* Render Jodit component when isJoditVisible is true */}
                   {isJoditVisible && (
                     <div>
@@ -486,7 +474,88 @@ export default function Content() {
               )}
             </div>
           </div>
-
+          {/* Chọn file */}
+          <div className="mb-6">
+            <div className="flex px-4 pt-3 bg-white w-full justify-between items-center border-t-2 border-l-2 border-r-2 border-gray-200">
+              <div className="flex gap-2 w-full items-center mr-4">
+                <Menu
+                  width="20"
+                  height="20"
+                />
+                <Input
+                  type={"text"}
+                  placeholder={"Tên bài học"}
+                  className={
+                    "w-full py-1 focus:border-b-indigo-500 focus:bg-gray-100 focus:border-b-2 focus:outline-none"
+                  }
+                />
+              </div>
+              <div className="flex gap-2 items-center">
+                <div className="flex items-center border-t-2 border-l-2 border-r-2 border-gray-200 transition ease-in-out text-gray-500 py-2 px-4 ">
+                  <div className="font-medium pr-2 text-[#17163A] whitespace-nowrap">Thêm video</div>
+                  <Close
+                    width="20"
+                    height="20"
+                    className="cursor-pointer"
+                  />
+                </div>
+                <PencilLine
+                  width="20"
+                  height="20"
+                  className="cursor-pointer"
+                />
+                <Delete
+                  width="20"
+                  height="20"
+                  className="cursor-pointer"
+                />
+              </div>
+            </div>
+            <div className="p-5 border-2 border-gray-200">
+              <div class="relative overflow-x-auto flex">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  <thead class="text-md text-gray-700  bg-white dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" class="px-6 py-3">
+                        Tên file
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Kiểu
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Trạng thái
+                      </th>
+                      <th scope="col" class="px-6 py-3">
+                        Ngày đăng
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="bg-white">
+                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Apple MacBook Pro 17"
+                      </th>
+                      <td class="px-6 py-4">
+                        Video
+                      </td>
+                      <td class="px-6 py-4">
+                        Laptop
+                      </td>
+                      <td class="px-6 py-4">
+                        20-20-2020
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="px-6 my-auto">
+                  <Close
+                    width="20px"
+                    height="20px"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           {/* Chọn link youtube */}
           <div className="mb-6">
             <div className="flex px-4 pt-3 bg-white w-full justify-between items-center border-t-2 border-l-2 border-r-2 border-gray-200">
@@ -526,29 +595,48 @@ export default function Content() {
               </div>
             </div>
             <div className="p-5 border-2 border-gray-200">
-              <Input
-                type={"text"}
-                placeholder={"Nhập link video Youtube vào đây"}
-                className={"w-full border-2 border-gray-200 py-3 px-4 focus:border-indigo-500 focus:bg-gray-100 focus:outline-none"}
-                onChange={handleYoutubeLinkChange}
-              />
+              {showInputLink && (
+                <Input
+                  type={"text"}
+                  placeholder={"Nhập link video Youtube vào đây"}
+                  className={"w-full border-2 border-gray-200 py-3 px-4 focus:border-indigo-500 focus:bg-gray-100 focus:outline-none"}
+                  onChange={handleYoutubeLinkChange}
+                />
+              )}
               {invalidLink ? (
                 <div className="py-4 text-red-500">Liên kết không hợp lệ</div>
               ) : youtubeLink && (
-                <div className="bg-[#000] max-w-[600px] m-auto mt-[20px] overflow-auto">
-                  <VideoWrapper>
-                    <div>
-                      <ReactPlayer
-                        width="100%"
-                        height="100%"
-                        url={youtubeLink}
-                        controls={true}
-                      />
+                <div className="w-full m-auto flex mt-[20px] overflow-auto">
+                  <div className="w-[20%]">
+                    <VideoWrapper>
+                      <div>
+                        <ReactPlayer
+                          width="100%"
+                          height="100%"
+                          url={youtubeLink}
+                          controls={true}
+                        />
+                      </div>
+                    </VideoWrapper>
+                  </div>
+                  <div className="w-[80%] pl-4  ">
+                    <div className="">
+                      <h3 className="font-medium text-[#17163A] ">Tên video</h3>
+                      <h3 className="">Độ dài video: </h3>
                     </div>
-                  </VideoWrapper>
+                    <div className="flex items-center">
+                      <PencilLine
+                        width="18px"
+                        height="18px"
+                        stroke="#1D2026" className="cursor-pointer hover:stroke-[#1a9550]"
+                      />
+                      <label className="text-indigo-700 cursor-pointer pl-1" onClick={handleEditContent}>
+                        Chỉnh sửa nội dung
+                      </label>
+                    </div>
+                  </div>
                 </div>
               )}
-              <div className="py-4"> <span className='font-medium'>Lưu ý:</span>Tất cả các tệp phải có kích thước tối thiểu là 720p và nhỏ hơn 4,0 GB.</div>
             </div>
           </div>
         </div>

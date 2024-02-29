@@ -2,7 +2,9 @@ import { useState } from "react";
 import ReactPlayer from "react-player";
 import styled from "styled-components";
 import Input from "@components/Input/Input"
+import PencilLine from '@components/common/icon/PencilLine'
 
+console.log("hello")
 const VideoWrapper = styled.div`
 position: relative;
 width: 100%;
@@ -18,9 +20,11 @@ max-height: 1080px; // Chiều cao tối đa là 1080px
   width: 100%;
 }
 `;
-export default function YoutubeURL({callback, youtubeURL}) {
+export default function YoutubeURL({ callback, youtubeURL }) {
     const [youtubeLink, setYoutubeLink] = useState(youtubeURL ?? "");
     const [invalidLink, setInvalidLink] = useState(false);
+    const [thumbnail, setThubmnail] = useState(null);
+    
     const extractVideoId = (link) => {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
         const match = link.match(regExp);
@@ -38,7 +42,9 @@ export default function YoutubeURL({callback, youtubeURL}) {
             }
 
             const data = await response.json();
+            if (data) setThubmnail(data?.items[0]?.snippet?.thumbnails?.default?.url)
             youtubeURL.videoURL = youtubeLink;
+            
             callback(youtubeURL)
             // Kiểm tra nếu có kết quả và có items trong danh sách
             return data.items && data.items.length > 0;
@@ -75,21 +81,25 @@ export default function YoutubeURL({callback, youtubeURL}) {
             />
             {invalidLink ? (
                 <div className="py-4 text-red-500">Liên kết không hợp lệ</div>
-            ) : youtubeLink && (
-                <div className="bg-[#000] max-w-[600px] m-auto mt-[20px] overflow-auto">
-                    <VideoWrapper>
-                        <div>
-                            <ReactPlayer
-                                width="100%"
-                                height="100%"
-                                url={youtubeLink}
-                                controls={true}
-                            />
+            ) : thumbnail && (
+                <div className="w-full m-auto flex mt-[20px] overflow-auto">
+                    <div className="w-[20%]">
+                        <VideoWrapper>
+                            <div>
+                                <img className="w-full h-full" src={`${thumbnail}`} alt="" />
+                            </div>
+                        </VideoWrapper>
+                    </div>
+                    <div className="w-[80%] pl-4  ">
+                        <div className="">
+                            <h3 className="font-medium text-[#17163A] ">Tên video</h3>
+                            <h3 className="">Độ dài video: </h3>
                         </div>
-                    </VideoWrapper>
+                    </div>
                 </div>
+
             )}
-            <div className="py-4"> <span className='font-medium'>Lưu ý:</span>Tất cả các tệp phải có kích thước tối thiểu là 720p và nhỏ hơn 4,0 GB.</div>
+             <div className="py-4"> <span className='font-medium'>Lưu ý:</span>Tất cả các tệp phải có kích thước tối thiểu là 720p và nhỏ hơn 4,0 GB.</div>
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import Input from "../../components/Input/Input";
+import Input from "../../components/Input/input";
 import InputSelect from "../../components/Input/InputSelect";
 import InputFile from "../../components/Input/InputFile";
 import InputDescription from "../../components/Input/InputDescription";
@@ -41,9 +41,9 @@ export default function Home() {
     const newForm = new FormData();
     const newName = convertViToEn(file.name); // Đặt tên mới ở đây
     newForm.append('file', file, newName);
-    setFormValue({ ...formValue, logo_cate: newForm.get("file") })
+    setFormValue({ ...formValue, thumbnail: newForm.get("file") })
   }
-
+  
   const handleSave = () => {
     console.log(formValue)
 
