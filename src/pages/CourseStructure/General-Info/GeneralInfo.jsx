@@ -1,4 +1,4 @@
-import React from 'react'
+import { useRef } from 'react';
 import InputFile from '@components/Input/InputFile'
 import Input from '@components/Input/Input';
 import InputSelect from '@components/Input/InputSelect';
@@ -6,7 +6,7 @@ import Plus from '@components/common/icon/Plus'
 import Jodit from '@components/Jodit/Jodit';
 import Button from '@components/Button/Button';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { ServerApi } from "../../../utils/http";
 import { convertViToEn, getLocalData } from '../../../utils/helper';
@@ -37,24 +37,71 @@ const getAuthor = async () => {
 export default function GeneralInfo() {
   const [showAddCategoryPopup, setShowAddCategoryPopup] = useState(false);
   const [showAddAuthorPopup, setShowAddAuthorPopup] = useState(false);
+  const [iframeUrl, setIframeUrl] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const admin_id = getLocalData("auth_info").admin?.admin_id;
-
+  const location = useLocation();
+  const navigate = useNavigate();
+  const iframeRef = useRef(null);
+  
+  
   const handleAddCategory = () => {
     setShowAddCategoryPopup(true);
+    setIsPopupOpen(true);
   };
 
   const handleClosePopup = () => {
     setShowAddCategoryPopup(false);
+    setIframeUrl("");
+    setIsPopupOpen(false);
   };
 
 
   const handleAddAuthor = () => {
     setShowAddAuthorPopup(true);
+    setIsPopupOpen(true);
   };
 
   const handleCloseAuthor = () => {
     setShowAddAuthorPopup(false);
+    setIframeUrl("");
+    setIsPopupOpen(false);
   };
+
+  // useEffect(() => {
+  //   const ht = iframeRef.current ? iframeRef?.current.contentWindow.location.href : null;
+  //   console.log("hello", ht);
+  //   handleIframeLoad();
+  //   setIframeUrl(ht);
+    
+  // }, [iframeUrl]); // Thêm iframeUrl vào mảng dependency
+
+  
+   const handleIframeLoad = (event) => {
+    // Lấy đường dẫn mới từ iframe
+    if (iframeRef.current) {
+      // Lấy đường dẫn mới từ iframe
+      const newUrl = iframeRef.current.contentWindow.location.href;
+    // Kiểm tra xem đường dẫn mới có khác với đường dẫn hiện tại không
+    if (newUrl !== iframeUrl) {
+      // Nếu không phải là cửa sổ popup hiện tại thì đóng popup
+      if (!isPopupOpen) {
+        if (iframeUrl !== "/add-category-course") {
+          handleClosePopup();
+        }
+        if (iframeUrl !== "/add-author-iframe") {
+          handleCloseAuthor();
+        }
+      }
+    }
+  
+    // Cập nhật đường dẫn hiện tại của iframe và trạng thái của cửa sổ popup
+    setIframeUrl(newUrl);
+    setIsPopupOpen(false);
+  }
+   };
+  
+
   const [formValue, setFormValue] = useState({
     category_id: "1",
     admin_id: admin_id || null,
@@ -70,7 +117,7 @@ export default function GeneralInfo() {
 
   const { data: cateData, isLoading, isError } = useQuery("cateData", getCategory);
   const { data: authorData } = useQuery("authorData", getAuthor);
-  const navigate = useNavigate();
+
   const handleSelectChange = (e) => {
     setFormValue({ ...formValue, category_id: e.target.value })
   };
@@ -188,6 +235,9 @@ export default function GeneralInfo() {
   }, [authorData]
 
   )
+
+
+ 
   return (
     <div className="mx-6">
       <div className="lg:my-0 md:my-0 sm:my-0 my-6 bg-white ">
@@ -249,9 +299,11 @@ export default function GeneralInfo() {
               </svg>
             </button>
             <iframe
+             ref={iframeRef}
               src="/add-category-course"
               className="w-full h-full"
               title="Add Category Course"
+              onLoad={handleIframeLoad}
             />
           </div>
         </div>
@@ -301,9 +353,11 @@ export default function GeneralInfo() {
               </svg>
             </button>
             <iframe
-              src="/add-author-iframe"
+             ref={iframeRef}
+              src={"/add-author-iframe"}
               className="w-full h-full"
-              title="Add Category Course"
+              title="Add Author"
+              onLoad={handleIframeLoad}
             />
           </div>
         </div>

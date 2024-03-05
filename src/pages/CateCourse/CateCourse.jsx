@@ -5,7 +5,7 @@ import { Menu } from "@headlessui/react";
 import Filter from "../../components/common/icon/Filter";
 import Search from "../../components/Search/Search";
 import TableCate from "../../components/Table/TableCate";
-
+import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <div className="px-6 py-6 max-h-full">
@@ -22,6 +22,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex gap-2 whitespace-nowrap mt-4 sm:mb-0 sm:mt-4 sm:justify-end">
+        <Link to="/add-cate-course">
           <Button
             text={"Thêm danh mục"}
             Class={
@@ -44,6 +45,7 @@ export default function Home() {
             }}
             onClick={() => console.log("You will be mine")}
           />
+          </Link>
         </div>
       </div>
       {/* filter button*/}

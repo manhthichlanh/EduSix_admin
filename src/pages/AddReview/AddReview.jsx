@@ -15,7 +15,7 @@ import Jodit from "../../components/Jodit/Jodit";
 export default function AddReview() {
     const navigate = useNavigate();
     const [formValue, setFormValue] = useState({
-        name_user: "",
+        reviewer_name: "",
         work: "",
         status: true,
         avatar: null,
@@ -24,7 +24,7 @@ export default function AddReview() {
 
     const resetForm = () => {
         setFormValue({
-            name_user: "",
+            reviewer_name: "",
             work: "",
             status: true,
             avatar: null,

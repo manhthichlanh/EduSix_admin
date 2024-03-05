@@ -6,7 +6,7 @@ import Pagination from "../common/Pagination";
 import Pencil from "../common/icon/Pencil";
 import Trash from "../common/icon/Trash";
 import { useQuery } from "react-query";
-import { ServerApi } from "../../utils/http";
+import { ServerApi, serverEndpoint } from "../../utils/http";
 function TableCate() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -24,16 +24,16 @@ function TableCate() {
   const columns = useMemo(
     () => [
       {
-        title: "Khóa học",
+        title: "Danh mục",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <div>
-              <h5 className="capitalize font-medium text-base leading-[20px] whitespace-nowrap">
+            <div className="flex-shrink-0 w-[50px] overflow-hidden bg-gray-300 rounded-lg">
+            <img src={`${serverEndpoint}category/logo_cate/${item.logo_cate}`} alt="" />
+            </div>
+            <div className="">
+              <p className="capitalize font-medium text-base leading-[20px]">
                 {item?.cate_name}
-              </h5>
-              <span className="capitalize text-gray-400 text-sm font-normal leading-[18px]">
-                {item?.category_id}
-              </span>
+              </p>
             </div>
           </div>
         ),
