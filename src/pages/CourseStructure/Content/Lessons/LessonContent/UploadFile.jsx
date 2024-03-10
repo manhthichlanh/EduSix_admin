@@ -5,11 +5,10 @@ import { useMutation } from "react-query";
 import { useSocket } from "@services/SocketService";
 import moment from "moment";
 export default function UploadFile({lesson_id}) {
-    const { socket, isSocketConnected } = useSocket();
+    const { socket } = useSocket();
     const [progress, setProgress] = useState(0);
     const [isPending, setIsPending] = useState(false);
     const [fileData, setFileData] = useState(null);
-    console.log({ socket, isSocketConnected })
     const { mutate, isSuccess, isError } = useMutation({
         mutationFn: (form_data) => {
             return ServerApi.post('video/stream/create', form_data, {
@@ -22,7 +21,6 @@ export default function UploadFile({lesson_id}) {
         onMutate: (context) => {
             setFileData(context.file_videos);
             socket.on("process_info", (info) => {
-                console.log(info);
                 setIsPending(true);
                 setProgress(info.progress_percent);
             })

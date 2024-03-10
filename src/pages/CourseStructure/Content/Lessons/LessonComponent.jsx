@@ -38,7 +38,7 @@ const chooseContent = (calllback) => {
 }
 
 export const LessonComponent = ({ lessonItem }) => {
-    const { name, lesson_id } = lessonItem;
+    const { name, lesson_id, quizzes } = lessonItem;
     console.log({ lessonItem });
     const [inputValue, setInputValue] = useState(name);
     const [isActiveEdit, setIsActiveEdit] = useState(false);
@@ -87,11 +87,10 @@ export const LessonComponent = ({ lessonItem }) => {
             case 2:
                 return <YoutubeURL/>
             case 3:
-                return <Quizzes lesson_id={lesson_id}/>
+                return <Quizzes lesson_id={lesson_id} quizzesData={quizzes}/>
             default:
         }
     }
-    console.log({contentData, true: contentData.type === 3})
     return (
         <div className="border-2 border-gray-200 mb-6">
             <div className={`flex px-4 ${isOpenContent ? "pt-3" : "py-3"} bg-white w-full justify-between items-center`}>

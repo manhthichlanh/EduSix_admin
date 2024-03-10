@@ -1,12 +1,10 @@
-import { useCallback, useMemo, useState } from "react";
-import ReactPlayer from "react-player";
+import { useState } from "react";
 import styled from "styled-components";
 import Input from "@components/Input/Input"
 import PencilLine from '@components/common/icon/PencilLine'
-import Spinner from "@components/Spinner/Spinner";
 // import useDebounce from "@hooks/useDebound";
 
-console.log("hello")
+
 const VideoWrapper = styled.div`
 position: relative;
 width: 100%;
@@ -76,19 +74,6 @@ export default function YoutubeURL({ callback, youtubeURL }) {
             setInvalidLink(true);
         }
     };
-    const debouncedFunction = (callback, delay) => {
-        let timeoutId = null;
-        return (...args) => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                callback(...args);
-            }, delay);
-        }
-    };
-
-    const handleYoutubeLinkChangeDebounce = useMemo(() => {
-        return debouncedFunction(() => console.log("123"), 1000)
-    }, [])
     return (
         <div className="p-5">
             <Input
