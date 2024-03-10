@@ -271,19 +271,6 @@ export default function AddCourse() {
             value={formValue.content} // Use an empty string as a fallback
             setValue={handleDescriptionChange}
           />
-
-
-          {/* <InputDescription
-            label={"Mô tả"}
-            placeholder={"Nhập mô tả"}
-            className={
-              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
-            }
-            rows={"10"}
-            cols={"30"}
-            value={formValue.content}
-            onChange={handleDescriptionChange}
-          /> */}
         </div>
         <div className="lg:my-0 md:my-0 sm:my-0 my-6">
           <InputFile

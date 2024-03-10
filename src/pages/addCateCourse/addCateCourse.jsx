@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import Input from "../../components/Input/Input";
+import Input from "../../components/Input/input";
 import InputSelect from "../../components/Input/InputSelect";
 import InputFile from "../../components/Input/InputFile";
 import InputDescription from "../../components/Input/InputDescription";
@@ -41,9 +41,9 @@ export default function Home() {
     const newForm = new FormData();
     const newName = convertViToEn(file.name); // Đặt tên mới ở đây
     newForm.append('file', file, newName);
-    setFormValue({ ...formValue, logo_cate: newForm.get("file") })
+    setFormValue({ ...formValue, thumbnail: newForm.get("file") })
   }
-
+  
   const handleSave = () => {
     console.log(formValue)
 
@@ -91,7 +91,7 @@ export default function Home() {
               text={"Hủy"}
               Class={
                 "flex font-medium items-center text-black hover:bg-slate-200 transition ease-in-out py-2 px-4 border-2 rounded-lg"
-              
+
               }
               Icon={function Icon() {
                 return (
@@ -109,99 +109,76 @@ export default function Home() {
               onClick={() => console.log("You are my dream")}
             />
             <Button
-            text={"Thêm"}
-            Class={
-              "flex font-medium items-center bg-indigo-500 hover-bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
-            }
-            Icon={function Icon() {
-              return (
-                <svg
-                  className="pr-2"
-                  fill="#ffffff"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v18c0-0.553-0.447-1-1-1z" />
-                  <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0-1-0.447-1-1z" />
-                </svg>
-              );
-            }}
-            onClick={() => {
-              const newFormError = {
-                "Tên": formValue.cate_name,
+              text={"Thêm"}
+              Class={
+                "flex font-medium items-center bg-indigo-500 hover-bg-indigo-700 transition ease-in-out text-white py-2 px-4 rounded-lg"
               }
-
-              let errCount = 0;
-              for (const [key, value] of Object.entries(newFormError)) {
-                if (!value) {
-                  errCount++;
-                  ToastMessage(`${key} format sai!`).warn()
+              Icon={function Icon() {
+                return (
+                  <svg
+                    className="pr-2"
+                    fill="#ffffff"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1s1-0.447 1-1v18c0-0.553-0.447-1-1-1z" />
+                    <path d="M22 11c0-0.553-0.447-1-1-1h-18c-0.553 0-1 0.447-1 1s0.447 1 1 1h18c0.553 0-1-0.447-1-1z" />
+                  </svg>
+                );
+              }}
+              onClick={() => {
+                const newFormError = {
+                  "Tên": formValue.cate_name,
                 }
-              }
-              if (errCount === 0) handleSave()
 
-            }
-            } />
+                let errCount = 0;
+                for (const [key, value] of Object.entries(newFormError)) {
+                  if (!value) {
+                    errCount++;
+                    ToastMessage(`${key} format sai!`).warn()
+                  }
+                }
+                if (errCount === 0) handleSave()
+
+              }
+              } />
           </div>
         </div>
-        <div className="px-6 py-4 m-6 bg-white border-2 rounded-lg">
+
+        <div className="w-full gap-6 p-6 md:grid sm:grid lg:flex md:grid-cols-1 sm:grid-cols-1">
+        <div className="w-full px-6 py-4 border-2 rounded-lg">
+          <p htmlFor="" className="pb-2 text-xl font-medium text-left">
+            Thông tin
+          </p>
           <Input
+            type={"text"}
             label={"Tên danh mục"}
             placeholder={"Nhập tên danh mục"}
             className={
-              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
+              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
-            value={""}
-          ></Input>
-           <Input
-            label={"Ảnh danh mục"}
-            type={"file"}
-            placeholder={"Nhập tên danh mục"}
-            className={
-              "w-full text-sm border rounded-lg p-2 mt-2 text-slate-500 file:mr-2 file:px-4 file:py-2 file:rounded-md file:border-none file:bg-blue-500 file:text-white file:hover:bg-blue-700 ease-in-out transition"
-            }
-            
             value={formValue.cate_name}
             onChange={handleNameChange}
-          ></Input>
-          <Input
-            label={"ordinal number"}
-            placeholder={"Nhập ordinal number"}
-            className={
-              "mt-2 px-4 pb-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-            }
-            
-            value={formValue.ordinal_number}
-            onChange={handleNumberChange}
-          ></Input>
+          />
+
           <InputSelect
             label={"Trạng thái"}
             array={[
-              { value: true, text: "Đang bật" },
-              { value: false, text: "Tắt" },
+              { value: "true", text: "Bật" },
+              { value: "false", text: "Tắt" },
             ]}
-            
-            value={selectedStatus}
+            value={formValue.status.toString()} // Ensure that the value is a string
             onChange={handleStatusChange}
             className={
               "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
             }
           />
-          {/* <InputDescription
-            label={"Mô tả"}
-            placeholder={"Nhập mô tả"}
-            className={
-              "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus:border-indigo-500 focus:outline-none"
-            }
-            cols={"30"}
-            rows={"10"}
-            value={""}
-          ></InputDescription> */}
+        </div>
+        <div className="lg:my-0 md:my-0 sm:my-0 my-6">
           <InputFile
-            title="Logo Category"
-            label={"Logo Category"}
+            title="Thumbnails"
             className={
               "grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center"
             }
@@ -209,6 +186,9 @@ export default function Home() {
             value={""}
           ></InputFile>
         </div>
+      </div>
+
+
       </form>
     </>
   );

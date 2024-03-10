@@ -57,7 +57,7 @@ function InputFile({ title, label, className, placeholder, value, onChange }) {
           <img
             src={selectedImage}
             alt="Selected"
-            className="mb-4 w-52  object-cover rounded-lg"
+            className="mb-4 max-w-40 object-cover rounded-lg"
           />
         ) : (
           <svg
@@ -90,13 +90,13 @@ function InputFile({ title, label, className, placeholder, value, onChange }) {
             />
           </svg>
         )}
-        <p className="mb-4 text-center text-gray-500 ">
-          {selectedImage ? (
-            `File đã chọn: ${selectedFileName}`
-          ) : (
-            "Kéo thả ảnh vào đây hoặc bấm chọn tệp"
-          )}
-        </p>
+         <p className="mb-4 text-center text-gray-500">
+        {selectedImage ? (
+          <span className="truncate inline-block max-w-40">{`File đã chọn: ${selectedFileName}`}</span>
+        ) : (
+          "Kéo thả ảnh vào đây hoặc bấm chọn tệp"
+        )}
+      </p>
         <label className="mb-4 cursor-pointer">
           <input
             type="file"

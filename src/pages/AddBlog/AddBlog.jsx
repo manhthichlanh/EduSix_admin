@@ -274,7 +274,6 @@ export default function AddBlog() {
           <Jodit
             label={"Nội dung bài viết"}
             placeholder={"Nội dung bài viết"}
-
             value={formValue.content}
             setValue={handleContentChange}
           ></Jodit>

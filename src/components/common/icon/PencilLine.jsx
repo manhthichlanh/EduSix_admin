@@ -6,7 +6,6 @@ export default function PencilLine(props) {
     return (
         <svg
             className=""
-
             {...props}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

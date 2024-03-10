@@ -4,7 +4,10 @@ import Delete from "@components/common/icon/Delete"
 import Menu from "@components/common/icon/Menu"
 import PencilLine from "@components/common/icon/PencilLine"
 import { ServerApi } from "@utils/http"
+import UploadFile from "./LessonContent/UploadFile"
+import YoutubeURL from "./LessonContent/YoutubeURL"
 import SelectContentComponent from "./SelectContentComponent"
+import Quizzes from "./LessonContent/Quizzes"
 const defaultContent = {
     type: 0,
     headerText: "Nội dung"
@@ -12,14 +15,17 @@ const defaultContent = {
 const uploadVideoFile = {
     type: 1,
     headerText: "Video file",
+    videoFile: null
 }
 const uploadVideoYoutube = {
     type: 2,
     headerText: "Video youtube",
+    videoYoutubeURL: null
 }
 const uploadQuizzes = {
     type: 3,
     headerText: "Thêm quizz",
+    quizzes: []
 }
 const chooseContent = (calllback) => {
     return {
@@ -61,17 +67,31 @@ export const LessonComponent = ({ lessonItem }) => {
                 if (!contentData.videoFile) setContentData(defaultContent)
                 break;
             case 2:
-                if (!contentData.videoURL) setContentData(defaultContent)
+                if (!contentData.videoYoutubeURL) setContentData(defaultContent)
                 break;
             case 3:
-                if (!contentData.quizzes.length === 0) setContentData(defaultContent)
+                if (contentData.quizzes?.length === 0) setContentData(defaultContent)
+                console.log("coas")
                 break;
             default:
                 break;
         }
         return;
     }
-
+    const renderLessonContent = () => {
+        switch (contentData.type) {
+            case 0:
+                return <SelectContentComponent selectContentAction={selectContentAction}/>
+            case 1:
+                return <UploadFile lesson_id={lesson_id}/>
+            case 2:
+                return <YoutubeURL/>
+            case 3:
+                return <Quizzes lesson_id={lesson_id}/>
+            default:
+        }
+    }
+    console.log({contentData, true: contentData.type === 3})
     return (
         <div className="border-2 border-gray-200 mb-6">
             <div className={`flex px-4 ${isOpenContent ? "pt-3" : "py-3"} bg-white w-full justify-between items-center`}>
@@ -126,9 +146,13 @@ export const LessonComponent = ({ lessonItem }) => {
                 </div>
 
             </div>
-            {isOpenContent && <div className="border-b-2 border-gray-200"></div>
+            {isOpenContent && <div className="border-t-2 border-gray-200">
+                {
+                    renderLessonContent()
+                }
+            </div>
             }
-            {isOpenContent && <SelectContentComponent selectContentAction={selectContentAction} />}
+            {/* {isOpenContent && <SelectContentComponent selectContentAction={selectContentAction} />} */}
         </div>
     )
 }
