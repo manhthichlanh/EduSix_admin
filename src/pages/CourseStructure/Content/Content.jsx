@@ -512,36 +512,36 @@ export default function Content() {
               </div>
             </div>
             <div className="p-5 border-2 border-gray-200">
-              <div class="relative overflow-x-auto flex">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                  <thead class="text-md text-gray-700  bg-white dark:bg-gray-700 dark:text-gray-400">
+              <div className="relative overflow-x-auto flex">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  <thead className="text-md text-gray-700  bg-white dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                      <th scope="col" class="px-6 py-3">
+                      <th scope="col" className="px-6 py-3">
                         Tên file
                       </th>
-                      <th scope="col" class="px-6 py-3">
+                      <th scope="col" className="px-6 py-3">
                         Kiểu
                       </th>
-                      <th scope="col" class="px-6 py-3">
+                      <th scope="col" className="px-6 py-3">
                         Trạng thái
                       </th>
-                      <th scope="col" class="px-6 py-3">
+                      <th scope="col" className="px-6 py-3">
                         Ngày đăng
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="bg-white">
-                      <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Apple MacBook Pro 17"
+                    <tr className="bg-white">
+                      <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        Apple MacBook Pro 17
                       </th>
-                      <td class="px-6 py-4">
+                      <td className="px-6 py-4">
                         Video
                       </td>
-                      <td class="px-6 py-4">
+                      <td className="px-6 py-4">
                         Laptop
                       </td>
-                      <td class="px-6 py-4">
+                      <td className="px-6 py-4">
                         20-20-2020
                       </td>
                     </tr>
