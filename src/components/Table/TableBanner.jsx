@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef  } from "react";
 import Table from "rc-table";
 import Pencil from "../../components/common/icon/Pencil";
 import Trash from "../../components/common/icon/Trash";
@@ -62,10 +62,21 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const LIMIT = 3;
-  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; // Parse the current page from the URL
+  const currentPage = parseInt(new URLSearchParams(window.location.search).get('page')) || 1; 
   const [selectedOrdinalNumber, setSelectedOrdinalNumber] = useState("");
+  const [editWindowOpen, setEditWindowOpen] = useState(false); // State to track if the edit window is open
+  const [editedItem, setEditedItem] = useState(null); // State to store the item being edited
+
+  const inputFileRef = useRef(null); // Create a ref for the input file element
+
+  const handlethumnailChange = (e) => {
+    const file = e.target.files[0];
+    const imageUrl = URL.createObjectURL(file); // Lấy đường dẫn của hình ảnh
   
-  
+    const formData = new FormData();
+    formData.append('thumnail', file);
+    setEditedItem({ ...editedItem, formData, imageUrl }); // Lưu đường dẫn của hình ảnh vào editedItem
+  };
   const moveRow = (dragIndex, hoverIndex) => {
     const newData = [...data];
     const draggedRow = newData[dragIndex];
@@ -81,16 +92,69 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
     }
   }, [dataArray]);
 
-  const updateOrdinalNumber = async (bannerId, ordinalNumber) => {
-    const response = await ServerApi.patch(`/banner/${bannerId}`, {
-      ordinal_number: ordinalNumber,
-    });
+  const handleOpenEditWindow = (item) => {
+    setEditedItem(item);
+    setEditWindowOpen(true);
+  };
+
+  const handleCloseEditWindow = () => {
+    setEditWindowOpen(false);
+  };
+
+ 
+
+  const handleEditConfirmation = async () => {
+    try {
+        // Log trước khi gọi API
+        // console.log('Gọi API để chỉnh sửa item:', editedItem);
+        if (!editedItem.name_banner || !editedItem.link || !editedItem.status || !editedItem.ordinal_number) {
+          ToastMessage('Vui lòng nhập đầy đủ thông tin').warn();
+          return; // Ngừng xử lý nếu có bất kỳ trường nào chưa được nhập
+        }
+      const formData = new FormData();
+      formData.append('name_banner', editedItem.name_banner);
+      formData.append('link', editedItem.link);
+      formData.append('status', editedItem.status);
+      formData.append('ordinal_number', editedItem.ordinal_number);
+      if (editedItem.formData) {
+        formData.append('thumnail', editedItem.formData.get('thumnail'));
+      }
   
-    if (!response.ok) {
-      throw new Error('Failed to update ordinal_number');
+      const response = await ServerApi.patch(`/banner/${editedItem.id}`, formData);
+  
+      // console.log('Phản hồi từ API sau khi chỉnh sửa:', response);
+  
+      if (response.status === 200) {
+        await triggerFetching();
+        ToastMessage('Chỉnh sửa thông tin thành công').success();
+        handleCloseEditWindow();
+      } else {
+        ToastMessage('Đã xảy ra lỗi khi chỉnh sửa thông tin').error();
+      }
+    } catch (error) {
+      console.error('Error updating item: ', error);
+      ToastMessage('Đã xảy ra lỗi khi chỉnh sửa thông tin').error();
     }
-  
-    return response.data; // Adjust this based on your API response structure
+  };
+
+
+
+  const handleStatusChange = async (bannerId, newStatus) => {
+    try {
+      const response = await ServerApi.patch(`/banner/${bannerId}`, {
+        status: newStatus,
+      });
+      await triggerFetching();
+      ToastMessage('Cập nhật trạng thái banner thành công').success();
+      const updatedData = [...data];
+      const updatedIndex = updatedData.findIndex((item) => item.id === bannerId);
+
+      if (updatedIndex !== -1) {
+        updatedData[updatedIndex] = { ...updatedData[updatedIndex], status: newStatus };
+      }
+    } catch (error) {
+      console.error('Error updating status: ', error);
+    }
   };
 
   const handleOrdinalNumberChange = async (bannerId, ordinalNumber) => {
@@ -100,12 +164,7 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
       });
       await triggerFetching();
       ToastMessage('Thay đổi thứ tự banner thành công').success();
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 3000);
 
-
-      // Clone the data array before modifying it
       const updatedData = [...data];
       const updatedIndex = updatedData.findIndex((item) => item.id === bannerId);
 
@@ -118,25 +177,16 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
     }
   };
 
-  const handleStatusChange = async (bannerId, newStatus) => {
+
+  const deleteBanner = async (bannerId) => {
     try {
-      const response = await ServerApi.patch(`/banner/${bannerId}`, {
-        status: newStatus,
-      });
-      await triggerFetching();z
-      ToastMessage('Cập nhật trạng thái banner thành công').success();
-      const updatedData = [...data];
-      const updatedIndex = updatedData.findIndex((item) => item.id === bannerId);
-  
-      if (updatedIndex !== -1) {
-        updatedData[updatedIndex] = { ...updatedData[updatedIndex], status: newStatus };
-      }
+      await ServerApi.delete(`/banner/${bannerId}`);
+      triggerFetching();
     } catch (error) {
-      console.error('Error updating status: ', error);
+      console.error("Error deleting banner:", error);
     }
   };
 
-  
   const columns = useMemo(
     () => [
       {
@@ -200,7 +250,7 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
             >
               {Array.from(new Set(dataArray.map((item) => item.ordinal_number))).map((ordinal) => (
                 <option key={ordinal} value={ordinal}>
-                  {ordinal}
+                Hàng  {ordinal}
                 </option>
               ))}
             </select>
@@ -212,18 +262,21 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
         title: "Thao tác",
         render: (item) => (
           <div className="flex items-center gap-2">
-            <button
-              onClick={() =>
-                navigate(`/add-banner?bannerId=${item.id}`, {
-                  state: { courseName: item.name, courseId: item.course_id },
-                })
-              }
-            >
+            <button onClick={() => handleOpenEditWindow(item)}>
               <Pencil className="text-gray-500 hover:text-orange-600"></Pencil>
             </button>
-            <button>
-              <Trash className="text-gray-500  hover:text-red-500"></Trash>
-            </button>
+            <button
+            onClick={() => {
+              // Hiển thị cảnh báo (confirm) trước khi xóa
+              const shouldDelete = window.confirm(`Bạn có chắc muốn xóa banner: ${item.name_banner}?` );
+              if (shouldDelete) {
+                // Gọi hàm xóa
+                deleteBanner(item.id);
+              }
+            }}
+          >
+            <Trash className="text-gray-500  hover:text-red-500"></Trash>
+          </button>
           </div>
         ),
       },
@@ -231,8 +284,6 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
     [selectedOrdinalNumber]
   );
 
-
-  
   // Calculate the correct endIndex based on the current page and LIMIT
   const endIndex = currentPage * LIMIT;
 
@@ -242,37 +293,96 @@ const TableBanner = ({ data, isLoading, isError, triggerFetching }) => {
     });
   };
 
-
-
   return (
     <DndProvider backend={HTML5Backend}>
-    <div className="border rounded-lg">
-      {/* Add a selector for ordinal numbers */}
-     
-      <Table
-        components={{
-          body: {
-            row: (props) => <DraggableBodyRow draggable moveRow={moveRow} {...props} />,
-          },
-        }}
-        columns={columns}
-        data={dataArray.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
-        rowKey="id"
-        scroll={{
-          x: true,
-        }}
-      ></Table>
-    </div>
-    <div className="flex items-center justify-end p-4">
-   
-      <Pagination
-        limit={LIMIT}
-        total={dataArray.length}
-        current={currentPage} // Use the current page
-        onChange={onPageChange}
-      />
-    </div>
-  </DndProvider>
+      <div className="border rounded-lg">
+        {/* Add a selector for ordinal numbers */}
+        <Table
+          components={{
+            body: {
+              row: (props) => <DraggableBodyRow draggable moveRow={moveRow} {...props} />,
+            },
+          }}
+          columns={columns}
+          data={dataArray.slice((currentPage - 1) * LIMIT, endIndex).map((item, index) => ({ ...item, index }))}
+          rowKey="id"
+          scroll={{
+            x: true,
+          }}
+        ></Table>
+      </div>
+      <div className="flex items-center justify-end p-4">
+        <Pagination
+          limit={LIMIT}
+          total={dataArray.length}
+          current={currentPage} // Use the current page
+          onChange={onPageChange}
+        />
+      </div>
+      {editWindowOpen && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-[2]">
+          <div className="bg-white p-[20px] rounded-lg w-[600px] m-[20px]">
+            {/* Content of the edit window */}
+            <h2 className="text-center text-[20px] text-blue-500 font-[600]">Sửa Banner: {editedItem.name_banner}</h2>
+            <div className="mt-[10px] border-b-[3px] py-[10px] max-h-[500px] overflow-auto">
+              <p className="mb-[10px]">
+            <label>Tên:</label><br/>
+               <input className="w-[100%] border-solid border-2 border-indigo-600 p-[10px] rounded-[5px] my-[5px]" placeholder="Nhập tên banner" type="text" value={editedItem.name_banner} onChange={(e) => setEditedItem({ ...editedItem, name_banner: e.target.value })} />
+               </p>
+               <p className="mb-[10px]">
+               <label>Đường dẫn:</label> <br/>
+               <input className="w-[100%] border-solid border-2 border-indigo-600 p-[10px] rounded-[5px] my-[5px]" placeholder="Nhập đường dẫn" type="text" value={editedItem.link} onChange={(e) => setEditedItem({ ...editedItem, link: e.target.value })} />
+               </p>
+               <p className="mb-[10px]">
+               <label>Trạng thái:</label> <br/>
+              <select className="w-[100%] border-solid border-2 border-indigo-600 p-[10px] rounded-[5px] my-[5px]" value={editedItem.status} onChange={(e) => setEditedItem({ ...editedItem, status: e.target.value })}>
+                <option value={true}>Đang bật</option>
+                <option value={false}>Đang tắt</option>
+              </select>
+              </p>
+            <p className="mb-[10px]">
+            <label>Thứ tự:</label> <br/>
+              <select className="w-[100%] border-solid border-2 border-indigo-600 p-[10px] rounded-[5px] my-[5px]" value={editedItem.ordinal_number} onChange={(e) => setEditedItem({ ...editedItem, ordinal_number: e.target.value })}>
+                {Array.from(new Set(dataArray.map((item) => item.ordinal_number))).map((ordinal) => (
+                  <option key={ordinal} value={ordinal}>
+                    Hàng {ordinal}
+                  </option>
+                ))}
+              </select>
+            </p>
+            <p>
+            {(editedItem.thumnail || editedItem.imageUrl) && (
+  <div>
+   <img
+  src={editedItem.imageUrl || `${serverEndpoint}banner/thumnail/${editedItem.thumnail}`}
+  alt="Preview"
+  style={{ maxWidth: '300px', maxHeight: '100%,', margin: 'auto', borderRadius: '5px' }}
+/>
+  </div>
+)}
+              <input
+                id="thumnailInput"
+                type="file"
+                accept="image/*"
+                onChange={handlethumnailChange}
+                style={{ display: 'none' }}
+                ref={inputFileRef}
+              />
+     <label htmlFor="thumnailInput" className="custom-file-upload">
+  {/* {editedItem?.formData?.get('thumnail')?.file || 'Chọn tệp...'} */}
+      <p className="bg-green-500 px-[10px] py-[5px] text-white w-[80px] text-center rounded-[5px] mt-[10px] m-auto">Sửa ảnh</p>
+</label>
+
+            </p>
+            </div>
+            <div className="flex gap-[10px] justify-end">
+            <button className="bg-blue-500 px-[10px] py-[5px] text-white w-[80px] text-center rounded-[5px] mt-[10px]" onClick={handleEditConfirmation}>Lưu</button>
+            <button className="bg-blue-500 px-[10px] py-[5px] text-white w-[80px] text-center rounded-[5px] mt-[10px]" onClick={handleCloseEditWindow}>Đóng</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </DndProvider>
   );
 }
 

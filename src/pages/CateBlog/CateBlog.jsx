@@ -5,7 +5,24 @@ import { Menu } from "@headlessui/react";
 import Filter from "../../components/common/icon/Filter";
 import Search from "../../components/Search/Search";
 import TableBlogCate from "../../components/Table/Blog/TableBlogCate";
+import { ServerApi } from '../../utils/http';
+import { useQuery } from 'react-query';
+import { Link } from "react-router-dom";
 export default function Home() {
+
+
+
+  const getCateBlogDataData = async () => {
+    try {
+      const response = await ServerApi.get("/blogCategory");
+      return response.data;
+    } catch (error) {
+      throw new Error("Error fetching blogCategory data");
+    }
+  };
+
+  const { data: cateBlogData, isLoading, isError, refetch: triggerFetching } = useQuery("cateBlogData", getCateBlogDataData);
+
   return (
     <div className="px-6 py-6 max-h-full">
       <div className="items-end justify-between mb-6 xl:flex lg:flex md:flex sm:flex">
@@ -21,6 +38,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex gap-2 whitespace-nowrap mt-4 sm:mb-0 sm:mt-4 sm:justify-end">
+        <Link to="/add-cate-blog">
           <Button
             text={"Thêm danh mục"}
             Class={
@@ -43,6 +61,7 @@ export default function Home() {
             }}
             onClick={() => console.log("You will be mine")}
           />
+           </Link>
         </div>
       </div>
       {/* filter button*/}
@@ -84,7 +103,7 @@ export default function Home() {
             </Menu.Items>
           </Menu>
         </div>
-        <TableBlogCate></TableBlogCate>
+        <TableBlogCate data={cateBlogData} triggerFetching={triggerFetching}></TableBlogCate>
       </div>
     </div>
   );

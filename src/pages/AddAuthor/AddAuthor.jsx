@@ -172,8 +172,7 @@ export default function AddAuthor() {
         </div>
         <div className="lg:my-0 md:my-0 sm:my-0 my-6">
           <InputFile
-            title="thumbnails"
-            label={"Image"}
+            title="Thumbnails"
             className={
               "grid p-6 mt-4 bg-gray-100 border-2 border-dashed rounded-lg justify-items-center"
             }

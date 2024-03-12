@@ -22,7 +22,7 @@ export default function ListAuthor() {
     }
   };
 
-  const { data: authorData, isLoading, isError } = useQuery("authorData", getAuthorData);
+  const { data: authorData, isLoading, isError,  refetch: triggerFetching } = useQuery("authorData", getAuthorData);
 
 
   return (
@@ -108,7 +108,7 @@ export default function ListAuthor() {
         ) : isError ? (
           <p>Error loading data</p>
         ) : (
-          <TableAuthor data={authorData} />
+          <TableAuthor data={authorData} triggerFetching={triggerFetching}/>
         )}
       </div>
 

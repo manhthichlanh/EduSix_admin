@@ -38,6 +38,8 @@ import CourseStructure from "./pages/CourseStructure/CourseStructure";
 import GeneralInfo from "./pages/CourseStructure/General-Info/GeneralInfo";
 import Content from "./pages/CourseStructure/Content/Content";
 import Publish from "./pages/CourseStructure/Publish/Publish";
+
+import CourseVideo from "./pages/CourseVideo/CourseVideo";
 //||Components
 function App() {
   return (
@@ -70,14 +72,6 @@ function App() {
               </ProtectedCourseRoute>
             }
           />
-          {/* <Route
-            path="/course-structure"
-            element={
-              <ProtectedCourseRoute>
-                <CourseStructure />
-              </ProtectedCourseRoute>
-            }
-          /> */}
           <Route
             path="/course-structure"
             element={
@@ -85,11 +79,20 @@ function App() {
                 <CourseStructure />
               </ProtectedCourseRoute>
             }
+          />
+          <Route
+            path="/course-structure/course"
+            element={
+              <ProtectedCourseRoute>
+                <CourseStructure />
+              </ProtectedCourseRoute>
+            }
           >
-            <Route path="general-info" element={<GeneralInfo/>} />
-            <Route path="content/:course_id" element={<Content/>} />
-            <Route path="publish" element={<Publish/>} />
-
+            <Route path="create/general-info" element={<GeneralInfo/>} />
+            <Route path=":course_id/general-info" element={<GeneralInfo/>} />
+            <Route path=":course_id/content" element={<Content/>} />
+            <Route path=":course_id/publish" element={<Publish/>} />
+            
           </Route>
           <Route
             path="/add-section"
@@ -208,6 +211,7 @@ function App() {
             }
           />
            <Route path="/add-author-iframe" element={<AddAuthor />} />
+           <Route path="/course-video-iframe" element={<CourseVideo />} />
       </Routes>
     </BrowserRouter>
   );

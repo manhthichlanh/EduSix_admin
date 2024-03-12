@@ -8,7 +8,6 @@ import TableReview from "../../components/Table/TableReview";
 import { Link, useSearchParams } from "react-router-dom";
 // import { DndProvider } from 'react-dnd';
 // import { HTML5Backend } from 'react-dnd-html5-backend';
-import TableAuthor from "../../components/Table/TableAuthor";
 import { ServerApi } from '../../utils/http';
 import { useQuery } from 'react-query';
 export default function ListReview() {
@@ -22,7 +21,7 @@ export default function ListReview() {
     }
   };
 
-  const { data: reviewData, isLoading, isError } = useQuery("authorData", getReviewData);
+  const { data: reviewData, isLoading, isError, refetch: triggerFetching } = useQuery("authorData", getReviewData);
 
 
   return (
@@ -108,7 +107,7 @@ export default function ListReview() {
         ) : isError ? (
           <p>Error loading data</p>
         ) : (
-          <TableReview data={reviewData} />
+          <TableReview data={reviewData} triggerFetching={triggerFetching} />
         )}
       </div>
 

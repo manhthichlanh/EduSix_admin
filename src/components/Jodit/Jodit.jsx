@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import JoditEditor from "jodit-react";
 import HTMLtoReact from "html-to-react";
 import "./Jodit.scss";
-const Jodit = ({ label, placeholder, onChange, value, setValue }) => {
+const Jodit = ({ label, placeholder, onChange, value, setValue, className }) => {
   const config = {
     readonly: false,
     placeholder: placeholder,
@@ -29,11 +29,13 @@ const Jodit = ({ label, placeholder, onChange, value, setValue }) => {
   };
 
   return (
-    <div className="Jodit_mota">
-      <label htmlFor="" className="text-base font-medium text-gray-500">
+    <div className={`Jodit_mota pt-4 ${className}`}>
+      {label && (
+      <label htmlFor="" className="text-base font-medium text-gray-500 ">
         {label}
       </label>
-      <div className="Jodit">
+      )}
+      <div className="Jodit pt-4">
         <JoditEditor
           value={value}
           config={config}

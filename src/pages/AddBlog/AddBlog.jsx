@@ -12,28 +12,26 @@ import ToastMessage from '../../utils/alert';
 import { useMutation } from 'react-query';
 import Jodit from "../../components/Jodit/Jodit";
 import { getLocalData } from '../../utils/helper';
+import { useQuery } from 'react-query';
+
+
+
+
 export default function AddBlog() {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
-  const [author, setAuthor] = useState([]);
-  const [userInfo, setUserInfo] = useState("");
- 
-  useEffect(() => {
-    const admin = getLocalData("auth_info").admin;
-    if (admin)setUserInfo(admin?.admin_id);
-    // setUserInfo(user.fullname);
-}, []
-)
+  const admin_id = getLocalData("auth_info").admin?.admin_id;
+  
+  const { data: blogCateData } = useQuery("cateData", () => getBlogCategory());
+  const { data: authorData } = useQuery("authorData", () => getAuthor());
+
   const [formValue, setFormValue] = useState({
     name: "",
     status: true,
     thumbnail: null,
-    content: "", // Use null instead of an empty string for files
-    blog_category_id: "",
-    author_id: "",
-    admin_id: userInfo,
-   
-
+    content: "",
+    blog_category_id: "" || null,
+    author_id: "" || null,
+    admin_id: admin_id || null,
   });
 
   const resetForm = () => {
@@ -44,63 +42,64 @@ export default function AddBlog() {
       content: "",
       blog_category_id: "",
       author_id: "",
-      admin_id: userInfo,
+      admin_id: admin_id || null,
     
     });
   };
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await ServerApi.get('/blogCategory/');
-        setCategories(response.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   useEffect(() => {
-    const fetchAuthor = async () => {
-      try {
-        const response = await ServerApi.get('/author/');
-        setAuthor(response.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
+    if (blogCateData && blogCateData.length > 0) {
+      setFormValue(prevFormValue => ({
+        ...prevFormValue,
+        blog_category_id: blogCateData[0].value
+      }));
+    }
+  }, [blogCateData]);
 
-    fetchAuthor();
-  }, []);
+  useEffect(() => {
+    if (authorData && authorData.length > 0) {
+      setFormValue(prevFormValue => ({
+        ...prevFormValue,
+        author_id: authorData[0].value
+      }));
+    }
+  }, [authorData]);
+
   const handleInputChange = (e) => {
-    setFormValue({ ...formValue, name: e.target.value });
+    setFormValue({ ...formValue, name: e.target.value })
   };
 
   const handleContentChange = (content) => {
-    setFormValue({ ...formValue, content })
-};
+    setFormValue(prevFormValue => ({
+      ...prevFormValue,
+      content: content
+    }));
+  };
 
   const handleStatusChange = (e) => {
-    const newStatus = e.target.value === "true"; // Convert the string to a boolean
+    const newStatus = e.target.value === "true";
     setFormValue({ ...formValue, status: newStatus });
   };
 
   const handleCategoryChange = (e) => {
-    setFormValue({ ...formValue, blog_category_id: e.target.value });
+    setFormValue({ ...formValue, blog_category_id: e.target.value })
   };
 
   const handleAuthorChange = (e) => {
-    setFormValue({ ...formValue, author_id: e.target.value });
+    setFormValue({ ...formValue, author_id: e.target.value })
   };
+
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     const newName = convertViToEn(file.name);
-    setFormValue({ ...formValue, thumbnail: file, thumbnailName: newName });
+    setFormValue(prevFormValue => ({
+      ...prevFormValue,
+      thumbnail: file,
+      thumbnailName: newName
+    }));
   };
 
-  
   const addBlogMutation = useMutation(
     (formData) => ServerApi.post('/blog/addBlog', formData),
     {
@@ -114,46 +113,49 @@ export default function AddBlog() {
     }
   );
 
+
+  
   const handleSave = () => {
-    const { name, thumbnail, content, blog_category_id, admin_id } = formValue;
+    const { name, thumbnail, content, blog_category_id, admin_id, author_id } = formValue;
 
-    // if (!name || !content || !thumbnail || !blog_category_id) {
-    //   ToastMessage('Nhập đầy đủ thông tin.').warn();
-    //   return;
-    // }
-
-    if (!name){
-                  ToastMessage('Nhập tên.').warn();
-                  return;
-              }
-      if (!content){
-          ToastMessage('Nhập nội dung.').warn();
-          return;
-      }
-      if (!thumbnail){
-          ToastMessage('Nhập hình.').warn();
-          return;
-      }
-      if (!blog_category_id){
-        ToastMessage('Nhập danh mục blog.').warn();
-        return;
-    }
-    if (!admin_id){
-      ToastMessage('Nhập id admin.').warn();
+    if (!name || !thumbnail || !content || !admin_id) {
+      ToastMessage('Vui lòng nhập đầy đủ thông tin').warn();
       return;
-  }
-   
-     
+    }
 
     const formData = new FormData();
     formData.append('name', name);
     formData.append('thumbnail', thumbnail);
     formData.append('content', content);
+    formData.append('blog_category_id', blog_category_id);
+    formData.append('author_id', author_id);
+    formData.append('admin_id', admin_id);
 
     addBlogMutation.mutate(formData);
   };
 
 
+ 
+
+  const getBlogCategory = async () => {
+    try {
+      const response = await ServerApi.get("/blogCategory");
+      const cateData = response.data;
+      return cateData.map(item => ({ value: item.blog_category_id, text: item.name_blog_category }));
+    } catch (error) {
+      throw new Error("Error fetching blogcategory data");
+    }
+  };
+  
+  const getAuthor = async () => {
+    try {
+      const response = await ServerApi.get("/author");
+      const authorData = response.data;
+      return authorData.map(item => ({ value: item.author_id, text: item.name_user }));
+    } catch (error) {
+      throw new Error("Error fetching author data");
+    }
+  };
   return (
     <>
       <div className="items-end justify-between px-6 xl:flex lg:grid lg:grid-cols-1 md:grid md:grid-cols-1 sm:grid sm:grid-cols-1">
@@ -224,31 +226,22 @@ export default function AddBlog() {
           </p>
            <InputSelect
         label={"Danh mục bài viết"}
-        array={categories.map((category) => ({
-          value: category.blog_category_id.toString(),
-          text: category.name_blog_category,
-        }))}
+        array={[{ value: "", text: "Không chọn" }, ...(blogCateData || [])]}
         value={formValue.blog_category_id}
         onChange={handleCategoryChange}
         className={
           "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
         }
       />
-      <InputSelect
-        label={"Lựa chọn tác giả"}
-        array={[
-          { value: null, text: "Không chọn" }, // Lựa chọn không chọn
-          ...author.map((author) => ({
-            value: author.author_id.toString(),
-            text: author.name_user,
-          })),
-        ]}
-        value={formValue.author_id}
-        onChange={handleAuthorChange}
-        className={
-          "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
-        }
-      />
+     <InputSelect
+  label={"Lựa chọn tác giả"}
+  array={[{ value: "", text: "Không chọn" }, ...(authorData || [])]}
+  value={formValue.author_id || ""}
+  onChange={handleAuthorChange}
+  className={
+    "mt-2 px-4 py-2 w-full bg-neutral-100 rounded-lg border-2 focus-border-indigo-500 focus:outline-none"
+  }
+/>
           <Input
             type={"text"}
             label={"Tiêu đề bài viết"}
@@ -274,7 +267,6 @@ export default function AddBlog() {
           <Jodit
             label={"Nội dung bài viết"}
             placeholder={"Nội dung bài viết"}
-
             value={formValue.content}
             setValue={handleContentChange}
           ></Jodit>

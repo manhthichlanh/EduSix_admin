@@ -1,0 +1,646 @@
+.CourseVideo {
+    clear: both;
+
+    .Header {
+        background: #29303b;
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        z-index: 2;
+
+        .directional {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+           
+            .return {
+                display: flex;
+                align-items: center;
+                padding-right: 20px;
+                border-right: 2px solid #fff;
+
+                .icon-link {
+                    float: left;
+                    margin-right: 10px;
+                }
+                .ChevronLeft{
+                    cursor: pointer;
+                    z-index: 3;
+                    color: rgb(255, 97, 61);
+                }
+            }
+
+            p {
+                margin: 0; // Loại bỏ margin mặc định của các đoạn văn bản
+                float: left;
+                color: #fff;
+                
+            }
+            .name_course {
+                width: 200px; /* Chiều rộng của phần tử cha */
+                overflow: hidden;
+              z-index: 1;
+              
+            p {
+                padding-left: 20px;
+                width: 100%; /* Chiều rộng của phần tử con, có thể là 100% hoặc giá trị cố định khác */
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        }
+        .progress {
+            // background-color: #29303b;
+            position: absolute;
+            top: 0px;
+            right: 20px; /* Adjust the right position */
+            color: #fff;
+            height: 100%;
+            display: flex;
+            justify-content: end;
+            gap: 10px;
+            align-items: center;
+            font-size: 13px;
+            strong{
+                border: 1px solid #fff;
+                padding: 5px;
+                border-radius: 5px;
+                color: orange;
+            }
+        }
+    }
+   
+    .Content_CourseVideo {
+        padding: 50px 10px 20px 10px;
+        display: flex;
+
+        .CourseVideo_Left {
+            width: 70%;
+           
+            // background-color: #e0e0e0;
+           
+            .video {
+                
+                width: 100%;
+                
+                max-height: 580px;
+                background-color: #000000;
+                border-radius: 5px;
+                top: 50px;
+                overflow: hidden;
+                
+                .custom-video {
+                    width: 100%;
+                }
+                
+            }
+            .Quiz{
+                width: 100%;
+                background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20220215/pngtree-the-blue-background-of-the-question-box-image_927362.jpg");
+                user-select: none;
+                background-attachment: fixed;
+                height: 80vh;
+                .QuizQuestions{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .InputQuizQuestions{
+                        width: 80%;
+                        
+                       margin-top: 15%;
+                        .InputQuestions{
+                            width: 100%;
+                            padding: 10px;
+                            border-radius: 5px;
+                            background-color: #fff;
+                        }
+                        .InputQuestions::placeholder{
+                            color: #FF6636;
+                        }
+                        .AnswerInfo{
+                            color: #ffffff;
+                            font-weight: 600;
+                            background-color: #05a70a;
+                            border-radius: 10px;
+                            padding: 5px 10px;
+                            margin-bottom: 10px;
+                        }
+                        
+                       .Answer{
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                       gap: 10px;
+                       margin-top: 10px;
+                       text-align: center;
+                       /* CSS để tô màu cho đáp án đã chọn */
+
+                       .AnswerOption{
+                        position: relative;
+                        .AnswerLabel{
+                            background-color: #FF6636;
+                           width: 50px;
+                          padding: 10px 0px;
+                           border-top-left-radius: 5px;
+                           border-bottom-left-radius: 5px;
+                            color: #fff;
+                            position: absolute;
+                            left: 0;
+                            font-weight: 600;
+                            
+                           }
+                         
+                        
+                        
+                          .AnswerOption.selected {
+                            background-color: #4caf50; /* Green color for selected answers */
+                          }
+                          
+                          .AnswerLabel {
+                            margin-right: 8px;
+                          }
+                          
+                          .AnswerLabel.correct {
+                            background-color: green; /* or any color to indicate correct answer */
+                          }
+                          
+                          .AnswerLabel.incorrect {
+                            background-color: red; /* or any color to indicate incorrect answer */
+                          }
+
+                          .AnswerOption {
+                            cursor: pointer;
+                            padding: 10px;
+                            margin-bottom: 8px;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                          }
+                          
+                          .AnswerOption.selected {
+                            background-color: #4caf50; /* Green color for selected answers */
+                          }
+                          
+                          .AnswerLabel {
+                            margin-right: 8px;
+                          }
+                          
+                           .InputAnswer{
+                            width: 100%;
+                            padding: 10px 10px 10px 60px;
+                            border-radius: 5px;
+                            background-color: #fff;
+                           }
+                           .InputAnswer.selected {
+                            color: #ffffff; /* Change the text color for selected answers */
+                            background-color: #388e3c; /* Change the background color for selected answers */
+                          }
+                       }
+
+                       } 
+                    }
+                 
+                }
+                .ButtonGroup{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+                    margin-top: 20px;
+                    font-weight: 600;
+                    .back{
+                        padding: 10px 20px;
+                        background-color: #e30000;
+                        border-radius: 5px;
+                        color: #fff;
+                    }
+                    .continue{
+                        padding: 10px 20px;
+                        background-color: rgb(1, 150, 63);
+                        border-radius: 5px;
+                        color: #fff;
+                    }
+                    .save-answers{
+                        padding: 10px 20px;
+                        background-color: rgb(1, 150, 11);
+                        border-radius: 5px;
+                        color: #fff;
+                    }
+                }
+            }
+          
+            .scrollBar{
+                background-color: #fff;
+                position: relative;
+                padding-bottom: 60px;
+
+            .mini_menu {
+                display: flex;
+                gap: 30px;
+                padding: 20px 10px;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+                font-size: 15px;
+                background-color: #f1f1f1;
+                box-shadow: 0px 0px 5px 0px #e1e1e1;
+                color: rgb(38, 38, 38);
+                margin-top: 10px;
+                border-radius: 5px;
+                border: none;
+                
+            }
+
+            .information {
+                width: 80%;
+                margin: auto;
+
+                .overview_CourseVideo {
+                    padding-top: 40px;
+
+                    h1 {
+                        font-size: 30px;
+                        font-weight: 600;
+                    }
+
+                    p {
+                        color: #8D8D8D;
+                        margin-top: 10px;
+                    }
+                }
+
+                .question_CourseVideo {
+                    padding-top: 40px;
+
+                    h2 {
+                        font-size: 20px;
+                        font-weight: 600;
+                    }
+
+                    .questionsmall {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                        gap: 15px;
+                        margin-top: 10px;
+
+                        .eachquestion {
+                            display: flex;
+                            position: relative;
+
+                            .icon_Check {
+                                width: 40px;
+
+                                .icon_Check_1 {
+                                    position: absolute;
+                                    top: 55%;
+                                    transform: translateY(-50%);
+                                }
+                            }
+
+                            .content_question {
+                                color: #8D8D8D;
+                                font-size: 13px;
+                            }
+                        }
+                    }
+                }
+
+                .comment {
+                    padding-top: 40px;
+                    width: 100%;
+
+                    .see_More {
+                        margin-top: 10px;
+
+                        .Button {
+                            padding: 10px 20px;
+                            background-color: #FFEEE8;
+                            border-radius: 5px;
+                            margin-left: 10px;
+                            color: #FF6636;
+                            transition: 0.3s ease-in-out;
+                        }
+
+                        .Button:hover {
+                            opacity: 0.8;
+                        }
+                    }
+
+                    h2 {
+                        font-size: 20px;
+                        font-weight: 600;
+                    }
+
+                    .Content {
+                        margin-top: 10px;
+
+                        .post_Comments {
+                            display: flex;
+
+                            .avatar {
+                                min-width: 50px;
+                                height: 50px;
+                                margin-right: 20px;
+                                img {
+
+                                    border-radius: 50%;
+                                    border: 2px solid #f98900;
+                                }
+                            }
+
+                            .input_comments {
+                                width: 50%;
+                                position: relative;
+
+                                input {
+                                    padding: 12px 10px 12px 40px;
+                                    // border: 1px solid #e3e3e3;
+                                    width: 100%;
+                                    border-radius: 4px;
+                                }
+
+                                .icon_Messages {
+                                    position: absolute;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    left: 10px;
+                                }
+                            }
+
+                            .Button_Comment {
+                                .Button {
+                                    padding: 12px 20px;
+                                    background-color: #FF6636;
+                                    border-radius: 4px;
+                                    margin-left: 10px;
+                                    color: #fff;
+                                    transition: 0.3s ease-in-out;
+                                }
+
+                                .Button:hover {
+                                    opacity: 0.8;
+                                }
+                            }
+                        }
+
+                        .commented_Content {
+                            margin-top: 10px;
+
+                            .boxCommented {
+                                border-bottom: 2px solid #f3f3f3;
+                                padding: 10px 0px;
+
+                                .commented {
+                                    display: flex;
+                                    overflow: hidden;
+                                    padding: 5px 0px;
+
+                                    .avatar {
+                                        min-width: 40px;
+                                        height: 40px;
+                                        margin-right: 20px;
+
+                                        img {
+                                            border-radius: 50%;
+                                            border: 2px solid #f98900;
+                                        }
+                                    }
+
+                                    .comment_Information {
+                                        float: left;
+
+                                        .User {
+                                            display: flex;
+
+                                            .name {
+                                                font-size: 16px;
+                                                font-weight: 600;
+                                                margin-right: 10px;
+                                            }
+
+                                            .time {
+                                                font-size: 12px;
+                                                list-style-type: disc;
+                                                /* Loại dấu chấm */
+                                                margin-top: 3px;
+                                                color: #8D8D8D;
+                                            }
+
+                                            .time::before {
+                                                content: "\2022";
+                                                /* Dấu chấm */
+                                                margin-right: 0.5em;
+                                                /* Khoảng cách giữa dấu chấm và nội dung */
+                                            }
+                                        }
+
+                                        .content {
+                                            margin-top: 5px;
+                                        }
+
+                                        .Reply {
+                                            display: flex;
+                                            margin-top: 10px;
+
+                                            .Messages {
+                                                margin-right: 10px;
+                                            }
+
+                                            .title {
+                                                color: #FF6636;
+                                                font-weight: 600;
+                                                font-size: 13px;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .commentReply {
+                                    padding-left: 40px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+        .CourseVideo_Right {
+            width: 30%;
+            min-height: 100vh;
+            background-color: #fff;
+            overflow: hidden;
+            margin-left: 10px;
+            border-left: 2px solid #f4f4f4;
+            .menu_CourseVideo_Right {
+                padding: 0px 10px;
+                width: 30%;
+                position: fixed;
+                .dropdownMenu{
+                    max-height: 72vh;
+                    overflow: auto;
+                
+                }
+
+            }
+        }
+    }
+
+    .certificate{
+        background: linear-gradient(90deg, rgb(0, 138, 148), rgb(0, 157, 255));
+        position: fixed;
+        bottom: 20%;
+        left: 20px;
+        border-radius: 50%;
+        .icon{
+           font-size: 50px;
+            color: #fff;
+            font-weight: 600;
+            // background-color: #FF6636;
+            padding: 10px;
+        }
+    }
+}
+
+.Footer {
+    clear: both;
+
+}
+
+.sub_menu {
+    background-color: #f0f0f0;
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 5px 0px #c5c5c5;
+
+    .course_content {
+        float: left;
+        display: none;
+
+        button {
+            padding: 10px 20px;
+           border: 1px solid #FF6636;
+           background-color: #FF6636;
+            color: #ffffff;
+            border-radius: 5px;
+        }
+    }
+
+    .next_page {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+
+        .knot {
+            display: flex;
+            border-radius: 5px;
+            border: 2px solid rgb(238, 96, 14);
+            cursor: pointer;
+            .icon-link {
+                margin-top: 10px;
+               margin-right: 3px;
+            }
+
+            .Button {
+                padding: 10px;
+                color: #FF6636;
+              
+               
+            }
+        }
+    }
+}
+
+
+@media (max-width: 1000px) {
+    .CourseVideo .Content_CourseVideo .CourseVideo_Left .information {
+        width: 100%;
+    }
+
+    .CourseVideo .Content_CourseVideo .CourseVideo_Left {
+        width: 100%;
+
+
+    }
+
+    .CourseVideo .Content_CourseVideo {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    // .CourseVideo .Content_CourseVideo .CourseVideo_Left .video{
+    //     display: flex;
+    //     flex-direction:column-reverse;
+    // }
+    .CourseVideo .Content_CourseVideo .background_Black {
+        background-color: #000000c0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    .CourseVideo .Content_CourseVideo .CourseVideo_Right {
+        width: 40%;
+        position: fixed;
+        top: 40px;
+        overflow: hidden;
+        min-height: 100vh;
+        // border-bottom: 10px solid #6d6d6d;
+        left: 0;
+        animation: SideBar_truot 0.5s ease-in-out;
+        z-index: 1;
+        min-height: 90vh;
+        margin: 0;
+        border: none;
+    }
+    // .CourseVideo .Content_CourseVideo .CourseVideo_Left .video{
+    //     width: 100%;
+    
+    // }
+    .CourseVideo .Content_CourseVideo .CourseVideo_Right .menu_CourseVideo_Right {
+        position: relative;
+        max-height: 90vh;
+        overflow: auto;
+        width: 100%;
+    }
+
+    .sub_menu .next_page {
+        justify-content: end;
+    }
+
+    .sub_menu .course_content {
+        display: block;
+    }
+
+    @keyframes SideBar_truot {
+        0% {
+            transform: translateX(-100%);
+        }
+
+        100% {
+            transform: translateX(0%);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .CourseVideo .Content_CourseVideo .CourseVideo_Right{
+        width: 50%;
+    }
+
+}
+
+@media (max-width: 580px){
+    .CourseVideo .Content_CourseVideo .CourseVideo_Right{
+        width: 70%;
+    }
+}
+
+
