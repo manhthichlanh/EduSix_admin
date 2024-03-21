@@ -1,25 +1,11 @@
 import { useState } from "react";
-import styled from "styled-components";
 import Input from "@components/Input/Input"
-import PencilLine from '@components/common/icon/PencilLine'
+import useDebouncedCallback from "@hooks/useDebounce";
+import VideoWrapperComponent from "./VideoWrapperComponent";
 // import useDebounce from "@hooks/useDebound";
 
 
-const VideoWrapper = styled.div`
-position: relative;
-width: 100%;
-padding-bottom: 56.25%;
 
-max-height: 1080px; // Chiều cao tối đa là 1080px
-
-> div {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-}
-`;
 export default function YoutubeURL({ callback, youtubeURL }) {
     const [youtubeLink, setYoutubeLink] = useState(youtubeURL || "");
     const [invalidLink, setInvalidLink] = useState(false);
@@ -35,7 +21,7 @@ export default function YoutubeURL({ callback, youtubeURL }) {
         const youtubeApiKey = import.meta.env.VITE_YOUTUBE_API_KEY;
         try {
             setIsLoading(true)
-            const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${youtubeApiKey}&part=snippet`, {
+            const response = await fetch(`https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${youtubeApiKey}&part=contentDetails`, {
                 method: 'GET',
             });
             if (!response.ok) {
@@ -43,9 +29,10 @@ export default function YoutubeURL({ callback, youtubeURL }) {
             }
 
             const data = await response.json();
+            console.log(data)
             setIsLoading(false);
 
-            if (data) setThubmnail(data?.items[0]?.snippet?.thumbnails?.default?.url)
+            if (data) setThubmnail(data?.items[0]?.snippet?.thumbnails?.medium?.url)
             // youtubeURL?.videoURL = youtubeLink;
 
             // callback(youtubeURL)
@@ -56,12 +43,12 @@ export default function YoutubeURL({ callback, youtubeURL }) {
             return false;
         }
     };
-    const handleYoutubeLinkChange = async (event) => {
+    const handleYoutubeLinkChange = useDebouncedCallback(async (event) => {
         const link = event.target.value;
         setYoutubeLink(link);
 
         // Kiểm tra nếu liên kết từ YouTube
-        if (link.includes('youtube.com') || link.includes('youtu.be')) {
+        if (link.includes('youtube.com') || link.includes('youtube')) {
             setInvalidLink(false);
             // Trích xuất ID video từ liên kết
             const videoId = extractVideoId(link);
@@ -73,7 +60,7 @@ export default function YoutubeURL({ callback, youtubeURL }) {
         } else {
             setInvalidLink(true);
         }
-    };
+    }, 500);
     return (
         <div className="p-5">
             <Input
@@ -85,31 +72,36 @@ export default function YoutubeURL({ callback, youtubeURL }) {
             {invalidLink ? (
                 <div className="py-4 text-red-500">Liên kết không hợp lệ</div>
             ) : thumbnail && (
-                <div className="w-full m-auto flex mt-[20px] overflow-auto">
-                    <div className="w-[20%]">
-                        <VideoWrapper>
-                            <div>
-                                <img className="w-full h-full" src={`${thumbnail}`} alt="" />
-                            </div>
-                        </VideoWrapper>
+                // <div className="w-full m-auto flex mt-[20px] overflow-auto">
+                //     <div className="w-[20%]">
+                //         <VideoWrapper>
+                //             <div>
+                //                 <img className="w-full h-full" src={`${thumbnail}`} alt="" />
+                //             </div>
+                //         </VideoWrapper>
+                //     </div>
+                //     <div className="w-[80%] pl-4">
+                //         <div className="">
+                //             <h3 className="font-medium text-[#17163A] ">Tên video</h3>
+                //             <h3 className="">Độ dài video: </h3>
+                //         </div>
+                //         <div className="flex items-center">
+                //             <PencilLine
+                //                 width="18px"
+                //                 height="18px"
+                //                 stroke="#1D2026" className="cursor-pointer hover:stroke-[#1a9550]"
+                //             />
+                //             <label className="text-indigo-700 cursor-pointer pl-1">
+                //                 Chỉnh sửa nội dung
+                //             </label>
+                //         </div>
+                //     </div>
+                // </div>
+                <VideoWrapperComponent duration={123} video_name={"hello"}>
+                    <div>
+                        <img className="w-full h-full" src={`${thumbnail}`} alt="" />
                     </div>
-                    <div className="w-[80%] pl-4">
-                        <div className="">
-                            <h3 className="font-medium text-[#17163A] ">Tên video</h3>
-                            <h3 className="">Độ dài video: </h3>
-                        </div>
-                        <div className="flex items-center">
-                            <PencilLine
-                                width="18px"
-                                height="18px"
-                                stroke="#1D2026" className="cursor-pointer hover:stroke-[#1a9550]"
-                            />
-                            <label className="text-indigo-700 cursor-pointer pl-1">
-                                Chỉnh sửa nội dung
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                </VideoWrapperComponent>
 
             )}
             <div className="py-4"> <span className='font-medium'>Lưu ý:</span>Tất cả các tệp phải có kích thước tối thiểu là 720p và nhỏ hơn 4,0 GB.</div>

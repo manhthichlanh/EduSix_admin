@@ -1,6 +1,7 @@
 function Input({
   type,
   className,
+  outLetClassName="py-2",
   label,
   placeholder,
   value,
@@ -9,7 +10,7 @@ function Input({
   min
 }) {
   return (
-    <div className="w-full py-2">
+    <div className={"w-full "+ outLetClassName} >
       <label htmlFor="" className="text-base font-medium text-gray-500">
         {label}
       </label>

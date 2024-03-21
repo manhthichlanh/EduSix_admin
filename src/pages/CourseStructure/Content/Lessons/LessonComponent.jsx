@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Input from "@components/Input/Input"
+import Input from "@components/input/input"
 import Delete from "@components/common/icon/Delete"
 import Menu from "@components/common/icon/Menu"
 import PencilLine from "@components/common/icon/PencilLine"
@@ -105,6 +105,7 @@ export const LessonComponent = ({ lessonItem }) => {
                         value={inputValue}
                         disabled={!isActiveEdit}
                         placeholder={"Tên bài học"}
+                        outLetClassName={"Hello"}
                         className={
                             "w-full p-1 focus:border-b-indigo-500 focus:bg-gray-100 focus:border-b-2 focus:outline-none"
                         }
